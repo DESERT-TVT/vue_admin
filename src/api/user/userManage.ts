@@ -55,3 +55,6 @@ export const getUserTemperamentLabelApi = (dataForm: any) => {
 export const updateUserInfoApi = (dataForm: any) => {
 	return service.post('/admin/sys/user/update', dataForm)
 }
+export const APIPostUserContactConfig = (dataForm: any) => {
+	return service.post('/admin/sys/user/contact/config/modify', dataForm)
+}
