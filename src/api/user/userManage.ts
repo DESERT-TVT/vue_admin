@@ -40,6 +40,10 @@ export const getRechargeCountApi = (dataForm: any) => {
 	return service.get('/admin/sys/user/recharge-details', { params: dataForm })
 }
 
+export const APIPostUserContactConfig = (dataForm: any) => {
+	return service.post('/admin/sys/user/contact/config/modify', dataForm)
+}
+
 export const getWithdrawCountApi = (dataForm: any) => {
 	return service.get('/admin/sys/user/withdraw-details', { params: dataForm })
 }
@@ -54,7 +58,4 @@ export const getUserTemperamentLabelApi = (dataForm: any) => {
 
 export const updateUserInfoApi = (dataForm: any) => {
 	return service.post('/admin/sys/user/update', dataForm)
-}
-export const APIPostUserContactConfig = (dataForm: any) => {
-	return service.post('/admin/sys/user/contact/config/modify', dataForm)
 }

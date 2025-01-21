@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useAccountLoginApi, useLogoutApi, useMobileLoginApi, useThirdLoginApi } from '@/api/auth'
+import { useAccountLoginApi, useMobileLoginApi, useThirdLoginApi } from '@/api/auth'
 import { useUserInfoApi } from '@/api/sys/user'
 import cache from '@/utils/cache'
 import { useAuthorityListApi } from '@/api/sys/menu'
@@ -78,7 +78,7 @@ export const useUserStore = defineStore('userStore', {
 		},
 		// 用户退出
 		async logoutAction() {
-			await useLogoutApi()
+			// await useLogoutApi()
 
 			// 移除 token
 			this.setToken(null)

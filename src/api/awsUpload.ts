@@ -1,6 +1,7 @@
 import service from '@/utils/request'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
+
 export const useUploadAuthApi = () => {
 	return service.get('/server/auth/file/sts/aws')
 }
@@ -18,7 +19,7 @@ export const useUploadAwsApi = async (file: File, suffix: string) => {
 			bucketName: r.data.bucketName
 		}
 		try {
-			await axios.putForm(r.data.api, params).then((res: any) => {
+			await axios.putForm('http://47.243.179.167:10002/upload/aws/simple', params).then((res: any) => {
 				if (res.status === 200) {
 					url = r.data.url + params.key
 				}

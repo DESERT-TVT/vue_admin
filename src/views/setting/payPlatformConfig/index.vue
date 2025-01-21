@@ -35,15 +35,32 @@
 		>
 			<el-table-column align="center" header-align="center" type="selection" width="38"></el-table-column>
 			<el-table-column align="center" header-align="center" label="名称" prop="name"></el-table-column>
-			<el-table-column align="center" header-align="center" label="商户ID" prop="merchantId"></el-table-column>
-			<el-table-column align="center" header-align="center" label="通道" prop="channel"></el-table-column>
-			<el-table-column align="center" header-align="center" label="网关地址" prop="gateway"></el-table-column>
-			<el-table-column align="center" header-align="center" label="标签" prop="tag"></el-table-column>
-			<el-table-column align="center" header-align="center" label="最小金额" prop="minAmount"></el-table-column>
-			<el-table-column align="center" header-align="center" label="最大金额" prop="maxAmount"></el-table-column>
-			<el-table-column align="center" header-align="center" label="每日额度" prop="dailyQuota"></el-table-column>
-			<fast-dict-column dict-type="pay_platform_config_type" label="支付类型" prop="payType"></fast-dict-column>
-			<el-table-column align="center" header-align="center" label="文档地址" prop="docUrl"></el-table-column>
+			<!--			<el-table-column align="center" header-align="center" label="商户ID" prop="merchantId"></el-table-column>-->
+			<el-table-column align="center" header-align="center" label="密钥(点击复制)" prop="merchantKey">
+				<template #default="scope">
+					<span class="masked-key" @click="copyToClipboard(scope.row.merchantKey)">
+						{{ maskKey(scope.row.merchantKey) }}
+					</span>
+				</template>
+			</el-table-column>
+			<el-table-column align="center" header-align="center" label="接口API" prop="gateway">
+				<template #header="{ column }">
+					{{ column.label }}
+					<el-tooltip content="该字段为支付模块获取付款地址的API地址" effect="dark" placement="top">
+						<el-text type="info">
+							<el-icon>
+								<QuestionFilled />
+							</el-icon>
+						</el-text>
+					</el-tooltip>
+				</template>
+			</el-table-column>
+			<!--			<el-table-column align="center" header-align="center" label="标签" prop="tag"></el-table-column>-->
+			<!--			<el-table-column align="center" header-align="center" label="最小金额" prop="minAmount"></el-table-column>-->
+			<!--			<el-table-column align="center" header-align="center" label="最大金额" prop="maxAmount"></el-table-column>-->
+			<!--			<el-table-column align="center" header-align="center" label="每日额度" prop="dailyQuota"></el-table-column>-->
+			<!--			<fast-dict-column dict-type="pay_platform_config_type" label="支付类型" prop="payType"></fast-dict-column>-->
+			<!--			<el-table-column align="center" header-align="center" label="文档地址" prop="docUrl"></el-table-column>-->
 			<el-table-column align="center" header-align="center" label="序号（权重）" min-width="120" prop="sort" sortable="custom">
 				<template #header="{ column }">
 					{{ column.label }}
@@ -85,6 +102,7 @@ import { reactive, ref } from 'vue'
 import { IHooksOptions } from '@/hooks/interface'
 import AddOrUpdate from './add-or-update.vue'
 import { QuestionFilled } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/config/pay/platform/list',
@@ -100,11 +118,33 @@ const addOrUpdateRef = ref()
 const addOrUpdateHandle = (id?: number) => {
 	addOrUpdateRef.value.init(id)
 }
-
-const sendRef = ref()
-const sendHandle = (row: any) => {
-	sendRef.value.init(row)
+// 显示处理：显示前三位和后三位，中间用 ***
+const maskKey = (key: string): string => {
+	if (key.length <= 6) {
+		return key
+	}
+	return `${key.slice(0, 3)}***${key.slice(-3)}`
 }
+
+// 复制到剪贴板
+const copyToClipboard = (key: string) => {
+	navigator.clipboard
+		.writeText(key)
+		.then(() => {
+			ElMessage.success('复制成功！')
+		})
+		.catch(() => {
+			ElMessage.error('复制失败，请重试！')
+		})
+}
+const sendRef = ref()
 
 const { getDataList, selectionChangeHandle, sizeChangeHandle, currentChangeHandle, deleteBatchHandle, reset } = useCrud(state)
 </script>
+<style scoped>
+.masked-key {
+	cursor: pointer;
+	color: #548abd;
+	text-decoration: underline;
+}
+</style>

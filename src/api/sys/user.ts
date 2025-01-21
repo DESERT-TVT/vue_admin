@@ -46,3 +46,7 @@ export const updateStatusApi = (dataForm: any) => {
 export const APISaveBotText = (params: any) => {
 	return service.post('/admin/sys/user/bot/comment/add', params)
 }
+
+export const APIUpdateBotTextStatus = (params: { id: string, status: number }) => {
+	return service.post('/admin/sys/user/bot/comment/status', params)
+}
