@@ -81,9 +81,23 @@
 					<el-table-column prop="updater" label="操作人" header-align="center" align="center"></el-table-column>
 					<el-table-column label="操作" fixed="right" header-align="center" align="center" width="120">
 						<template #default="scope">
-							<el-button v-if="scope.row.status === 0" v-auth="'payment:withdraw:check'" type="primary" @click="auditHandle(scope.row)">
-								审核
-							</el-button>
+							<div v-if="scope.row.status === 0" v-auth="'payment:withdraw:check'">
+								<el-popconfirm
+									title="是否同意这笔提现"
+									confirm-button-text="通过"
+									cancel-button-text="拒绝"
+									cancel-button-type="danger"
+									@confirm="submitForm(1, scope.row.id)"
+									@cancel="auditHandle(scope.row)"
+								>
+									<template #reference>
+										<el-button type="primary"> 审核 </el-button>
+									</template>
+								</el-popconfirm>
+							</div>
+							<!--							<el-button  type="primary" @click="auditHandle(scope.row)">-->
+							<!--								审核-->
+							<!--							</el-button>-->
 							<span v-else>已审核</span>
 						</template>
 					</el-table-column>
@@ -110,7 +124,7 @@
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
-				<el-button type="success" @click="submitForm(1)">同意</el-button>
+				<!--				<el-button type="success" @click="submitForm(1)">同意</el-button>-->
 				<el-button type="danger" @click="submitForm(-1)">拒绝</el-button>
 			</div>
 		</template>
@@ -148,7 +162,10 @@ const auditForm = reactive({
 	type: 0,
 	status: ''
 })
-const submitForm = (status: number) => {
+const submitForm = (status: number, id?: any) => {
+	if (id) {
+		auditForm.id = id
+	}
 	if (status == -1 && auditForm.refuseReason == '') {
 		ElMessage({
 			message: '拒绝原因不能为空',
@@ -183,7 +200,7 @@ const submitForm = (status: number) => {
 		})
 		.finally(() => {
 			loading.close()
-      auditForm.refuseReason = "";
+			auditForm.refuseReason = ''
 		})
 }
 const searchDataList = () => {
