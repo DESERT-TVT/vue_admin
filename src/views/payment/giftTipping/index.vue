@@ -56,10 +56,16 @@
 					<el-table-column type="selection" header-align="center" align="center" width="38"></el-table-column>
 					<el-table-column prop="id" label="订单号" header-align="center" align="center"></el-table-column>
 					<el-table-column prop="userId" label="赠送人UID" header-align="center" align="center"></el-table-column>
-					<el-table-column prop="giftContent" label="礼物内容" header-align="center" align="center"></el-table-column>
+					<el-table-column prop="giftContent" label="礼物内容" header-align="center" align="center">
+						<template #default="scope">
+							<el-tag type="success">{{ scope.row.giftContent }}</el-tag>
+						</template>
+					</el-table-column>
 					<el-table-column prop="giftValue" label="礼物价值" header-align="center" align="center">
 						<template #default="scope">
-							<span>{{ scope.row.giftValue * scope.row.giftNum }}</span>
+							<el-tag type="warning"
+								><span>{{ scope.row.giftValue * scope.row.giftNum }}</span></el-tag
+							>
 						</template>
 					</el-table-column>
 					<el-table-column prop="toUserId" label="接收人UID" header-align="center" align="center"></el-table-column>

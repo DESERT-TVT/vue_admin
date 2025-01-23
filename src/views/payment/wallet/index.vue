@@ -45,8 +45,16 @@
 						</template>
 					</el-table-column>
 					<el-table-column align="center" header-align="center" label="vip到期时间" prop="vipExpireTime"></el-table-column>
-					<el-table-column prop="goldCoins" label="金币余额" header-align="center" align="center"></el-table-column>
-					<el-table-column prop="integral" label="积分余额" header-align="center" align="center"></el-table-column>
+					<el-table-column prop="goldCoins" label="金币余额" header-align="center" align="center">
+						<template #default="scope">
+							<el-tag type="warning">{{ scope.row.goldCoins }}</el-tag>
+						</template>
+					</el-table-column>
+					<el-table-column prop="integral" label="积分余额" header-align="center" align="center">
+						<template #default="scope">
+							<el-tag type="success">{{ scope.row.integral }}</el-tag>
+						</template>
+					</el-table-column>
 					<!--					<el-table-column align="center" header-align="center" label="注册免费文字聊天条数" prop="freeTextChatNum"></el-table-column>-->
 					<el-table-column align="center" header-align="center" label="vip免费文字聊天条数" prop="freeTextChatNum"></el-table-column>
 					<el-table-column prop="freeVoiceChatNum" label="免费语音通话时长" header-align="center" align="center"></el-table-column>

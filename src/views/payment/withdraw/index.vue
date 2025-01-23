@@ -62,12 +62,16 @@
 					</el-table-column>
 					<el-table-column prop="exchangeNum" label="实际到账" header-align="center" align="center"></el-table-column>
 					<el-table-column prop="withdrawFee" label="手续费" header-align="center" align="center"></el-table-column>
-					<el-table-column prop="platform" label="渠道" header-align="center" align="center"></el-table-column>
+					<!--					<el-table-column prop="platform" label="渠道" header-align="center" align="center"></el-table-column>-->
 					<el-table-column prop="status" label="状态" header-align="center" align="center">
 						<template #default="scope">
-							<span v-if="scope.row.status === 0">审核中</span>
-							<span v-else-if="scope.row.status === 1">通过</span>
-							<span v-else-if="scope.row.status === -1">拒绝</span>
+							<el-tag v-if="scope.row.status === 0" type="warning">审核中</el-tag>
+							<el-tag v-else-if="scope.row.status === 1" type="success">通过</el-tag>
+							<el-tag v-else-if="scope.row.status === -1" type="danger">拒绝</el-tag>
+
+							<!--							<span v-if="scope.row.status === 0">审核中</span>-->
+							<!--							<span v-else-if="scope.row.status === 1">通过</span>-->
+							<!--							<span v-else-if="scope.row.status === -1">拒绝</span>-->
 						</template>
 					</el-table-column>
 					<el-table-column prop="type" label="类型" header-align="center" align="center">
