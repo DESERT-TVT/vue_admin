@@ -16,3 +16,7 @@ export const APIModifySite = (params: any) => {
 export const APIModifySiteUserRate = (params: any) => {
 	return service.post('/admin/site/config/modify/ratio', params)
 }
+
+export const APIMigrateUser = (params: any) => {
+	return service.post('/admin/site/migrate/user', params)
+}

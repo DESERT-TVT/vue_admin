@@ -18,6 +18,9 @@
 					<el-form-item>
 						<el-button v-auth="'sys:site:del'" icon="Delete" type="danger" @click="deleteBatchHandle()"> 批量删除 </el-button>
 					</el-form-item>
+					<el-form-item>
+						<el-button icon="CopyDocument" type="warning" @click="migrate()">平台间用户迁移</el-button>
+					</el-form-item>
 				</el-form>
 			</el-card>
 			<el-card>
@@ -59,6 +62,7 @@
 
 	<!-- 弹窗, 新增 / 修改 -->
 	<add-or-update ref="addOrUpdateRef" @refresh-data-list="getDataList"></add-or-update>
+	<user-migrate ref="migrateRef" @refresh-data-list="getDataList"></user-migrate>
 </template>
 
 <script lang="ts" setup>
@@ -66,6 +70,7 @@ import { reactive, ref } from 'vue'
 import { IHooksOptions } from '@/hooks/interface'
 import { useCrud } from '@/hooks'
 import AddOrUpdate from '@/views/site/manager/add-or-update.vue'
+import UserMigrate from '@/views/site/manager/user-migrate.vue'
 
 const loading = ref(false)
 const state: IHooksOptions = reactive({
@@ -94,6 +99,10 @@ const queryHandle = () => {
 const resetHandle = () => {
 	state.queryForm.userId = ''
 	getDataList()
+}
+const migrateRef = ref()
+const migrate = () => {
+	migrateRef.value.init()
 }
 </script>
 
