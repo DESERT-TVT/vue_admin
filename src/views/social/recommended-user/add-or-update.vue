@@ -20,7 +20,11 @@
 			<el-table-column align="center" header-align="center" type="selection" width="38"></el-table-column>
 			<el-table-column align="center" header-align="center" label="UID" prop="userId"></el-table-column>
 			<el-table-column align="center" header-align="center" label="名称" prop="nickname"></el-table-column>
-			<el-table-column align="center" header-align="center" label="动态总数" prop="dynamicCount"></el-table-column>
+			<el-table-column align="center" header-align="center" label="魅力等级" prop="charmLevel">
+				<template #default="scope">
+					<el-tag>{{ scope.row.charmLevel }} </el-tag>
+				</template>
+			</el-table-column>
 		</el-table>
 		<el-pagination
 			:current-page="state.page"
@@ -35,7 +39,7 @@
 		<template #footer>
 			<div style="margin-top: 20px; display: flex; justify-content: end">
 				<el-button @click="handleDrawerClose">取消</el-button>
-				<el-button v-auth="'sys:recommended:add'" type="primary" @click="confirm">确定</el-button>
+				<el-button v-auth="'sys:recommended:anchor:add'" type="primary" @click="confirm">确定</el-button>
 			</div>
 		</template>
 	</el-dialog>
@@ -45,7 +49,7 @@
 import { reactive, ref } from 'vue'
 import { IHooksOptions } from '@/hooks/interface'
 import { useCrud } from '@/hooks'
-import { APIRecommended } from '@/api/social/social'
+import { APIRecommended, APIRecommendedAnchor } from '@/api/social/social'
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus/es'
 
@@ -54,7 +58,7 @@ const availableUsers = ref([])
 const visible = ref(false)
 const state: IHooksOptions = reactive({
 	primaryKey: 'userId',
-	dataListUrl: '/admin/social/recommend/user/list',
+	dataListUrl: '/admin/social/recommend/anchor/user/list',
 	queryForm: {
 		userId: ''
 	}
@@ -87,11 +91,11 @@ const confirm = () => {
 		text: '推荐中',
 		background: 'rgba(0, 0, 0, 0.7)'
 	})
-	APIRecommended(params)
+	APIRecommendedAnchor(params)
 		.then((resp: any) => {
 			if (resp.code === 0) {
 				ElMessage({
-					message: '分享成功',
+					message: '推荐成功',
 					type: 'success',
 					duration: 1000
 				})

@@ -16,10 +16,10 @@
 	<el-card>
 		<el-space>
 			<el-space>
-				<el-button v-auth="'sys:recommended:add'" icon="Plus" type="primary" @click="addOrUpdateHandle()">新增 </el-button>
+				<el-button v-auth="'sys:recommended:anchor:add'" icon="Plus" type="primary" @click="addOrUpdateHandle()">新增 </el-button>
 			</el-space>
 			<el-space>
-				<el-button v-auth="'sys:recommended:del'" icon="Delete" plain type="danger" @click="deleteBatchHandle()"> 批量删除 </el-button>
+				<el-button v-auth="'sys:recommended:anchor:del'" icon="Delete" plain type="danger" @click="deleteBatchHandle()"> 批量删除 </el-button>
 			</el-space>
 		</el-space>
 		<el-table v-loading="state.dataListLoading" :data="state.dataList" border class="layout-table" @selection-change="selectionChangeHandle">
@@ -27,7 +27,11 @@
 			<el-table-column align="center" header-align="center" label="ID" prop="id"></el-table-column>
 			<el-table-column align="center" header-align="center" label="用户id" prop="userId"></el-table-column>
 			<el-table-column align="center" header-align="center" label="昵称" prop="nickname"></el-table-column>
-			<el-table-column align="center" header-align="center" label="发布动态数量" prop="dynamicCount"></el-table-column>
+			<el-table-column align="center" header-align="center" label="魅力等级" prop="charmLevel">
+				<template #default="scope">
+					<el-tag>{{ scope.row.charmLevel }}</el-tag>
+				</template>
+			</el-table-column>
 			<el-table-column align="center" header-align="center" label="头像" prop="avatar">
 				<template #default="scope">
 					<el-popover :width="383" placement="right" trigger="hover">
@@ -64,8 +68,8 @@ import { IHooksOptions } from '@/hooks/interface'
 import AddOrUpdate from './add-or-update.vue'
 
 const state: IHooksOptions = reactive({
-	dataListUrl: '/admin/social/recommend/page',
-	deleteUrl: '/admin/social/recommend/del',
+	dataListUrl: '/admin/social/recommend/anchor/page',
+	deleteUrl: '/admin/social/recommend/anchor/del',
 	queryForm: {
 		userId: ''
 	}
