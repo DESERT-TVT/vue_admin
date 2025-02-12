@@ -7,3 +7,7 @@ export const APIRecommended = (params: any) => {
 export const APIRecommendedAnchor = (params: any) => {
 	return service.post('/admin/social/recommend/anchor', params)
 }
+
+export const APIRecommendedAnchorSort = (params: any) => {
+	return service.post('/admin/social/recommend/anchor/sort', params)
+}

@@ -32,6 +32,22 @@
 					<el-tag>{{ scope.row.charmLevel }}</el-tag>
 				</template>
 			</el-table-column>
+
+			<el-table-column align="center" header-align="center" label="排序">
+				<template #header="{ column }">
+					{{ column.label }}
+					<el-tooltip effect="dark" content="推荐榜排序，数字越高排名越靠前" placement="top">
+						<el-text type="info">
+							<el-icon>
+								<QuestionFilled />
+							</el-icon>
+						</el-text>
+					</el-tooltip>
+				</template>
+				<template #default="scope">
+					<el-input-number v-model="scope.row.sort" min="0" step="1" @change="changeSort(scope.row)"></el-input-number>
+				</template>
+			</el-table-column>
 			<el-table-column align="center" header-align="center" label="头像" prop="avatar">
 				<template #default="scope">
 					<el-popover :width="383" placement="right" trigger="hover">
@@ -66,6 +82,9 @@ import { useCrud } from '@/hooks'
 import { reactive, ref } from 'vue'
 import { IHooksOptions } from '@/hooks/interface'
 import AddOrUpdate from './add-or-update.vue'
+import { QuestionFilled } from '@element-plus/icons-vue'
+import { APIRecommendedAnchorSort } from '@/api/social/social'
+import { ElMessage } from 'element-plus'
 
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/social/recommend/anchor/page',
@@ -82,8 +101,17 @@ const addOrUpdateHandle = (id?: number) => {
 	addOrUpdateRef.value.init(id)
 }
 
-const add = () => {
-	addOrUpdateRef.value.init()
+const changeSort = (row: any) => {
+	APIRecommendedAnchorSort({
+		id: row.id,
+		sort: row.sort
+	}).then(() => {
+		ElMessage.success({
+			message: '操作成功',
+			duration: 1000
+		})
+		getDataList()
+	})
 }
 const { getDataList, selectionChangeHandle, sizeChangeHandle, currentChangeHandle, deleteBatchHandle, reset } = useCrud(state)
 </script>

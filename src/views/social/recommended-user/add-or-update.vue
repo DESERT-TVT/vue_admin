@@ -25,6 +25,22 @@
 					<el-tag>{{ scope.row.charmLevel }} </el-tag>
 				</template>
 			</el-table-column>
+			<!--      如果被勾选则显示-->
+			<!--			<el-table-column align="center" header-align="center" label="排序">-->
+			<!--				<template #header="{ column }">-->
+			<!--					{{ column.label }}-->
+			<!--					<el-tooltip effect="dark" content="推荐榜排序，数字越高排名越靠前" placement="top">-->
+			<!--						<el-text type="info">-->
+			<!--							<el-icon>-->
+			<!--								<QuestionFilled />-->
+			<!--							</el-icon>-->
+			<!--						</el-text>-->
+			<!--					</el-tooltip>-->
+			<!--				</template>-->
+			<!--				<template #default="scope">-->
+			<!--					<el-input-number v-model="scope.row.sort" min="0" step="1"></el-input-number>-->
+			<!--				</template>-->
+			<!--			</el-table-column>-->
 		</el-table>
 		<el-pagination
 			:current-page="state.page"
@@ -52,6 +68,7 @@ import { useCrud } from '@/hooks'
 import { APIRecommended, APIRecommendedAnchor } from '@/api/social/social'
 import { ElMessage } from 'element-plus'
 import { ElLoading } from 'element-plus/es'
+import { QuestionFilled } from '@element-plus/icons-vue'
 
 const emit = defineEmits(['refreshDataList', 'getDataList'])
 const availableUsers = ref([])
@@ -85,6 +102,14 @@ const confirm = () => {
 	const params = {
 		userIds: availableUsers.value
 	}
+	// if (availableUsers.value.length % 3 != 0) {
+	// 	ElMessage({
+	// 		message: '推荐用户数量必须是3的倍数,例如3，6，9（方便前端显示分页）',
+	// 		type: 'warning',
+	// 		duration: 3000
+	// 	})
+	// 	return
+	// }
 
 	const loading = ElLoading.service({
 		lock: true,
