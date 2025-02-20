@@ -16,6 +16,24 @@
 						</template>
 					</el-table-column>
 					<el-table-column align="center" header-align="center" label="内容" prop="content"></el-table-column>
+					<el-table-column align="center" header-align="center" label="语言" prop="lang">
+						<template #default="scope">
+							<el-tag v-if="scope.row.lang == 'zh'" type="success">中文</el-tag>
+							<el-tag v-if="scope.row.lang == 'en'" type="success">英文</el-tag>
+							<el-tag v-if="scope.row.lang == 'in'" type="success">印度语</el-tag>
+							<el-tag v-if="scope.row.lang == 'pt'" type="success">葡萄牙语</el-tag>
+							<el-tag v-if="scope.row.lang == 'th'" type="success">泰国语</el-tag>
+							<el-tag v-if="scope.row.lang == 'vi'" type="success">越南语</el-tag>
+							<el-tag v-if="scope.row.lang == 'tc'" type="success">繁体中文</el-tag>
+
+							<!--              <el-option label="印度语" value="in" />-->
+							<!--              <el-option label="葡萄牙语" value="pt" />-->
+							<!--              <el-option label="泰国语" value="th" />-->
+							<!--              <el-option label="越南语" value="vi" />-->
+							<!--              <el-option label="繁体中文" value="tc" />-->
+							<!--              <el-option label="中文" value="zh" />-->
+						</template>
+					</el-table-column>
 					<el-table-column align="center" header-align="center" label="创建时间" prop="createTime"></el-table-column>
 					<el-table-column align="center" header-align="center" label="操作人" prop="updater"></el-table-column>
 					<el-table-column align="center" fixed="right" header-align="center" label="操作" width="150">
@@ -46,6 +64,19 @@
 					<el-option label="隐私政策" value="2" />
 				</el-select>
 			</el-form-item>
+
+			<el-form-item label="语言" prop="lang">
+				<el-select v-model="submitForm.lang" placeholder="请选择">
+					<el-option label="英文" value="en" />
+					<el-option label="印度语" value="in" />
+					<el-option label="葡萄牙语" value="pt" />
+					<el-option label="泰国语" value="th" />
+					<el-option label="越南语" value="vi" />
+					<el-option label="繁体中文" value="tc" />
+					<el-option label="中文" value="zh" />
+				</el-select>
+			</el-form-item>
+
 			<el-form-item label="内容" prop="content">
 				<fast-editor v-model="submitForm.content" placeholder="请输入..."></fast-editor>
 			</el-form-item>
@@ -78,7 +109,8 @@ const state: IHooksOptions = reactive({
 const submitForm = reactive({
 	id: '',
 	type: '',
-	content: ''
+	content: '',
+	lang: ''
 })
 const dataFormRef = ref()
 const cancelHandle = () => {
@@ -95,7 +127,8 @@ const queryRef = ref()
 
 const dataRules = ref({
 	type: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
-	content: [{ required: true, message: '必填项不能为空', trigger: 'blur' }]
+	content: [{ required: true, message: '必填项不能为空', trigger: 'blur' }],
+	lang: [{ required: true, message: '必填项不能为空', trigger: 'blur' }]
 })
 
 const handleUpdateClick = (row: any) => {
