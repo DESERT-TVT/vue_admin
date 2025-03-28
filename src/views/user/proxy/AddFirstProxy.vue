@@ -4,30 +4,51 @@
 			<el-form-item label="用户id" prop="userId">
 				<el-input v-model="dataForm.userId" placeholder="请输入用户Id" />
 			</el-form-item>
-			<el-form-item label="用户消费分成比例" prop="userRate">
+			<el-form-item label="代理消费分成" prop="cosRate">
 				<el-input-number
-					v-model="dataForm.userRate"
+					v-model="dataForm.cosRate"
 					style="width: 100%"
 					:step="0.01"
 					max="1"
 					min="0"
 					type="number"
-					placeholder="请输入用户消费分成比例"
-					@change="onChangeUserRate"
+					placeholder="请输入代理消费分成"
+					@change="handleRateChange('cosRate')"
 				/>
 			</el-form-item>
-			<el-form-item label="主播收益分成比例" prop="anchorRate">
+			<el-form-item label="代理收益分成" prop="inRate">
 				<el-input-number
-					v-model="dataForm.anchorRate"
+					v-model="dataForm.inRate"
 					style="width: 100%"
 					:step="0.01"
 					max="1"
 					min="0"
 					type="number"
-					placeholder="请输入主播收益分成比例"
-					@change="onChangeAnchorRate"
+					placeholder="请输入代理收益分成"
+					@change="handleRateChange('inRate')"
 				/>
 			</el-form-item>
+			<!-- <el-form-item label="下级主播直接分成" prop="onlineRate">
+				<el-input-number
+					v-model="dataForm.onlineRate"
+					style="width: 100%"
+					:step="0.01"
+					max="1"
+					min="0"
+					type="number"
+					placeholder="请输入下级主播直接分成"
+					@change="handleRateChange('onlineRate')"
+				/>
+			</el-form-item> -->
+			<!-- <el-form-item v-if="!showUpdata" label="上级用户id" prop="parentUserId">
+				<el-input v-model="dataForm.parentUserId" placeholder="请输入上级用户id" />
+			</el-form-item> -->
+			<!-- <el-form-item v-if="!showUpdata" label="用户类型" prop="userType" :rules="[{ required: true, message: '请选择用户类型', trigger: 'blur' }]">
+				<el-radio-group v-model="dataForm.userType">
+					<el-radio :value="1">主播</el-radio>
+					<el-radio :value="2">代理</el-radio>
+				</el-radio-group>
+			</el-form-item> -->
 		</el-form>
 		<template #footer>
 			<el-button @click="onCloseDialog">取消</el-button>
@@ -35,83 +56,99 @@
 		</template>
 	</el-dialog>
 </template>
+
 <script setup lang="ts">
 import { fetchAddProxy, ProxyAddReq } from '@/api/user/proxy'
 import { ElMessage, FormInstance } from 'element-plus'
 import { reactive, ref } from 'vue'
 
+// 对话框可见性状态
 const visible = ref(false)
+// 表单引用
 const dataFormRef = ref<FormInstance>()
+// 表单数据
 const dataForm = reactive({
 	userId: '',
-	userRate: 0,
-	anchorRate: 0
+	cosRate: 0,
+	inRate: 0,
+	// onlineRate: 0,
+	// parentUserId: '',
+	userType: 1
 })
-const dataRules = reactive({
-	userId: [{ required: true, message: '请输入用户Id', trigger: 'blur' }]
-})
-const handleRateChange = (value: string, field: 'userRate' | 'anchorRate') => {
-	const numValue = parseFloat(value)
-	const validValue = isNaN(numValue) ? 0 : parseFloat(numValue.toFixed(2))
-	dataForm[field] = Math.min(1, Math.max(0, validValue))
+
+// 定义一个将比率转换为百分比字符串的函数
+const convertRateToPercentage = (rate: number) => {
+	return (rate * 100).toFixed(0)
 }
-const onChangeUserRate = (value: string) => {
-	handleRateChange(value, 'userRate')
+// 定义一个将百分比字符串恢复为比率数字的函数
+const convertPercentageToRate = (percentage: string): number => {
+	const parsedPercentage = parseFloat(percentage)
+	return isNaN(parsedPercentage) ? 0 : parsedPercentage / 100
+}
+// 处理比率输入的公共函数
+const handleRateChange = (field: 'cosRate' | 'inRate') => {
+	const value = dataForm[field]
+	const validValue = Math.min(1, Math.max(0, parseFloat(value.toFixed(2))))
+	dataForm[field] = validValue
 }
 
-// 主播分成比例改变的处理函数
-const onChangeAnchorRate = (value: string) => {
-	handleRateChange(value, 'anchorRate')
-}
+// 表单验证规则
+const dataRules = reactive({
+	userId: [{ required: true, message: '请输入用户Id', trigger: 'blur' }],
+	cosRate: [{ required: true, message: '请输入代理消费分成', trigger: 'blur' }],
+	inRate: [{ required: true, message: '请输入代理收益分成', trigger: 'blur' }],
+	onlineRate: [{ required: true, message: '请输入主播收益分成比例', trigger: 'blur' }]
+})
+
+// 重置表单数据和验证状态
 const onReset = () => {
 	dataForm.userId = ''
-	dataForm.userRate = 0
-	dataForm.anchorRate = 0
+	dataForm.cosRate = 0
+	dataForm.inRate = 0
+	// dataForm.onlineRate = 0
+	// dataForm.parentUserId = ''
+	dataForm.userType = 1
+	showUpdata.value = false
 	dataFormRef.value?.resetFields()
 }
+
+// 关闭对话框
 const onCloseDialog = () => {
 	visible.value = false
 }
-// 定义一个将比率转换为百分比字符串的函数
-const convertRateToPercentage = (rate: string | number): string => {
-	const parsedRate = typeof rate === 'string' ? parseFloat(rate) : rate
-	return isNaN(parsedRate) ? '0' : (parsedRate * 100).toFixed(0)
-}
 
+// 提交表单
 const onSubmit = async () => {
-	// // 创建一个新的 Map 对象
-	// const type2RateMap = new Map<number, string>()
-	// type2RateMap.set(1, convertRateToPercentage(dataForm.userRate))
-	// type2RateMap.set(2, convertRateToPercentage(dataForm.anchorRate))
-	// const mapToObject = Object.fromEntries(type2RateMap)
-	if (!dataForm.userRate || !dataForm.anchorRate) {
-		ElMessage.warning('请输入用户消费分成比例或主播收益分成比例')
-		return
-	}
-	const res = await dataFormRef.value?.validate()
-	if (!res) {
-		return
-	}
-	const type2RateObject: Record<number, string> = {
-		1: convertRateToPercentage(dataForm.userRate),
-		2: convertRateToPercentage(dataForm.anchorRate)
-	}
-	// 生成符合 ProxyAddReq 接口的对象
-	const params: ProxyAddReq = {
+	const params = {
 		userId: dataForm.userId,
-		type2Rate: type2RateObject
+		cosRate: convertRateToPercentage(dataForm.cosRate),
+		inRate: convertRateToPercentage(dataForm.inRate)
+		// onlineRate: convertRateToPercentage(dataForm.onlineRate),
+		// parentUserId: showUpdata.value ? undefined : dataForm.parentUserId,
+		// userType: showUpdata.value ? undefined : dataForm.userType
+	} as ProxyAddReq
+	const res = await fetchAddProxy(params)
+	if (res) {
+		ElMessage.success('设置成功')
+		onCloseDialog()
 	}
-	fetchAddProxy(params).then(res => {
-		if (res) {
-			ElMessage.success('设置成功')
-			onCloseDialog()
-		}
-	})
 }
-const init = () => {
-	onReset()
+const showUpdata = ref(false)
+// 初始化对话框
+const init = (row?: ProxyAddReq) => {
+	if (row) {
+		dataForm.userId = row.userId
+		dataForm.cosRate = convertPercentageToRate(row.cosRate)
+		dataForm.inRate = convertPercentageToRate(row.inRate)
+		// dataForm.onlineRate = convertPercentageToRate(row.onlineRate)
+		showUpdata.value = true
+	} else {
+		onReset()
+	}
 	visible.value = true
 }
+
+// 暴露初始化方法供外部调用
 defineExpose({
 	init
 })
