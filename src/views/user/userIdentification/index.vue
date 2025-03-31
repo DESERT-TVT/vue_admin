@@ -49,6 +49,35 @@
 								</template>
 							</el-table-column>
 							<fast-dict-column prop="type" label="申请类型" dict-type="identification_type"></fast-dict-column>
+							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
+								<template #default="scope">
+									<div v-if="scope.row?.fileUrl">
+										<el-image
+											v-if="scope.row.type == 1"
+											:initial-index="0"
+											:max-scale="7"
+											:min-scale="0.2"
+											:preview-src-list="[scope.row?.fileUrl]"
+											:preview-teleported="true"
+											:src="scope.row?.fileUrl"
+											:zoom-rate="1.2"
+											fit="cover"
+											style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px"
+										/>
+										<div v-else-if="scope.row.type == 2 || scope.row.type == 3" style="margin-left: 15px">
+											<el-image
+												:src="scope.row?.fileUrl?.split(';')[1]"
+												class="image-with-mask"
+												style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px; cursor: pointer"
+												@click="videoDialogHandle(scope.row, false)"
+											/>
+										</div>
+										<el-icon v-else>
+											<icon-picture />
+										</el-icon>
+									</div>
+								</template>
+							</el-table-column>
 							<el-table-column label="个人信息" header-align="center" align="center">
 								<template #default="scope">
 									<span>{{ scope.row.gender == 1 ? '女' : '男' }}</span
@@ -118,33 +147,35 @@
 								</template>
 							</el-table-column>
 							<fast-dict-column prop="type" label="申请类型" dict-type="identification_type"></fast-dict-column>
-							<!-- <el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
+							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
 								<template #default="scope">
-									<el-image
-										v-if="scope.row.type == 1"
-										:initial-index="0"
-										:max-scale="7"
-										:min-scale="0.2"
-										:preview-src-list="[scope.row.fileUrl]"
-										:preview-teleported="true"
-										:src="scope.row.fileUrl"
-										:zoom-rate="1.2"
-										fit="cover"
-										style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px"
-									/>
-									<div v-else-if="scope.row.type == 2 || scope.row.type == 3" style="margin-left: 15px">
+									<div v-if="scope.row?.fileUrl">
 										<el-image
-											:src="scope.row.fileUrl.split(';')[1]"
-											class="image-with-mask"
-											style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px; cursor: pointer"
-											@click="videoDialogHandle(scope.row, false)"
+											v-if="scope.row.type == 1"
+											:initial-index="0"
+											:max-scale="7"
+											:min-scale="0.2"
+											:preview-src-list="[scope.row?.fileUrl]"
+											:preview-teleported="true"
+											:src="scope.row?.fileUrl"
+											:zoom-rate="1.2"
+											fit="cover"
+											style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px"
 										/>
+										<div v-else-if="scope.row.type == 2 || scope.row.type == 3" style="margin-left: 15px">
+											<el-image
+												:src="scope.row?.fileUrl?.split(';')[1]"
+												class="image-with-mask"
+												style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px; cursor: pointer"
+												@click="videoDialogHandle(scope.row, false)"
+											/>
+										</div>
+										<el-icon v-else>
+											<icon-picture />
+										</el-icon>
 									</div>
-									<el-icon v-else>
-										<icon-picture />
-									</el-icon>
 								</template>
-							</el-table-column> -->
+							</el-table-column>
 							<el-table-column label="个人信息" header-align="center" align="center">
 								<template #default="scope">
 									<span>{{ scope.row.gender == 1 ? '女' : '男' }}</span
@@ -215,33 +246,35 @@
 								</template>
 							</el-table-column>
 							<fast-dict-column prop="type" label="申请类型" dict-type="identification_type"></fast-dict-column>
-							<!-- <el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
+							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
 								<template #default="scope">
-									<el-image
-										v-if="scope.row.type == 1"
-										:initial-index="0"
-										:max-scale="7"
-										:min-scale="0.2"
-										:preview-src-list="[scope.row.fileUrl]"
-										:preview-teleported="true"
-										:src="scope.row.fileUrl"
-										:zoom-rate="1.2"
-										fit="cover"
-										style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px"
-									/>
-									<div v-else-if="scope.row.type == 2 || scope.row.type == 3" style="margin-left: 15px">
+									<div v-if="scope.row?.fileUrl">
 										<el-image
-											:src="scope.row.fileUrl.split(';')[1]"
-											class="image-with-mask"
-											style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px; cursor: pointer"
-											@click="videoDialogHandle(scope.row, false)"
+											v-if="scope.row.type == 1"
+											:initial-index="0"
+											:max-scale="7"
+											:min-scale="0.2"
+											:preview-src-list="[scope.row?.fileUrl]"
+											:preview-teleported="true"
+											:src="scope.row?.fileUrl"
+											:zoom-rate="1.2"
+											fit="cover"
+											style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px"
 										/>
+										<div v-else-if="scope.row.type == 2 || scope.row.type == 3" style="margin-left: 15px">
+											<el-image
+												:src="scope.row?.fileUrl?.split(';')[1]"
+												class="image-with-mask"
+												style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px; cursor: pointer"
+												@click="videoDialogHandle(scope.row, false)"
+											/>
+										</div>
+										<el-icon v-else>
+											<icon-picture />
+										</el-icon>
 									</div>
-									<el-icon v-else>
-										<icon-picture />
-									</el-icon>
 								</template>
-							</el-table-column> -->
+							</el-table-column>
 							<el-table-column label="个人信息" header-align="center" align="center">
 								<template #default="scope">
 									<span>{{ scope.row.gender == 1 ? '女' : '男' }}</span

@@ -29,6 +29,16 @@
 				</el-table-column> -->
 			</el-table>
 		</el-form>
+		<el-pagination
+			:current-page="state.page"
+			:page-size="state.limit"
+			:page-sizes="state.pageSizes"
+			:total="state.total"
+			layout="total, sizes, prev, pager, next, jumper"
+			@size-change="sizeChangeHandle"
+			@current-change="currentChangeHandle"
+		>
+		</el-pagination>
 	</el-card>
 	<AddFirstProxy ref="addFirstProxyRef" />
 </template>
@@ -42,6 +52,7 @@ import { TreeNode } from 'element-plus'
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/proxy/list/leve1',
 	createdIsNeed: false,
+	limit: 100,
 	queryForm: {}
 })
 const addFirstProxyRef = ref<InstanceType<typeof AddFirstProxy>>()
