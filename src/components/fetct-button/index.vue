@@ -1,5 +1,9 @@
 <template>
-	<el-button :loading="submitLoading" type="primary" @click="handleClick">确定</el-button>
+	<el-button :loading="submitLoading" type="primary" @click="handleClick">
+		<template #default>
+			<slot>确定</slot>
+		</template>
+	</el-button>
 </template>
 
 <script setup lang="ts">

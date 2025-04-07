@@ -22,11 +22,14 @@
 				<el-table-column prop="cosRate" label="代理消费分成" />
 				<el-table-column prop="inRate" label="代理收益分成" />
 				<el-table-column prop="onlineRate" label="下级主播直接分成" />
-				<!-- <el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
+				<el-table-column label="操作" fixed="right" header-align="center" align="center" min-width="300">
 					<template #default="scope">
-						<el-button v-auth="'sys:menu:update'" type="primary" link @click="UpdateHandle(scope.row)">修改</el-button>
+						<el-button v-auth="'sys:menu:update'" type="primary" link @click="ShowProxyIncome(scope.row)">代理收益</el-button>
+						<el-button v-auth="'sys:menu:update'" type="primary" link @click="UpdateHandle(scope.row)">主播数据</el-button>
+						<el-button v-auth="'sys:menu:update'" type="primary" link @click="UpdateHandle(scope.row)">代理数据</el-button>
+						<el-button v-auth="'sys:menu:update'" type="primary" link @click="UpdateHandle(scope.row)">代理用户数据</el-button>
 					</template>
-				</el-table-column> -->
+				</el-table-column>
 			</el-table>
 		</el-form>
 		<el-pagination
@@ -41,6 +44,7 @@
 		</el-pagination>
 	</el-card>
 	<AddFirstProxy ref="addFirstProxyRef" />
+	<ProxyIncome ref="ProxyIncomeRef" />
 </template>
 <script lang="ts" setup>
 import { useCrud } from '@/hooks'
@@ -49,6 +53,7 @@ import { computed, reactive, ref } from 'vue'
 import AddFirstProxy from './AddFirstProxy.vue'
 import { fetchProxyList, ProxyAddReq, ProxyListData } from '@/api/user/proxy'
 import { TreeNode } from 'element-plus'
+import ProxyIncome from './ProxyIncome.vue'
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/proxy/list/leve1',
 	createdIsNeed: false,
@@ -56,11 +61,15 @@ const state: IHooksOptions = reactive({
 	queryForm: {}
 })
 const addFirstProxyRef = ref<InstanceType<typeof AddFirstProxy>>()
+const ProxyIncomeRef = ref<InstanceType<typeof ProxyIncome>>()
 const showAddProxy = () => {
 	addFirstProxyRef.value?.init()
 }
 const UpdateHandle = (row: ProxyAddReq) => {
 	addFirstProxyRef.value?.init(row)
+}
+const ShowProxyIncome = (row: ProxyAddReq) => {
+	ProxyIncomeRef.value?.init(row)
 }
 const dataList = computed(() => {
 	if (state.dataList) {

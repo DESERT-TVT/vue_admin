@@ -52,7 +52,8 @@
 		</el-form>
 		<template #footer>
 			<el-button @click="onCloseDialog">取消</el-button>
-			<el-button v-auth="'sys:contact:modify'" type="primary" @click="onSubmit">确定</el-button>
+			<fetctButton :submit-handle="onSubmit" />
+			<!-- <el-button v-auth="'sys:contact:modify'" type="primary" @click="onSubmit">确定</el-button> -->
 		</template>
 	</el-dialog>
 </template>
@@ -61,6 +62,7 @@
 import { fetchAddProxy, ProxyAddReq } from '@/api/user/proxy'
 import { ElMessage, FormInstance } from 'element-plus'
 import { reactive, ref } from 'vue'
+import fetctButton from '@/components/fetct-button/index.vue'
 
 // 对话框可见性状态
 const visible = ref(false)
@@ -119,6 +121,10 @@ const onCloseDialog = () => {
 
 // 提交表单
 const onSubmit = async () => {
+	const validate = await dataFormRef.value?.validate()
+	if (!validate) {
+		return
+	}
 	const params = {
 		userId: dataForm.userId,
 		cosRate: convertRateToPercentage(dataForm.cosRate),

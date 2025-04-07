@@ -50,3 +50,21 @@ export const fetchProxyList = (parentId: string) => {
 		}
 	})
 }
+export interface ProxyIncomeReq {
+	userId: string
+	begin: string
+	end: string
+}
+export interface ProxyIncomeRes {
+	/** 代理总收益 */
+	proxyTotalIncome: number
+	/** 主播收益 */
+	onlineIncome: number
+	/** 推广收益 */
+	proxyIncome: number
+}
+export function fetchProxyIncome(params: ProxyIncomeReq) {
+	return service.get<ProxyIncomeRes>('/admin/proxy/income', {
+		params
+	})
+}
