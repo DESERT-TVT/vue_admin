@@ -49,6 +49,7 @@ import { giftFormApi, giftSubmitApi } from '@/api/social/socialGift'
 import { Delete, Plus } from '@element-plus/icons-vue'
 import { UploadInstance } from 'element-plus'
 import { useUploadAwsApi } from '@/api/awsUpload'
+import { useUploadOssApi } from '@/api/upload'
 
 const emit = defineEmits(['refreshDataList'])
 
@@ -113,7 +114,8 @@ const submitHandle = async () => {
 	if (coverFile.value && coverFile.value.length > 0 && coverFile.value.at(0).raw) {
 		let raw = coverFile.value.at(0).raw
 		const suffix = raw.name.substring(raw.name.lastIndexOf('.'))
-		await useUploadAwsApi(raw, suffix).then(r => (dataForm.giftImg = r))
+		await useUploadOssApi(raw, 'cover/', null, suffix).then(r => (dataForm.giftImg = r))
+		// await useUploadAwsApi(raw, suffix).then(r => (dataForm.giftImg = r))
 	}
 
 	dataFormRef.value.validate((valid: boolean) => {

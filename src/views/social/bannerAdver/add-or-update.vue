@@ -132,7 +132,8 @@ const submitHandle = async () => {
 	if (coverFile.value && coverFile.value.length > 0 && coverFile.value.at(0).raw) {
 		let raw = coverFile.value.at(0).raw
 		const suffix = raw.name.substring(raw.name.lastIndexOf('.'))
-		await useUploadAwsApi(raw, suffix).then(r => (dataForm.images = r))
+		await useUploadOssApi(raw, 'cover/', null, suffix).then(r => (dataForm.images = r))
+		// await useUploadAwsApi(raw, suffix).then(r => (dataForm.images = r))
 	}
 
 	dataFormRef.value.validate((valid: boolean) => {

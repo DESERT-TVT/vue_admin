@@ -68,3 +68,44 @@ export function fetchProxyIncome(params: ProxyIncomeReq) {
 		params
 	})
 }
+export interface ProxyInfoRes {
+	/** 一级代理数据 */
+	oneLevelNumber: number
+	/** 一级代理代理收益 */
+	oneLevelIncome: number
+	/** 二级代理数据 */
+	twoLevelNumber: number
+	/** 二级代理收益 */
+	twoLevelIncome: number
+}
+export function fetchProxyInfo(params: ProxyIncomeReq) {
+	return service.get<ProxyInfoRes>('/admin/proxy/info/proxy', {
+		params
+	})
+}
+export interface OnlineInfoRes {
+	/** 主播总数 */
+	onlineNumber: number
+	/** 主播总收益 */
+	onlineIncome: number
+}
+export function fetchOnlineInfo(params: ProxyIncomeReq) {
+	return service.get<ProxyInfoRes>('/admin/proxy/info/online', {
+		params
+	})
+}
+export interface UserInfoRes {
+	/** 注册用户数 */
+	registerNumber: number
+	/** 支付用户数 */
+	payNumber: number
+	/** 活跃用户数 */
+	dynamicNumber: number
+	/** 相比增长 */
+	increaseRate: number
+}
+export function fetchUserInfo(params: ProxyIncomeReq) {
+	return service.get<UserInfoRes>('/admin/proxy/info/user', {
+		params
+	})
+}

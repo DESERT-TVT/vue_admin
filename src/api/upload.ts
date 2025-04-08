@@ -8,7 +8,7 @@ export const useUploadAuthApi = () => {
 }
 
 export const useUploadOssApi = async (file: File, path: string, fileName: any, suffix: string, options?: UploadRequestOptions) => {
-	let url
+	let url: string = ''
 
 	// 进度
 	const progress = (p: any, _checkpoint: any) => {

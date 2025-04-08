@@ -24,10 +24,12 @@
 				<el-table-column prop="onlineRate" label="下级主播直接分成" />
 				<el-table-column label="操作" fixed="right" header-align="center" align="center" min-width="300">
 					<template #default="scope">
-						<el-button v-auth="'sys:menu:update'" type="primary" link @click="ShowProxyIncome(scope.row)">代理收益</el-button>
-						<el-button v-auth="'sys:menu:update'" type="primary" link @click="UpdateHandle(scope.row)">主播数据</el-button>
-						<el-button v-auth="'sys:menu:update'" type="primary" link @click="UpdateHandle(scope.row)">代理数据</el-button>
-						<el-button v-auth="'sys:menu:update'" type="primary" link @click="UpdateHandle(scope.row)">代理用户数据</el-button>
+						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowProxyIncome(scope.row)">代理收益</el-button>
+						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowOnlineInfo(scope.row)">主播数据</el-button>
+						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowProxyInfo(scope.row)">代理数据</el-button>
+						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowUserInfo(scope.row)">代理用户数据</el-button>
+						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowOnlineList(scope.row)">主播列表</el-button>
+						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowIncomePage(scope.row)">推广收益列表</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -44,7 +46,12 @@
 		</el-pagination>
 	</el-card>
 	<AddFirstProxy ref="addFirstProxyRef" />
-	<ProxyIncome ref="ProxyIncomeRef" />
+	<ProxyIncome ref="proxyIncomeRef" />
+	<ProxyInfo ref="proxyInfoRef" />
+	<OnlineInfo ref="onlineInfoRef" />
+	<UserInfo ref="userInfoRef" />
+	<OnlineList ref="onlineListRef" />
+	<IncomePage ref="incomePageRef" />
 </template>
 <script lang="ts" setup>
 import { useCrud } from '@/hooks'
@@ -54,6 +61,11 @@ import AddFirstProxy from './AddFirstProxy.vue'
 import { fetchProxyList, ProxyAddReq, ProxyListData } from '@/api/user/proxy'
 import { TreeNode } from 'element-plus'
 import ProxyIncome from './ProxyIncome.vue'
+import ProxyInfo from './ProxyInfo.vue'
+import OnlineInfo from './OnlineInfo.vue'
+import UserInfo from './UserInfo.vue'
+import OnlineList from './OnlineList.vue'
+import IncomePage from './IncomePage.vue'
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/proxy/list/leve1',
 	createdIsNeed: false,
@@ -61,15 +73,35 @@ const state: IHooksOptions = reactive({
 	queryForm: {}
 })
 const addFirstProxyRef = ref<InstanceType<typeof AddFirstProxy>>()
-const ProxyIncomeRef = ref<InstanceType<typeof ProxyIncome>>()
+const proxyIncomeRef = ref<InstanceType<typeof ProxyIncome>>()
+const proxyInfoRef = ref<InstanceType<typeof ProxyInfo>>()
+const onlineInfoRef = ref<InstanceType<typeof OnlineInfo>>()
+const userInfoRef = ref<InstanceType<typeof UserInfo>>()
+const onlineListRef = ref<InstanceType<typeof OnlineList>>()
+const incomePageRef = ref<InstanceType<typeof IncomePage>>()
 const showAddProxy = () => {
 	addFirstProxyRef.value?.init()
 }
-const UpdateHandle = (row: ProxyAddReq) => {
-	addFirstProxyRef.value?.init(row)
+// const UpdateHandle = (row: ProxyAddReq) => {
+// 	addFirstProxyRef.value?.init(row)
+// }
+const onShowProxyIncome = (row: ProxyAddReq) => {
+	proxyIncomeRef.value?.init(row)
 }
-const ShowProxyIncome = (row: ProxyAddReq) => {
-	ProxyIncomeRef.value?.init(row)
+const onShowProxyInfo = (row: ProxyAddReq) => {
+	proxyInfoRef.value?.init(row)
+}
+const onShowOnlineInfo = (row: ProxyAddReq) => {
+	onlineInfoRef.value?.init(row)
+}
+const onShowUserInfo = (row: ProxyAddReq) => {
+	userInfoRef.value?.init(row)
+}
+const onShowOnlineList = (row: ProxyAddReq) => {
+	onlineListRef.value?.init(row.userId)
+}
+const onShowIncomePage = (row: ProxyAddReq) => {
+	incomePageRef.value?.init(row.userId)
 }
 const dataList = computed(() => {
 	if (state.dataList) {
@@ -80,12 +112,6 @@ const dataList = computed(() => {
 		return []
 	}
 })
-//生成随机数五位
-function generateRandomFiveDigitNumber() {
-	const min = 10000
-	const max = 99999
-	return Math.floor(Math.random() * (max - min + 1)) + min
-}
 const load = (row: ProxyAddReq, treeNode: TreeNode, resolve: (data: ProxyListData[]) => void) => {
 	fetchProxyList(row.userId)
 		.then(res => {

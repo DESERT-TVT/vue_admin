@@ -41,6 +41,7 @@ import { Delete, Plus } from '@element-plus/icons-vue'
 import { UploadInstance } from 'element-plus'
 import { useUploadAwsApi } from '@/api/awsUpload'
 import { APIPostUserContactConfig } from '@/api/user/userManage'
+import { useUploadOssApi } from '@/api/upload'
 
 const emit = defineEmits(['refreshDataList'])
 const visible = ref(false)
@@ -94,7 +95,8 @@ const submitHandle = async () => {
 	if (coverFile.value && coverFile.value.length > 0 && coverFile.value.at(0).raw) {
 		let raw = coverFile.value.at(0).raw
 		const suffix = raw.name.substring(raw.name.lastIndexOf('.'))
-		await useUploadAwsApi(raw, suffix).then(r => (dataForm.contactIcon = r))
+		await useUploadOssApi(raw, 'cover/', null, suffix).then(r => (dataForm.contactIcon = r))
+		// await useUploadAwsApi(raw, suffix).then(r => (dataForm.contactIcon = r))
 	}
 
 	dataFormRef.value.validate((valid: boolean) => {

@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-model="visible" title="代理收益" :close-on-click-modal="false" draggable>
+	<el-dialog v-model="visible" title="代理数据" :close-on-click-modal="false" draggable>
 		<el-form :inline="true" :model="queryForm" @keyup.enter="getDataList()">
 			<el-form-item>
 				<el-date-picker v-model="queryForm.begin" type="date" placeholder="选择开始时间" format="YYYY-MM-DD" value-format="YYYY-MM-DD" />
@@ -8,20 +8,20 @@
 				<el-date-picker v-model="queryForm.end" type="date" placeholder="选择结束时间" format="YYYY-MM-DD" value-format="YYYY-MM-DD" />
 			</el-form-item>
 			<el-form-item>
-				<fetctButton :submit-handle="getDataList">查询</fetctButton>
+				<fetctButton v-auth="'proxy:user:add'" :submit-handle="getDataList">查询</fetctButton>
 			</el-form-item>
 		</el-form>
 		<el-descriptions :title="'用户Id：' + queryForm.userId" direction="vertical" :column="4" size="default" border>
-			<el-descriptions-item label="代理总收益">{{ dataForm.proxyTotalIncome }}</el-descriptions-item>
-			<el-descriptions-item label="主播收益">{{ dataForm.onlineIncome }}</el-descriptions-item>
-			<el-descriptions-item label="推广收益">{{ dataForm.proxyIncome }}</el-descriptions-item>
+			<el-descriptions-item label="一级代理数据">{{ dataForm.oneLevelNumber }}</el-descriptions-item>
+			<el-descriptions-item label="一级代理代理收益">{{ dataForm.oneLevelIncome }}</el-descriptions-item>
+			<el-descriptions-item label="二级代理数据">{{ dataForm.twoLevelNumber }}</el-descriptions-item>
+			<el-descriptions-item label="二级代理收益">{{ dataForm.twoLevelIncome }}</el-descriptions-item>
 		</el-descriptions>
 	</el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { fetchProxyIncome, ProxyIncomeReq } from '@/api/user/proxy'
-import { number } from 'echarts'
+import { fetchProxyInfo, ProxyIncomeReq } from '@/api/user/proxy'
 import { reactive, ref } from 'vue'
 import dayjs from 'dayjs'
 import fetctButton from '@/components/fetct-button/index.vue'
@@ -34,9 +34,10 @@ const queryForm = reactive<ProxyIncomeReq>({
 })
 
 const dataForm = reactive({
-	proxyTotalIncome: 0,
-	onlineIncome: 0,
-	proxyIncome: 0
+	oneLevelNumber: 0,
+	oneLevelIncome: 0,
+	twoLevelNumber: 0,
+	twoLevelIncome: 0
 })
 
 const init = (row: any) => {
@@ -47,7 +48,7 @@ const init = (row: any) => {
 	getDataList()
 }
 const getDataList = async () => {
-	const res = await fetchProxyIncome(queryForm)
+	const res = await fetchProxyInfo(queryForm)
 	Object.assign(dataForm, res.data)
 }
 defineExpose({
