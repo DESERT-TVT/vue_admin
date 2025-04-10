@@ -49,7 +49,7 @@
 								</template>
 							</el-table-column>
 							<fast-dict-column prop="type" label="申请类型" dict-type="identification_type"></fast-dict-column>
-							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
+							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center" width="150px">
 								<template #default="scope">
 									<div v-if="scope.row?.fileUrl">
 										<el-image
@@ -147,7 +147,7 @@
 								</template>
 							</el-table-column>
 							<fast-dict-column prop="type" label="申请类型" dict-type="identification_type"></fast-dict-column>
-							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
+							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center" width="150px">
 								<template #default="scope">
 									<div v-if="scope.row?.fileUrl">
 										<el-image
@@ -246,7 +246,7 @@
 								</template>
 							</el-table-column>
 							<fast-dict-column prop="type" label="申请类型" dict-type="identification_type"></fast-dict-column>
-							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center">
+							<el-table-column prop="fileUrl" label="提交资料" header-align="center" align="center" width="150px">
 								<template #default="scope">
 									<div v-if="scope.row?.fileUrl">
 										<el-image
