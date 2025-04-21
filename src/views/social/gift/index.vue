@@ -5,10 +5,10 @@
 				<el-input v-model="state.queryForm.giftName" clearable placeholder="名称"></el-input>
 			</el-form-item>
 			<el-form-item prop="type">
-				<fast-dict-select v-model="state.queryForm.category" dict-type="social_gift_category" clearable placeholder="类型"></fast-dict-select>
+				<fast-dict-select v-model="state.queryForm.category" clearable dict-type="social_gift_category" placeholder="类型"></fast-dict-select>
 			</el-form-item>
 			<el-form-item>
-				<el-button icon="Search" type="primary" @click="getDataList()" v-auth="'sys:gift:list'">查询</el-button>
+				<el-button v-auth="'sys:gift:list'" icon="Search" type="primary" @click="getDataList()">查询</el-button>
 			</el-form-item>
 			<el-form-item>
 				<el-button icon="RefreshRight" @click="reset(queryRef)">重置</el-button>
@@ -54,10 +54,10 @@
 			</el-space>
 		</el-space>
 		<el-table v-loading="state.dataListLoading" :data="state.dataList" border class="layout-table" @selection-change="selectionChangeHandle">
-			<el-table-column type="selection" header-align="center" align="center" width="38"></el-table-column>
+			<el-table-column align="center" header-align="center" type="selection" width="38"></el-table-column>
 			<el-table-column align="center" header-align="center" label="ID" prop="id"></el-table-column>
-			<el-table-column prop="giftName" label="礼物名称" header-align="center" align="center"></el-table-column>
-			<el-table-column prop="giftValue" label="礼物价值" header-align="center" align="center"></el-table-column>
+			<el-table-column align="center" header-align="center" label="礼物名称" prop="giftName"></el-table-column>
+			<el-table-column align="center" header-align="center" label="礼物价值" prop="giftValue"></el-table-column>
 			<el-table-column align="center" header-align="center" label="礼物图片" prop="giftImg">
 				<template #default="scope">
 					<el-popover :width="383" placement="right" trigger="hover">
@@ -70,48 +70,48 @@
 					</el-popover>
 				</template>
 			</el-table-column>
-			<fast-dict-column prop="category" label="礼物类别" dict-type="social_gift_category"></fast-dict-column>
-			<el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
-			<el-table-column prop="creatorName" label="创建者" header-align="center" align="center"></el-table-column>
-			<el-table-column prop="status" label="状态" align="center">
+			<fast-dict-column dict-type="social_gift_category" label="礼物类别" prop="category"></fast-dict-column>
+			<el-table-column align="center" header-align="center" label="创建时间" prop="createTime"></el-table-column>
+			<el-table-column align="center" header-align="center" label="创建者" prop="creatorName"></el-table-column>
+			<el-table-column align="center" label="状态" prop="status">
 				<template #default="scope">
 					<el-switch
 						v-model="scope.row.status"
-						class="mb-2"
-						inline-prompt
-						style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-						active-text="禁用"
-						inactive-text="启用"
 						:active-value="1"
 						:inactive-value="0"
+						active-text="启用"
+						class="mb-2"
+						inactive-text="禁用"
+						inline-prompt
+						style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
 						@change="handleStatusChange(scope.row)"
 					/>
 				</template>
 			</el-table-column>
-      <el-table-column align="center" header-align="center" label="飘屏通知" prop="bannerNotify">
-        <template #default="scope">
-          <el-switch
-              v-model="scope.row.bannerNotify"
-              :active-value="1"
-              :inactive-value="0"
-              active-text="开启"
-              inactive-text="关闭"
-              inline-prompt
-              @click="() => handleStatusChange(scope.row)"
-          ></el-switch>
-        </template>
-      </el-table-column>
-			<el-table-column label="操作" fixed="right" header-align="center" align="center" width="160">
+			<el-table-column align="center" header-align="center" label="飘屏通知" prop="bannerNotify">
 				<template #default="scope">
-					<el-button link type="primary" @click="addOrUpdateHandle(scope.row.id)">修改 </el-button>
-					<el-button link type="primary" @click="deleteBatchHandle(scope.row.id)">删除 </el-button>
+					<el-switch
+						v-model="scope.row.bannerNotify"
+						:active-value="1"
+						:inactive-value="0"
+						active-text="开启"
+						inactive-text="关闭"
+						inline-prompt
+						@click="() => handleStatusChange(scope.row)"
+					></el-switch>
+				</template>
+			</el-table-column>
+			<el-table-column align="center" fixed="right" header-align="center" label="操作" width="160">
+				<template #default="scope">
+					<el-button link type="primary" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+					<el-button link type="primary" @click="deleteBatchHandle(scope.row.id)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 		<el-pagination
 			:current-page="state.page"
-			:page-sizes="state.pageSizes"
 			:page-size="state.limit"
+			:page-sizes="state.pageSizes"
 			:total="state.total"
 			layout="total, sizes, prev, pager, next, jumper"
 			@size-change="sizeChangeHandle"
@@ -124,12 +124,11 @@
 	</el-card>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useCrud } from '@/hooks'
 import { reactive, ref } from 'vue'
 import { IHooksOptions } from '@/hooks/interface'
 import AddOrUpdate from './add-or-update.vue'
-import { bannerAdverformSubmitApi } from '@/api/social/socialBannerAdver'
 import { ElLoading, ElMessage } from 'element-plus'
 import { APIGetAllGiftList, APISaveDefaultGift, giftSubmitApi } from '@/api/social/socialGift'
 import { DefaultGiftSaveVO, Gift } from '@/types/social'

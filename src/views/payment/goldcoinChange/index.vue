@@ -60,7 +60,11 @@
 					<el-table-column align="center" header-align="center" label="UID" prop="userId"></el-table-column>
 					<el-table-column align="center" header-align="center" label="订单号" prop="id"></el-table-column>
 					<fast-dict-column dict-type="gold_coins_record_type" label="变动类型" prop="recordType"></fast-dict-column>
-					<el-table-column align="center" header-align="center" label="变动数额" prop="goldCoinsNum"></el-table-column>
+					<el-table-column align="center" header-align="center" label="变动数额" prop="goldCoinsNum">
+						<template #default="scope">
+							<el-tag :type="scope.row.goldCoinsNum > 0 ? 'success' : 'danger'">{{ scope.row.goldCoinsNum }}</el-tag>
+						</template>
+					</el-table-column>
 					<el-table-column align="center" header-align="center" label="余额" prop="goldCoinsBalance"></el-table-column>
 					<el-table-column align="center" header-align="center" label="接收人" prop="toUser"></el-table-column>
 					<!--					<el-table-column align="center" header-align="center" label="操作人" prop="updater"></el-table-column>-->

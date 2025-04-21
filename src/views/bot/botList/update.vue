@@ -80,6 +80,14 @@
 			<el-form-item label="性别" prop="gender" style="width: 300px">
 				<fast-dict-select v-model="dataForm.gender" clearable dict-type="user_gender" placeholder="性别"></fast-dict-select>
 			</el-form-item>
+
+			<el-form-item label="定位" prop="lastLoginLocate" style="width: 300px">
+				<el-input v-model="dataForm.lastLoginLocate" placeholder="定位" />
+			</el-form-item>
+
+			<el-form-item label="地图" prop="lastLoginLocate" style="width: 300px">
+				<el-button @click="openMap" type="primary">打开地图</el-button>
+			</el-form-item>
 		</el-form>
 		<template #footer>
 			<el-button @click="closeDialogHandle">取消</el-button>
@@ -88,6 +96,7 @@
 	</el-dialog>
 	<!-- 视频弹窗 -->
 	<video-dialog ref="videoDialogRef"></video-dialog>
+	<MapDialog ref="maps" @close="close"></MapDialog>
 </template>
 
 <script lang="ts" setup>
@@ -99,12 +108,15 @@ import { Temperament } from '@/hooks/interface'
 import { userPhotoListApi } from '@/api/user/userIdentification'
 import { getUserTemperamentLabelApi, updateUserInfoApi } from '@/api/user/userManage'
 import VideoDialog from '@/components/video-dialog/index.vue'
+import MapDialog from '@/views/bot/botList/MapDialog.vue'
+import { useUploadOssApi } from '@/api/upload'
 
 const emit = defineEmits(['refreshDataList'])
 
 const visible = ref(false)
 
 const dataFormRef = ref()
+const maps = ref()
 
 const coverAvatarFile = ref<any[]>([])
 const coverAvatarFileRef = ref<UploadInstance>()
@@ -120,9 +132,13 @@ const dataForm = reactive({
 	nickname: '',
 	avatar: ref<any>(),
 	temperamentLabel: ref<any[]>([]),
-	gender: ''
+	gender: 0,
+	lastLoginLocate: ''
 })
-
+const openMap = () => {
+	console.log('aaaa')
+	maps.value.openDialog()
+}
 const videoDialogRef = ref()
 const videoDialogHandle = (row: any, isImg: boolean) => {
 	let parms = {
@@ -131,6 +147,9 @@ const videoDialogHandle = (row: any, isImg: boolean) => {
 		isImg: isImg
 	}
 	videoDialogRef.value.init(parms)
+}
+const close = (data: string) => {
+	dataForm.lastLoginLocate = data
 }
 
 const init = (row: any) => {
@@ -142,8 +161,9 @@ const init = (row: any) => {
 	dataForm.userPhotoList = []
 	dataForm.userId = row.userId
 	dataForm.nickname = row.nickname
-	dataForm.gender = row.gender.toString()
+	dataForm.gender = row.gender
 	dataForm.avatar = row.avatar
+	dataForm.lastLoginLocate = row.lastLoginLocate
 	getUserTemperamentLabel(row.temperamentLabel)
 	coverAvatarFile.value.push({ url: [row.avatar] })
 	getUserPhoto(row.userId)
@@ -220,7 +240,8 @@ const submitHandle = async () => {
 			if (coverImageFile.value.at(i).raw) {
 				let raw = coverImageFile.value.at(i).raw
 				const suffix = raw.name.substring(raw.name.lastIndexOf('.'))
-				await useUploadAwsApi(raw, suffix, dataForm.userPhotoList[i]).then(r => dataForm.userPhotoList.push(r))
+				await useUploadOssApi(raw, 'cover/', null, suffix).then(r => dataForm.userPhotoList.push(r))
+				// await useUploadAwsApi(raw, suffix, dataForm.userPhotoList[i]).then(r => dataForm.userPhotoList.push(r))
 			}
 		}
 	}
@@ -228,7 +249,8 @@ const submitHandle = async () => {
 	if (coverAvatarFile.value && coverAvatarFile.value.length > 0 && coverAvatarFile.value.at(0).raw) {
 		let raw = coverAvatarFile.value.at(0).raw
 		const suffix = raw.name.substring(raw.name.lastIndexOf('.'))
-		await useUploadAwsApi(raw, suffix).then(r => (dataForm.avatar = r))
+		await useUploadOssApi(raw, 'cover/', null, suffix).then(r => (dataForm.avatar = r))
+		// await useUploadAwsApi(raw, suffix).then(r => (dataForm.avatar = r))
 		if (!dataForm.avatar) {
 			ElMessage.error({
 				message: '修改失败!',

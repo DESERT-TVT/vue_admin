@@ -99,6 +99,7 @@ import { Temperament } from '@/hooks/interface'
 import { userPhotoListApi } from '@/api/user/userIdentification'
 import { getUserTemperamentLabelApi, updateUserInfoApi } from '@/api/user/userManage'
 import VideoDialog from '@/components/video-dialog/index.vue'
+import { useUploadOssApi } from '@/api/upload'
 
 const emit = defineEmits(['refreshDataList'])
 
@@ -220,7 +221,8 @@ const submitHandle = async () => {
 			if (coverImageFile.value.at(i).raw) {
 				let raw = coverImageFile.value.at(i).raw
 				const suffix = raw.name.substring(raw.name.lastIndexOf('.'))
-				await useUploadAwsApi(raw, suffix, dataForm.userPhotoList[i]).then(r => dataForm.userPhotoList.push(r))
+				await useUploadOssApi(raw, 'cover/', null, suffix).then(r => dataForm.userPhotoList.push(r))
+				// await useUploadAwsApi(raw, suffix, dataForm.userPhotoList[i]).then(r => dataForm.userPhotoList.push(r))
 			}
 		}
 	}
@@ -228,7 +230,8 @@ const submitHandle = async () => {
 	if (coverAvatarFile.value && coverAvatarFile.value.length > 0 && coverAvatarFile.value.at(0).raw) {
 		let raw = coverAvatarFile.value.at(0).raw
 		const suffix = raw.name.substring(raw.name.lastIndexOf('.'))
-		await useUploadAwsApi(raw, suffix).then(r => (dataForm.avatar = r))
+		await useUploadOssApi(raw, 'cover/', null, suffix).then(r => (dataForm.avatar = r))
+		// await useUploadAwsApi(raw, suffix).then(r => (dataForm.avatar = r))
 		if (!dataForm.avatar) {
 			ElMessage.error({
 				message: '修改失败!',

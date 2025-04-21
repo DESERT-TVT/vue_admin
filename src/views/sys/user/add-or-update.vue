@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-model="visible" :title="!dataForm.id ? '新增' : '修改'" :close-on-click-modal="false" draggable>
+	<el-dialog v-model="visible" :close-on-click-modal="false" :title="!dataForm.id ? '新增' : '修改'" draggable>
 		<el-form ref="dataFormRef" :model="dataForm" :rules="dataRules" label-width="120px" @keyup.enter="submitHandle()">
 			<el-row>
 				<el-col :span="12">
@@ -13,31 +13,32 @@
 						<el-input v-model="dataForm.username" placeholder="用户名"></el-input>
 					</el-form-item>
 					<el-form-item v-if="showPassword" label="设置密码" prop="password">
-						<el-input v-model="dataForm.password" type="password" placeholder="密码"></el-input>
+						<el-input v-model="dataForm.password" placeholder="密码" type="password"></el-input>
 					</el-form-item>
 					<el-form-item label="设置角色" prop="roleIdList">
 						<el-select v-model="dataForm.roleIdList" multiple placeholder="角色" style="width: 100%">
 							<el-option v-for="role in roleList" :key="role.id" :label="role.name" :value="role.id"></el-option>
 						</el-select>
 					</el-form-item>
-					<!--					<el-form-item prop="postIdList" label="所属岗位">-->
-					<!--						<el-select v-model="dataForm.postIdList" multiple placeholder="所属岗位" style="width: 100%">-->
-					<!--							<el-option v-for="post in postList" :key="post.id" :label="post.postName" :value="post.id"></el-option>-->
-					<!--						</el-select>-->
-					<!--					</el-form-item>-->
+
+					<el-form-item label="所属站点" prop="postIdList">
+						<el-select v-model="dataForm.tenantId" placeholder="所属站点" style="width: 100%">
+							<el-option v-for="post in siteList" :key="post.id" :label="post.siteName" :value="post.id"></el-option>
+						</el-select>
+					</el-form-item>
 				</el-col>
 
 				<el-col :span="12">
 					<!--					<el-form-item prop="realName" label="姓名">-->
 					<!--						<el-input v-model="dataForm.realName" placeholder="姓名"></el-input>-->
 					<!--					</el-form-item>-->
-					<el-form-item prop="gender" label="性别">
+					<el-form-item label="性别" prop="gender">
 						<fast-dict-radio v-model="dataForm.gender" dict-type="user_gender"></fast-dict-radio>
 					</el-form-item>
-					<el-form-item prop="email" label="邮箱">
+					<el-form-item label="邮箱" prop="email">
 						<el-input v-model="dataForm.email" placeholder="邮箱"></el-input>
 					</el-form-item>
-					<el-form-item prop="status" label="状态">
+					<el-form-item label="状态" prop="status">
 						<fast-dict-radio v-model="dataForm.status" dict-type="user_status"></fast-dict-radio>
 					</el-form-item>
 				</el-col>
@@ -50,18 +51,20 @@
 	</el-dialog>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus/es'
 import { useUserApi, useUserSubmitApi } from '@/api/sys/user'
 import { usePostListApi } from '@/api/sys/post'
 import { useRoleListApi } from '@/api/sys/role'
+import { useSiteList } from '@/api/sys/site'
 
 const emit = defineEmits(['refreshDataList'])
 
 const visible = ref(false)
 const postList = ref<any[]>([])
 const roleList = ref<any[]>([])
+const siteList = ref<any[]>([])
 const dataFormRef = ref()
 const showPassword = ref(true)
 
@@ -77,7 +80,8 @@ const dataForm = reactive({
 	mobile: '',
 	roleIdList: [] as any[],
 	postIdList: [] as any[],
-	status: 1
+	status: 1,
+	tenantId: null
 })
 
 const init = (id?: number) => {
@@ -97,6 +101,7 @@ const init = (id?: number) => {
 
 	getPostList()
 	getRoleList()
+	getSiteList()
 }
 
 // 获取岗位列表
@@ -109,6 +114,11 @@ const getPostList = async () => {
 const getRoleList = async () => {
 	let res = await useRoleListApi()
 	roleList.value = res.data
+}
+
+const getSiteList = async () => {
+	let res = await useSiteList()
+	siteList.value = res.data
 }
 
 // 获取信息

@@ -60,13 +60,17 @@
 					<el-table-column prop="userId" label="UID" header-align="center" align="center"></el-table-column>
 					<el-table-column prop="id" label="订单号" header-align="center" align="center"></el-table-column>
 					<fast-dict-column dict-type="integral_record_type" label="变动类型" prop="recordType"></fast-dict-column>
-					<el-table-column prop="goldCoinsNum" label="变动数额" header-align="center" align="center"></el-table-column>
-					<el-table-column align="center" header-align="center" label="余额" prop="goldCoinsBalance"></el-table-column>
-					<el-table-column align="center" header-align="center" label="状态" prop="status">
+					<el-table-column prop="goldCoinsNum" label="变动数额" header-align="center" align="center">
 						<template #default="scope">
-							<el-tag type="success">已结算</el-tag>
+							<el-tag :type="scope.row.goldCoinsNum > 0 ? 'success' : 'danger'">{{ scope.row.goldCoinsNum }}</el-tag>
 						</template>
 					</el-table-column>
+					<el-table-column align="center" header-align="center" label="余额" prop="goldCoinsBalance"></el-table-column>
+					<!--					<el-table-column align="center" header-align="center" label="状态" prop="status">-->
+					<!--						<template #default="scope">-->
+					<!--							<el-tag type="success">已结算</el-tag>-->
+					<!--						</template>-->
+					<!--					</el-table-column>-->
 					<el-table-column align="center" header-align="center" label="操作人" prop="updater"></el-table-column>
 					<el-table-column prop="createTime" label="变动时间" header-align="center" align="center"></el-table-column>
 				</el-table>
