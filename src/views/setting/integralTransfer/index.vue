@@ -32,12 +32,12 @@
 					@selection-change="selectionChangeHandle"
 				>
 					<el-table-column align="center" header-align="center" type="selection" width="38"></el-table-column>
-					<el-table-column align="center" header-align="center" label="积分" prop="integral"></el-table-column>
+					<el-table-column align="center" header-align="center" label="钻石" prop="integral"></el-table-column>
 					<el-table-column align="center" header-align="center" label="兑换结果" prop="settle"></el-table-column>
 					<el-table-column align="center" header-align="center" label="类型" prop="type">
 						<template #default="scope">
-							<div v-if="scope.row.type === 'integral2coin'">积分换金币</div>
-							<div v-if="scope.row.type === 'integral2cache'">积分提现</div>
+							<div v-if="scope.row.type === 'integral2coin'">钻石换金币</div>
+							<div v-if="scope.row.type === 'integral2cache'">钻石提现</div>
 						</template>
 					</el-table-column>
 					<el-table-column align="center" fixed="right" header-align="center" label="修改" width="120">
@@ -75,8 +75,8 @@ const state: IHooksOptions = reactive({
 	}
 })
 const options = [
-	{ value: 'integral2coin', label: '积分换金币' },
-	{ value: 'integral2cache', label: '积分提现' }
+	{ value: 'integral2coin', label: '钻石换金币' },
+	{ value: 'integral2cache', label: '钻石提现' }
 ]
 
 const getSettleDetail = async (row: any) => {

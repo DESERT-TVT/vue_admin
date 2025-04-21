@@ -50,7 +50,7 @@
 							<el-tag type="warning">{{ scope.row.goldCoins }}</el-tag>
 						</template>
 					</el-table-column>
-					<el-table-column prop="integral" label="积分余额" header-align="center" align="center">
+					<el-table-column prop="integral" label="钻石余额" header-align="center" align="center">
 						<template #default="scope">
 							<el-tag type="success">{{ scope.row.integral }}</el-tag>
 						</template>
@@ -84,7 +84,7 @@
 			<el-form-item label="赠送/扣除金币（正数为赠送，负数为扣除）">
 				<el-input-number v-model="addOrUpdateForm.goldCoins" :precision="2" :step="0.1" />
 			</el-form-item>
-			<el-form-item label="赠送/扣除积分（正数为赠送，负数为扣除）">
+			<el-form-item label="赠送/扣除钻石（正数为赠送，负数为扣除）">
 				<el-input-number v-model="addOrUpdateForm.integral" :precision="2" :step="0.1" />
 			</el-form-item>
 			<el-form-item label="赠送/扣除Vip天数（正数为赠送，负数为扣除）">

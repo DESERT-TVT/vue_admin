@@ -160,7 +160,7 @@
 							</el-popover>
 						</template>
 					</el-table-column>
-					<el-table-column prop="integral" label="积分余额" width="100" header-align="center" align="center">
+					<el-table-column prop="integral" label="钻石余额" width="100" header-align="center" align="center">
 						<template #default="scope">
 							<el-popover placement="right" :width="550" trigger="click">
 								<template #reference>
@@ -169,7 +169,7 @@
 								<el-card>
 									<el-table :data="dataDetails.integralFrom.integralDataList" height="300px">
 										<el-table-column align="center" label="变更时间" property="updateTime" />
-										<el-table-column align="center" label="积分余额" property="goldCoinsBalance" />
+										<el-table-column align="center" label="钻石余额" property="goldCoinsBalance" />
 									</el-table>
 									<el-pagination
 										size="small"
@@ -539,7 +539,7 @@ const showGoldCoinsDetail = (userId: string) => {
 		dataDetails.goldCoinsFrom.total = res.data.total
 	})
 }
-// 查看积分变动明细
+// 查看钻石变动明细
 const showIntegralDetail = (userId: string) => {
 	dataDetails.integralFrom.userId = userId
 	dataDetails.integralFrom.type = '2'

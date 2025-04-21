@@ -29,16 +29,16 @@
 				</div>
 
 				<div>
-					<el-input v-model="integralRate" placeholder="积分兑换人民币比例" style="max-width: 600px">
+					<el-input v-model="integralRate" placeholder="钻石兑换人民币比例" style="max-width: 600px">
 						<template #prepend>
-							<samp style="width: 250px"> 积分兑换货币比例(1积分=?人民币) </samp>
+							<samp style="width: 250px"> 钻石兑换货币比例(1钻石=?人民币) </samp>
 						</template>
 					</el-input>
 				</div>
 				<div>
-					<el-input v-model="integralCoin" placeholder="积分兑换货币比例" style="max-width: 600px">
+					<el-input v-model="integralCoin" placeholder="钻石兑换货币比例" style="max-width: 600px">
 						<template #prepend>
-							<samp style="width: 250px"> 积分兑换金币比例(1积分=?金币) </samp>
+							<samp style="width: 250px"> 钻石兑换金币比例(1钻石=?金币) </samp>
 						</template>
 					</el-input>
 				</div>
@@ -60,9 +60,9 @@ const withdrawFee = ref('0')
 const withdrawMax = ref('0')
 // 最小提现金额
 const withdrawMin = ref('0')
-// 积分兑换货币比例
+// 钻石兑换货币比例
 const integralRate = ref('0')
-// 积分兑换金币比例
+// 钻石兑换金币比例
 const integralCoin = ref('0')
 
 // const closeDialogHandle = () =>{
