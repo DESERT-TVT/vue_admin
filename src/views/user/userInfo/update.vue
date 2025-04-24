@@ -77,6 +77,18 @@
 					<el-checkbox :label="item.labelName" :value="item.labelValue" />
 				</el-checkbox-group>
 			</el-form-item>
+			<el-form-item prop="hotNumber" label="热度值">
+				<el-input v-model="dataForm.hotNumber" placeholder="请输入热度值" type="number"></el-input>
+			</el-form-item>
+			<el-form-item prop="hotEndTime" label="热度结束时间">
+				<el-date-picker
+					v-model="dataForm.hotEndTime"
+					type="datetime"
+					placeholder="请选择热度结束时间"
+					format="YYYY-MM-DD HH:mm:ss"
+					value-format="YYYY-MM-DD HH:mm:ss"
+				/>
+			</el-form-item>
 			<el-form-item label="性别" prop="gender" style="width: 300px">
 				<fast-dict-select v-model="dataForm.gender" clearable dict-type="user_gender" placeholder="性别"></fast-dict-select>
 			</el-form-item>
@@ -121,7 +133,9 @@ const dataForm = reactive({
 	nickname: '',
 	avatar: ref<any>(),
 	temperamentLabel: ref<any[]>([]),
-	gender: ''
+	gender: '',
+	hotNumber: '',
+	hotEndTime: ''
 })
 
 const videoDialogRef = ref()
@@ -145,6 +159,8 @@ const init = (row: any) => {
 	dataForm.nickname = row.nickname
 	dataForm.gender = row.gender.toString()
 	dataForm.avatar = row.avatar
+	dataForm.hotNumber = row.hotNumber
+	dataForm.hotEndTime = row.hotEndTime
 	getUserTemperamentLabel(row.temperamentLabel)
 	coverAvatarFile.value.push({ url: [row.avatar] })
 	getUserPhoto(row.userId)
@@ -215,6 +231,12 @@ const dataRules = ref({
 
 // 表单提交
 const submitHandle = async () => {
+	if (dataForm.hotNumber && !dataForm.hotEndTime) {
+		return ElMessage.warning('请输入热度结束时间')
+	}
+	if (dataForm.hotEndTime && !dataForm.hotNumber) {
+		return ElMessage.warning('请输入热度值')
+	}
 	// 上传相册
 	if (coverImageFile.value && coverImageFile.value.length > 0) {
 		for (let i = 0; i < coverImageFile.value.length; i++) {
@@ -244,7 +266,6 @@ const submitHandle = async () => {
 			return
 		}
 	}
-
 	dataFormRef.value.validate((valid: boolean) => {
 		if (!valid) {
 			return false

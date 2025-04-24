@@ -135,6 +135,8 @@
 							<span v-else> </span>
 						</template>
 					</el-table-column>
+					<el-table-column align="center" header-align="center" label="热度值" prop="hotNumber" width="150"></el-table-column>
+					<el-table-column align="center" header-align="center" label="热度结束时间" prop="hotEndTime" width="150"></el-table-column>
 					<el-table-column prop="vipExpireTime" label="vip到期时间" width="180" header-align="center" align="center"></el-table-column>
 					<el-table-column prop="goldCoins" label="金币余额" width="100" header-align="center" align="center">
 						<template #default="scope">
