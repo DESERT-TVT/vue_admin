@@ -5,11 +5,11 @@ export interface ProxyAddReq {
 	/** 目标用户id */
 	userId: string
 	/** 代理消费分成 */
-	cosRate: string
+	cosRate?: string
 	/** 代理收益分成 */
-	inRate: string
+	inRate?: string
 	/** 下级主播直接分成 */
-	onlineRate: string
+	onlineRate?: string
 	/** 上级用户id */
 	parentUserId?: string
 	/** 1主播 2 代理 */
@@ -17,6 +17,9 @@ export interface ProxyAddReq {
 }
 export const fetchAddProxy = (data: ProxyAddReq) => {
 	return service.post('/admin/proxy/add', data)
+}
+export const fetchUpdateProxy = (data: ProxyAddReq) => {
+	return service.post('/admin/proxy/update', data)
 }
 export interface ProxyListReq {
 	/*总记录数 */

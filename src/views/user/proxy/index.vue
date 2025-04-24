@@ -24,6 +24,7 @@
 				<el-table-column prop="onlineRate" label="下级主播直接分成" />
 				<el-table-column label="操作" fixed="right" header-align="center" align="center" min-width="300">
 					<template #default="scope">
+						<el-button v-auth="'proxy:user:edit'" type="primary" link @click="showAddProxy(scope.row)">修改</el-button>
 						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowProxyIncome(scope.row)">代理收益</el-button>
 						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowOnlineInfo(scope.row)">主播数据</el-button>
 						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowProxyInfo(scope.row)">代理数据</el-button>
@@ -45,7 +46,7 @@
 		>
 		</el-pagination>
 	</el-card>
-	<AddFirstProxy ref="addFirstProxyRef" />
+	<AddFirstProxy ref="addFirstProxyRef" @refresh-list="getDataList" />
 	<ProxyIncome ref="proxyIncomeRef" />
 	<ProxyInfo ref="proxyInfoRef" />
 	<OnlineInfo ref="onlineInfoRef" />
@@ -79,8 +80,8 @@ const onlineInfoRef = ref<InstanceType<typeof OnlineInfo>>()
 const userInfoRef = ref<InstanceType<typeof UserInfo>>()
 const onlineListRef = ref<InstanceType<typeof OnlineList>>()
 const incomePageRef = ref<InstanceType<typeof IncomePage>>()
-const showAddProxy = () => {
-	addFirstProxyRef.value?.init()
+const showAddProxy = (row?: ProxyAddReq) => {
+	addFirstProxyRef.value?.init(row)
 }
 // const UpdateHandle = (row: ProxyAddReq) => {
 // 	addFirstProxyRef.value?.init(row)
