@@ -27,7 +27,7 @@
 			<el-table-column align="center" header-align="center" label="ID" prop="id"></el-table-column>
 			<el-table-column align="center" header-align="center" label="用户id" prop="userId"></el-table-column>
 			<el-table-column align="center" header-align="center" label="昵称" prop="nickname"></el-table-column>
-			<el-table-column align="center" header-align="center" label="魅力等级" prop="charmLevel">
+			<el-table-column v-if="false" align="center" header-align="center" label="魅力等级" prop="charmLevel">
 				<template #default="scope">
 					<el-tag>{{ scope.row.charmLevel }}</el-tag>
 				</template>

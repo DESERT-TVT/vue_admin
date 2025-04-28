@@ -18,7 +18,17 @@ export interface ProxyAddReq {
 export const fetchAddProxy = (data: ProxyAddReq) => {
 	return service.post('/admin/proxy/add', data)
 }
-export const fetchUpdateProxy = (data: ProxyAddReq) => {
+export interface ProxyUpdateReq {
+	/** 代理消费分成 */
+	cosRate?: string
+	/** 代理收益分成 */
+	inRate?: string
+	/** 下级主播直接分成 */
+	onlineRate?: string
+	/** 代理id */
+	userId: string
+}
+export const fetchUpdateProxy = (data: ProxyUpdateReq) => {
 	return service.post('/admin/proxy/update', data)
 }
 export interface ProxyListReq {
