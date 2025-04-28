@@ -125,8 +125,8 @@ const sendHandle = (row: any) => {
 const videoDialogRef = ref()
 const videoDialogHandle = (row: any) => {
 	let parms = {
-		src: row.mediaContent.split(';')[0],
-		poster: row.mediaContent.split(';')[1]
+		src: row.mediaContentList[0],
+		poster: row.mediaContentList[1]
 	}
 	videoDialogRef.value.init(parms)
 }

@@ -2,7 +2,7 @@
 	<el-dialog v-model="visible" :close-on-click-modal="false" :title="title" :width="500" @close="onReset">
 		<el-form ref="dataFormRef" :model="dataForm" :rules="dataRules" label-width="150px" @keyup.enter="onSubmit">
 			<el-form-item label="用户id" prop="userId">
-				<el-input v-model="dataForm.userId" placeholder="请输入用户Id" :readonly="showUpdata" />
+				<el-input v-model="dataForm.userId" type="number" placeholder="请输入用户Id" :readonly="showUpdata" />
 			</el-form-item>
 			<el-tabs v-model="tabsVModel">
 				<el-tab-pane label="代理分成" name="proxy">
