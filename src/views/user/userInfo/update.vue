@@ -130,6 +130,7 @@ const temperamentList = ref<Temperament[]>([])
 const dataForm = reactive({
 	userId: '',
 	userPhotoList: ref<any[]>([]),
+	userPhotoListIds: [] as string[],
 	nickname: '',
 	avatar: ref<any>(),
 	temperamentLabel: ref<any[]>([]),
@@ -155,6 +156,7 @@ const init = (row: any) => {
 		dataFormRef.value.resetFields()
 	}
 	dataForm.userPhotoList = []
+	dataForm.userPhotoListIds = []
 	dataForm.userId = row.userId
 	dataForm.nickname = row.nickname
 	dataForm.gender = row.gender.toString()
@@ -165,13 +167,18 @@ const init = (row: any) => {
 	coverAvatarFile.value.push({ url: [row.avatar] })
 	getUserPhoto(row.userId)
 }
-
+const photoList = ref<any[]>([])
 const getUserPhoto = (userId: number) => {
 	userPhotoListApi({ targetId: userId, page: 1, limit: 999 }).then(res => {
 		if (res.data.list.length != 0) {
 			res.data.list.forEach((item: any) => {
+				photoList.value.push({
+					url: item.photo,
+					id: item.id
+				})
 				coverImageFile.value.push({ url: [item.photo] })
-				dataForm.userPhotoList.push(item.photo)
+				// dataForm.userPhotoList.push(item.photo)
+				dataForm.userPhotoListIds.push(item.id)
 			})
 		}
 	})
@@ -218,9 +225,13 @@ const handleCoverImageFileRemove = (uploadFile: any) => {
 		// 使用splice删除找到的文件
 		coverImageFile.value.splice(index, 1)
 	}
-	dataForm.userPhotoList = dataForm.userPhotoList.filter((item: any) => {
-		return item != uploadFile.url[0]
-	})
+
+	const targetUrl = uploadFile.url[0]
+	const matchedItem = photoList.value.find(item => item.url === targetUrl)
+	if (matchedItem) {
+		// 排除匹配到的 ID
+		dataForm.userPhotoListIds = dataForm.userPhotoListIds.filter(id => id !== matchedItem.id)
+	}
 }
 
 const dataRules = ref({

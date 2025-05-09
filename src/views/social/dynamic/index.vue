@@ -37,7 +37,7 @@
 			<el-table-column prop="mediaContentList" label="动态图片/视频" header-align="center" align="center">
 				<template #default="scope">
 					<el-image
-						v-if="scope.row.type == 1"
+						v-if="scope.row.type == 1 && scope.row.mediaContent?.length > 0"
 						:preview-src-list="scope.row.mediaContent"
 						:preview-teleported="true"
 						:src="scope.row.mediaContent[0]"
