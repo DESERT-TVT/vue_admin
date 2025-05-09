@@ -57,6 +57,17 @@
 									</span>
 								</span>
 							</div>
+							<div v-else-if="file.url[0].indexOf(',') != -1" style="width: 100%">
+								<img :src="(file as any).url[0].split(',')[0]" alt="" class="el-upload-list__item-thumbnail" />
+								<span class="el-upload-list__item-actions">
+									<span class="el-upload-list__item-delete" @click="videoDialogHandle(file.url[0], true)">
+										<el-icon><ZoomIn /></el-icon>
+									</span>
+									<span class="el-upload-list__item-delete" @click="handleCoverImageFileRemove(file)">
+										<el-icon><Delete /></el-icon>
+									</span>
+								</span>
+							</div>
 							<div v-else style="width: 100%">
 								<img :src="(file as any).url" alt="" class="el-upload-list__item-thumbnail" />
 								<span class="el-upload-list__item-actions">
