@@ -140,7 +140,7 @@ const temperamentList = ref<Temperament[]>([])
 
 const dataForm = reactive({
 	userId: '',
-	userPhotoList: ref<any[]>([]),
+	userPhotoList: [] as string[],
 	userPhotoListIds: [] as string[],
 	nickname: '',
 	avatar: ref<any>(),
