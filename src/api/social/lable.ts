@@ -18,7 +18,7 @@ export interface LableDeleteReq {
 	type: number
 }
 export const fetchLableDelete = (data: LableDeleteReq) => {
-	return service.post('/admin/label/delete', data)
+	return service.post<number[]>('/admin/label/delete', data)
 }
 export interface LableAddReq {
 	/** 标签名称 */

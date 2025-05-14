@@ -81,9 +81,19 @@ const onDiscoveryDelect = (row: LablePageRes) => {
 		cancelButtonText: '取消',
 		type: 'warning'
 	}).then(() => {
-		fetchLableDelete({ ids: [row.id], type: row.labelType }).then(() => {
-			ElMessage.success('删除成功')
-			getDataList()
+		fetchLableDelete({ ids: [row.id], type: row.labelType }).then(res => {
+			if (res) {
+				if (!res.data.length) {
+					ElMessage.success('删除成功')
+					getDataList()
+					return
+				}
+				ElMessageBox.confirm(`${res.data.join(',')}正在使用，删除失败`, '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				})
+			}
 		})
 	})
 }
@@ -115,27 +125,35 @@ const onBatchUpdate = async () => {
 		.then(async () => {
 			state.dataListLoading = true
 			try {
-				let results = []
+				let failedIds: number[] = []
 				if (type1Ids.length > 0) {
 					const res1 = await fetchLableDelete({
 						ids: type1Ids,
 						type: 1
 					})
-					results.push(res1)
+					if (res1.data && res1.data.length > 0) {
+						failedIds = [...failedIds, ...res1.data]
+					}
 				}
 				if (type2Ids.length > 0) {
 					const res2 = await fetchLableDelete({
 						ids: type2Ids,
 						type: 2
 					})
-					results.push(res2)
+					if (res2.data && res2.data.length > 0) {
+						failedIds = [...failedIds, ...res2.data]
+					}
 				}
-				// 检查所有请求是否成功
-				const allSuccess = results.every(res => res)
-				if (allSuccess) {
-					ElMessage.success('批量操作成功')
+
+				// 处理失败的ID
+				if (failedIds.length > 0) {
+					ElMessageBox.confirm(`删除失败${failedIds.length}个，原因：${failedIds.join(',')}正在使用`, '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					})
 				} else {
-					ElMessage.error('部分操作失败')
+					ElMessage.success('批量操作成功')
 				}
 				getDataList() // 刷新数据
 			} catch (error) {
