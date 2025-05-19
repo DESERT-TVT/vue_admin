@@ -4,7 +4,7 @@
 			<el-card class="layout-query">
 				<el-form ref="queryRef" :inline="true" :model="state.queryForm">
 					<el-form-item prop="userId">
-						<el-input v-model="state.queryForm.userId" clearable placeholder="UID"></el-input>
+						<el-input v-model="state.queryForm.userId" clearable placeholder="UID" type="number"></el-input>
 					</el-form-item>
 					<el-form-item prop="nickname">
 						<el-input v-model="state.queryForm.nickname" clearable placeholder="昵称"></el-input>
