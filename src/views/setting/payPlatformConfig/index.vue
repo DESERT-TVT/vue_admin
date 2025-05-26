@@ -36,14 +36,14 @@
 			<el-table-column align="center" header-align="center" type="selection" width="38"></el-table-column>
 			<el-table-column align="center" header-align="center" label="名称" prop="name"></el-table-column>
 			<!--			<el-table-column align="center" header-align="center" label="商户ID" prop="merchantId"></el-table-column>-->
-			<el-table-column align="center" header-align="center" label="密钥(点击复制)" prop="merchantKey">
+			<!--			<el-table-column align="center" header-align="center" label="密钥(点击复制)" prop="merchantKey">
 				<template #default="scope">
 					<span class="masked-key" @click="copyToClipboard(scope.row.merchantKey)">
 						{{ maskKey(scope.row.merchantKey) }}
 					</span>
 				</template>
-			</el-table-column>
-			<el-table-column align="center" header-align="center" label="接口API" prop="gateway">
+			</el-table-column>-->
+			<!--			<el-table-column align="center" header-align="center" label="接口API" prop="gateway">
 				<template #header="{ column }">
 					{{ column.label }}
 					<el-tooltip content="该字段为支付模块获取付款地址的API地址" effect="dark" placement="top">
@@ -54,13 +54,13 @@
 						</el-text>
 					</el-tooltip>
 				</template>
-			</el-table-column>
-			<!--			<el-table-column align="center" header-align="center" label="标签" prop="tag"></el-table-column>-->
-			<!--			<el-table-column align="center" header-align="center" label="最小金额" prop="minAmount"></el-table-column>-->
-			<!--			<el-table-column align="center" header-align="center" label="最大金额" prop="maxAmount"></el-table-column>-->
-			<!--			<el-table-column align="center" header-align="center" label="每日额度" prop="dailyQuota"></el-table-column>-->
-			<!--			<fast-dict-column dict-type="pay_platform_config_type" label="支付类型" prop="payType"></fast-dict-column>-->
-			<!--			<el-table-column align="center" header-align="center" label="文档地址" prop="docUrl"></el-table-column>-->
+			</el-table-column>-->
+			<el-table-column align="center" header-align="center" label="编码" prop="code"></el-table-column>
+			<el-table-column align="center" header-align="center" label="最小金额" prop="minAmount"></el-table-column>
+			<el-table-column align="center" header-align="center" label="最大金额" prop="maxAmount"></el-table-column>
+			<el-table-column align="center" header-align="center" label="转换汇率" prop="exchangeRate"></el-table-column>
+			<fast-dict-column dict-type="pay_platform_config_type" label="支付类型" prop="payType"></fast-dict-column>
+			<el-table-column align="center" header-align="center" label="文档地址" prop="docUrl"></el-table-column>
 			<el-table-column align="center" header-align="center" label="序号（权重）" min-width="120" prop="sort" sortable="custom">
 				<template #header="{ column }">
 					{{ column.label }}
