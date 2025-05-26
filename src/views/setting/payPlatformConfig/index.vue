@@ -60,7 +60,7 @@
 			<!--			<el-table-column align="center" header-align="center" label="最大金额" prop="maxAmount"></el-table-column>-->
 			<!--			<el-table-column align="center" header-align="center" label="每日额度" prop="dailyQuota"></el-table-column>-->
 			<!--			<fast-dict-column dict-type="pay_platform_config_type" label="支付类型" prop="payType"></fast-dict-column>-->
-			<!--			<el-table-column align="center" header-align="center" label="文档地址" prop="docUrl"></el-table-column>-->
+			<el-table-column align="center" header-align="center" label="文档地址" prop="docUrl"></el-table-column>
 			<el-table-column align="center" header-align="center" label="序号（权重）" min-width="120" prop="sort" sortable="custom">
 				<template #header="{ column }">
 					{{ column.label }}
@@ -120,6 +120,9 @@ const addOrUpdateHandle = (id?: number) => {
 }
 // 显示处理：显示前三位和后三位，中间用 ***
 const maskKey = (key: string): string => {
+	if (!key) {
+		return ''
+	}
 	if (key.length <= 6) {
 		return key
 	}
