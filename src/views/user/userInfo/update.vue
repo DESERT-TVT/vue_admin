@@ -89,7 +89,7 @@
 				</el-checkbox-group>
 			</el-form-item>
 			<el-form-item prop="hotNumber" label="热度值">
-				<el-input-number v-model="dataForm.hotNumber" placeholder="请输入热度值" type="number" min="0" style="width: 200px"></el-input-number>
+				<el-input-number v-model="dataForm.hotNumber" placeholder="请输入热度值" type="number" :min="0" style="width: 200px"></el-input-number>
 			</el-form-item>
 			<el-form-item prop="hotEndTime" label="热度结束时间">
 				<el-date-picker
