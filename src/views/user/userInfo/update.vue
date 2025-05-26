@@ -57,6 +57,17 @@
 									</span>
 								</span>
 							</div>
+							<div v-else-if="file.url[0].indexOf(',') != -1" style="width: 100%">
+								<img :src="(file as any).url[0].split(',')[0]" alt="" class="el-upload-list__item-thumbnail" />
+								<span class="el-upload-list__item-actions">
+									<span class="el-upload-list__item-delete" @click="videoDialogHandle(file.url[0], true)">
+										<el-icon><ZoomIn /></el-icon>
+									</span>
+									<span class="el-upload-list__item-delete" @click="handleCoverImageFileRemove(file)">
+										<el-icon><Delete /></el-icon>
+									</span>
+								</span>
+							</div>
 							<div v-else style="width: 100%">
 								<img :src="(file as any).url" alt="" class="el-upload-list__item-thumbnail" />
 								<span class="el-upload-list__item-actions">
@@ -76,6 +87,18 @@
 				<el-checkbox-group v-for="(item, index) in temperamentList" :key="index" v-model="dataForm.temperamentLabel">
 					<el-checkbox :label="item.labelName" :value="item.labelValue" />
 				</el-checkbox-group>
+			</el-form-item>
+			<el-form-item prop="hotNumber" label="热度值">
+				<el-input v-model="dataForm.hotNumber" placeholder="请输入热度值" type="number"></el-input>
+			</el-form-item>
+			<el-form-item prop="hotEndTime" label="热度结束时间">
+				<el-date-picker
+					v-model="dataForm.hotEndTime"
+					type="datetime"
+					placeholder="请选择热度结束时间"
+					format="YYYY-MM-DD HH:mm:ss"
+					value-format="YYYY-MM-DD HH:mm:ss"
+				/>
 			</el-form-item>
 			<el-form-item label="性别" prop="gender" style="width: 300px">
 				<fast-dict-select v-model="dataForm.gender" clearable dict-type="user_gender" placeholder="性别"></fast-dict-select>
@@ -117,11 +140,14 @@ const temperamentList = ref<Temperament[]>([])
 
 const dataForm = reactive({
 	userId: '',
-	userPhotoList: ref<any[]>([]),
+	userPhotoList: [] as string[],
+	userPhotoListIds: [] as string[],
 	nickname: '',
 	avatar: ref<any>(),
 	temperamentLabel: ref<any[]>([]),
-	gender: ''
+	gender: '',
+	hotNumber: '',
+	hotEndTime: ''
 })
 
 const videoDialogRef = ref()
@@ -141,21 +167,29 @@ const init = (row: any) => {
 		dataFormRef.value.resetFields()
 	}
 	dataForm.userPhotoList = []
+	dataForm.userPhotoListIds = []
 	dataForm.userId = row.userId
 	dataForm.nickname = row.nickname
 	dataForm.gender = row.gender.toString()
 	dataForm.avatar = row.avatar
+	dataForm.hotNumber = row.hotNumber
+	dataForm.hotEndTime = row.hotEndTime
 	getUserTemperamentLabel(row.temperamentLabel)
 	coverAvatarFile.value.push({ url: [row.avatar] })
 	getUserPhoto(row.userId)
 }
-
+const photoList = ref<any[]>([])
 const getUserPhoto = (userId: number) => {
 	userPhotoListApi({ targetId: userId, page: 1, limit: 999 }).then(res => {
 		if (res.data.list.length != 0) {
 			res.data.list.forEach((item: any) => {
+				photoList.value.push({
+					url: item.photo,
+					id: item.id
+				})
 				coverImageFile.value.push({ url: [item.photo] })
-				dataForm.userPhotoList.push(item.photo)
+				// dataForm.userPhotoList.push(item.photo)
+				dataForm.userPhotoListIds.push(item.id)
 			})
 		}
 	})
@@ -202,9 +236,13 @@ const handleCoverImageFileRemove = (uploadFile: any) => {
 		// 使用splice删除找到的文件
 		coverImageFile.value.splice(index, 1)
 	}
-	dataForm.userPhotoList = dataForm.userPhotoList.filter((item: any) => {
-		return item != uploadFile.url[0]
-	})
+
+	const targetUrl = uploadFile.url[0]
+	const matchedItem = photoList.value.find(item => item.url === targetUrl)
+	if (matchedItem) {
+		// 排除匹配到的 ID
+		dataForm.userPhotoListIds = dataForm.userPhotoListIds.filter(id => id !== matchedItem.id)
+	}
 }
 
 const dataRules = ref({
@@ -215,6 +253,12 @@ const dataRules = ref({
 
 // 表单提交
 const submitHandle = async () => {
+	if (dataForm.hotNumber && !dataForm.hotEndTime) {
+		return ElMessage.warning('请输入热度结束时间')
+	}
+	if (dataForm.hotEndTime && !dataForm.hotNumber) {
+		return ElMessage.warning('请输入热度值')
+	}
 	// 上传相册
 	if (coverImageFile.value && coverImageFile.value.length > 0) {
 		for (let i = 0; i < coverImageFile.value.length; i++) {
@@ -244,7 +288,6 @@ const submitHandle = async () => {
 			return
 		}
 	}
-
 	dataFormRef.value.validate((valid: boolean) => {
 		if (!valid) {
 			return false

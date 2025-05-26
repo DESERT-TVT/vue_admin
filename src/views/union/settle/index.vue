@@ -35,7 +35,7 @@
 
 			<!-- table -->
 			<el-card>
-				总计分成积分：{{ totalShareIntegral }}<span style="margin-left: 20px">总计消耗金币数量：{{ totalCoin }}</span>
+				总计分成钻石：{{ totalShareIntegral }}<span style="margin-left: 20px">总计消耗金币数量：{{ totalCoin }}</span>
 				<el-table
 					v-loading="state.dataListLoading"
 					show-overflow-tooltip
@@ -48,7 +48,7 @@
 					<el-table-column type="selection" header-align="center" align="center" width="38"></el-table-column>
 					<el-table-column prop="userId" label="UID" header-align="center" align="center"></el-table-column>
 					<!--					<el-table-column prop="account" label="账号" header-align="center" align="center"></el-table-column>-->
-					<el-table-column prop="settleValue" label="分成(积分)" header-align="center" align="center"></el-table-column>
+					<el-table-column prop="settleValue" label="分成(钻石)" header-align="center" align="center"></el-table-column>
 					<!--					<el-table-column prop="kickbackRate" label="分成比例" header-align="center" align="center">-->
 					<!--            <template #default="scope">-->
 					<!--              <span>{{ scope.row.kickbackRate*100 }}%</span>-->

@@ -43,8 +43,8 @@
 			<el-card>
 				<el-row>
 					<el-col :offset="19" :span="5">
-						总收入：{{ state.extend ? state.extend.incomeCount + ' 积分' : '0' + ' 积分' }}&nbsp;&nbsp;总支出：{{
-							state.extend ? Math.abs(state.extend.payCount) + ' 积分' : '0' + ' 积分'
+						总收入：{{ state.extend ? state.extend.incomeCount + ' 钻石' : '0' + ' 钻石' }}&nbsp;&nbsp;总支出：{{
+							state.extend ? Math.abs(state.extend.payCount) + ' 钻石' : '0' + ' 钻石'
 						}}
 					</el-col>
 				</el-row>

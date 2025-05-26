@@ -1,8 +1,8 @@
 <template>
 	<el-dialog v-model="visible" :title="!dataForm.integral ? '新增' : '修改'" :close-on-click-modal="false" width="30%" @close="closeDialogHandle">
 		<el-form ref="dataFormRef" :model="dataForm" :rules="dataRules" label-width="100px" @keyup.enter="submitHandle()">
-			<el-form-item label="积分数量" prop="level">
-				<el-input-number v-model="dataForm.integral" placeholder="积分数量" min="0" />
+			<el-form-item label="钻石数量" prop="level">
+				<el-input-number v-model="dataForm.integral" placeholder="钻石数量" min="0" />
 			</el-form-item>
 			<!--			<el-form-item label="兑换数量" prop="price">-->
 			<!--				<el-input-number v-model="dataForm.settle" placeholder="兑换数量" min="0" />-->
@@ -38,8 +38,8 @@ const dataForm = reactive({
 	type: ''
 })
 const options = [
-	{ value: 'integral2coin', label: '积分换金币' },
-	{ value: 'integral2cache', label: '积分提现' }
+	{ value: 'integral2coin', label: '钻石换金币' },
+	{ value: 'integral2cache', label: '钻石提现' }
 ]
 
 const getTypeLabel = (value: string | number): string => {

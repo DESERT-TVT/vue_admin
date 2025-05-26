@@ -20,7 +20,7 @@
 			<el-table-column align="center" header-align="center" type="selection" width="38"></el-table-column>
 			<el-table-column align="center" header-align="center" label="UID" prop="userId"></el-table-column>
 			<el-table-column align="center" header-align="center" label="名称" prop="nickname"></el-table-column>
-			<el-table-column align="center" header-align="center" label="魅力等级" prop="charmLevel">
+			<el-table-column v-if="false" align="center" header-align="center" label="魅力等级" prop="charmLevel">
 				<template #default="scope">
 					<el-tag>{{ scope.row.charmLevel }} </el-tag>
 				</template>
