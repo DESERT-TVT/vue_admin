@@ -57,6 +57,14 @@ export const APIPayPlatformConfigSubmit = (params: any) => {
 	}
 }
 
+export const APIWithdrawPlatformConfigSubmit = (params: any) => {
+	if (params.id) {
+		return service.post('/admin/config/withdraw/platform/update', params)
+	} else {
+		return service.post('/admin/config/withdraw/platform/save', params)
+	}
+}
+
 export const APIPayPlatformConfig = (id: number) => {
 	return service.get('/admin/config/pay/platform/' + id)
 }
