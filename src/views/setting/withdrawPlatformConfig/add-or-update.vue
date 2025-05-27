@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus/es'
-import {APIWithdrawPlatformConfigSubmit} from "@/api/config/setting";
+import { APIWithdrawPlatformConfigSubmit } from '@/api/config/setting'
 
 const emit = defineEmits(['refreshDataList'])
 
