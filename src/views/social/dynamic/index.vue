@@ -37,10 +37,10 @@
 			<el-table-column prop="mediaContentList" label="动态图片/视频" header-align="center" align="center">
 				<template #default="scope">
 					<el-image
-						v-if="scope.row.type == 1"
-						:preview-src-list="scope.row.mediaContentList"
+						v-if="scope.row.type == 1 && scope.row.mediaContent?.length > 0"
+						:preview-src-list="scope.row.mediaContent"
 						:preview-teleported="true"
-						:src="scope.row.mediaContentList[0]"
+						:src="scope.row.mediaContent[0]"
 						:zoom-rate="1.2"
 						:max-scale="7"
 						:min-scale="0.2"
@@ -51,7 +51,7 @@
 					<div v-else-if="scope.row.type == 2" style="margin-left: 15px">
 						<el-image
 							class="image-with-mask"
-							:src="scope.row.mediaContent.split(';')[1]"
+							:src="scope.row.mediaContent[0].split(';')[1]"
 							style="margin-top: 7px; width: 100px; height: 100px; border-radius: 6px; cursor: pointer"
 							@click="videoDialogHandle(scope.row)"
 						/>
@@ -125,8 +125,8 @@ const sendHandle = (row: any) => {
 const videoDialogRef = ref()
 const videoDialogHandle = (row: any) => {
 	let parms = {
-		src: row.mediaContent.split(';')[0],
-		poster: row.mediaContent.split(';')[1]
+		src: row.mediaContent[0].split(';')[0],
+		poster: row.mediaContent[0].split(';')[1]
 	}
 	videoDialogRef.value.init(parms)
 }

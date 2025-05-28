@@ -24,6 +24,8 @@
 				<el-table-column prop="onlineRate" label="下级主播直接分成" />
 				<el-table-column label="操作" fixed="right" header-align="center" align="center" min-width="300">
 					<template #default="scope">
+						<el-button v-auth="'proxy:user:edit'" type="primary" link @click="showAddProxy(scope.row)">修改</el-button>
+						<el-button v-auth="'proxy:user:edit'" type="primary" link @click="showAddProxy(scope.row, true)">新增下级代理</el-button>
 						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowProxyIncome(scope.row)">代理收益</el-button>
 						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowOnlineInfo(scope.row)">主播数据</el-button>
 						<el-button v-auth="'proxy:user:income'" type="primary" link @click="onShowProxyInfo(scope.row)">代理数据</el-button>
@@ -45,7 +47,7 @@
 		>
 		</el-pagination>
 	</el-card>
-	<AddFirstProxy ref="addFirstProxyRef" />
+	<AddFirstProxy ref="addFirstProxyRef" @refresh-list="refreshList" />
 	<ProxyIncome ref="proxyIncomeRef" />
 	<ProxyInfo ref="proxyInfoRef" />
 	<OnlineInfo ref="onlineInfoRef" />
@@ -53,6 +55,7 @@
 	<OnlineList ref="onlineListRef" />
 	<IncomePage ref="incomePageRef" />
 </template>
+
 <script lang="ts" setup>
 import { useCrud } from '@/hooks'
 import { IHooksOptions } from '@/hooks/interface'
@@ -66,12 +69,14 @@ import OnlineInfo from './OnlineInfo.vue'
 import UserInfo from './UserInfo.vue'
 import OnlineList from './OnlineList.vue'
 import IncomePage from './IncomePage.vue'
+
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/proxy/list/leve1',
 	createdIsNeed: false,
 	limit: 100,
 	queryForm: {}
 })
+
 const addFirstProxyRef = ref<InstanceType<typeof AddFirstProxy>>()
 const proxyIncomeRef = ref<InstanceType<typeof ProxyIncome>>()
 const proxyInfoRef = ref<InstanceType<typeof ProxyInfo>>()
@@ -79,30 +84,43 @@ const onlineInfoRef = ref<InstanceType<typeof OnlineInfo>>()
 const userInfoRef = ref<InstanceType<typeof UserInfo>>()
 const onlineListRef = ref<InstanceType<typeof OnlineList>>()
 const incomePageRef = ref<InstanceType<typeof IncomePage>>()
-const showAddProxy = () => {
-	addFirstProxyRef.value?.init()
+
+interface parentNodeType extends ProxyListData {
+	hasChildren: boolean
 }
-// const UpdateHandle = (row: ProxyAddReq) => {
-// 	addFirstProxyRef.value?.init(row)
-// }
+const parentNodes = ref<{ row: ProxyAddReq; treeNode: TreeNode; resolve: (data: ProxyListData[]) => void; children: parentNodeType[] }[]>([])
+const updateRowId = ref('')
+const isAddJunior = ref(false)
+const showAddProxy = (row?: ProxyAddReq, isAdd?: boolean) => {
+	addFirstProxyRef.value?.init(row, isAdd)
+	isAddJunior.value = isAdd || false
+	updateRowId.value = row?.userId || ''
+}
+
 const onShowProxyIncome = (row: ProxyAddReq) => {
 	proxyIncomeRef.value?.init(row)
 }
+
 const onShowProxyInfo = (row: ProxyAddReq) => {
 	proxyInfoRef.value?.init(row)
 }
+
 const onShowOnlineInfo = (row: ProxyAddReq) => {
 	onlineInfoRef.value?.init(row)
 }
+
 const onShowUserInfo = (row: ProxyAddReq) => {
 	userInfoRef.value?.init(row)
 }
+
 const onShowOnlineList = (row: ProxyAddReq) => {
 	onlineListRef.value?.init(row.userId)
 }
+
 const onShowIncomePage = (row: ProxyAddReq) => {
 	incomePageRef.value?.init(row.userId)
 }
+
 const dataList = computed(() => {
 	if (state.dataList) {
 		return state.dataList.map((item: ProxyListData) => {
@@ -112,6 +130,7 @@ const dataList = computed(() => {
 		return []
 	}
 })
+
 const load = (row: ProxyAddReq, treeNode: TreeNode, resolve: (data: ProxyListData[]) => void) => {
 	fetchProxyList(row.userId)
 		.then(res => {
@@ -119,15 +138,41 @@ const load = (row: ProxyAddReq, treeNode: TreeNode, resolve: (data: ProxyListDat
 				const data = res.data.list.map((item: ProxyListData) => {
 					return { ...item, hasChildren: true }
 				})
+				if (parentNodes.value.findIndex(node => node.row.userId === row.userId) == -1 && res.data.list.length > 0) {
+					parentNodes.value.push({ row, treeNode, resolve, children: data })
+				}
 				resolve(data)
 			} else {
+				parentNodes.value.push({ row, treeNode, resolve, children: [] })
 				resolve([])
 			}
 		})
 		.catch(err => {
+			parentNodes.value.push({ row, treeNode, resolve, children: [] })
 			resolve([])
 		})
 }
+
 const { getDataList, selectionChangeHandle, sizeChangeHandle, currentChangeHandle, reset } = useCrud(state)
+
+const refreshList = () => {
+	getDataList()
+	if (isAddJunior.value) {
+		parentNodes.value.forEach(({ row, treeNode, resolve }) => {
+			if (updateRowId.value == row.userId) {
+				load(row, treeNode, resolve)
+			}
+		})
+		return
+	}
+	parentNodes.value.forEach(({ row, treeNode, resolve, children }) => {
+		children.forEach(item => {
+			if (item.userId == updateRowId.value) {
+				load(row, treeNode, resolve)
+			}
+		})
+	})
+}
 </script>
+
 <style lang="scss" scoped></style>

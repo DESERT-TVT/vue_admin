@@ -1,33 +1,53 @@
 <template>
-	<el-dialog v-model="visible" :close-on-click-modal="false" title="设置一级代理" :width="500" @close="onReset">
+	<el-dialog v-model="visible" :close-on-click-modal="false" :title="title" :width="500" @close="onReset">
 		<el-form ref="dataFormRef" :model="dataForm" :rules="dataRules" label-width="150px" @keyup.enter="onSubmit">
 			<el-form-item label="用户id" prop="userId">
-				<el-input v-model="dataForm.userId" placeholder="请输入用户Id" />
+				<el-input v-model="dataForm.userId" type="number" placeholder="请输入用户Id" :readonly="showUpdata" />
 			</el-form-item>
-			<el-form-item label="代理消费分成" prop="cosRate">
-				<el-input-number
-					v-model="dataForm.cosRate"
-					style="width: 100%"
-					:step="0.01"
-					max="1"
-					min="0"
-					type="number"
-					placeholder="请输入代理消费分成"
-					@change="handleRateChange('cosRate')"
-				/>
-			</el-form-item>
-			<el-form-item label="代理收益分成" prop="inRate">
-				<el-input-number
-					v-model="dataForm.inRate"
-					style="width: 100%"
-					:step="0.01"
-					max="1"
-					min="0"
-					type="number"
-					placeholder="请输入代理收益分成"
-					@change="handleRateChange('inRate')"
-				/>
-			</el-form-item>
+			<el-tabs v-model="tabsVModel">
+				<el-tab-pane label="代理分成" name="proxy">
+					<el-form-item label="代理消费分成" prop="cosRate">
+						<el-input v-model="dataForm.cosRate" type="number" placeholder="请输入代理消费分成" @change="handleRateChange('cosRate')">
+							<template #append>%</template>
+						</el-input>
+						<!-- <el-input-number
+							v-model="dataForm.cosRate"
+							style="width: 100%"
+							:step="1"
+							max="100"
+							min="1"
+							type="number"
+							placeholder="请输入代理消费分成"
+							@change="handleRateChange('cosRate')"
+						/> -->
+					</el-form-item>
+					<el-form-item label="代理收益分成" prop="inRate">
+						<el-input
+							v-model="dataForm.inRate"
+							style="width: 100%"
+							type="number"
+							placeholder="请输入代理消费分成"
+							@change="handleRateChange('inRate')"
+						>
+							<template #append>%</template>
+						</el-input>
+					</el-form-item>
+				</el-tab-pane>
+				<el-tab-pane v-if="showUpdata" label="主播分成" name="online">
+					<el-form-item label="下级主播直接分成" prop="onlineRate">
+						<el-input
+							v-model="dataForm.onlineRate"
+							style="width: 100%"
+							type="number"
+							placeholder="请输入代理消费分成"
+							@change="handleRateChange('onlineRate')"
+						>
+							<template #append>%</template>
+						</el-input>
+					</el-form-item>
+				</el-tab-pane>
+			</el-tabs>
+
 			<!-- <el-form-item label="下级主播直接分成" prop="onlineRate">
 				<el-input-number
 					v-model="dataForm.onlineRate"
@@ -59,9 +79,9 @@
 </template>
 
 <script setup lang="ts">
-import { fetchAddProxy, ProxyAddReq } from '@/api/user/proxy'
+import { fetchAddProxy, fetchUpdateProxy, ProxyAddReq } from '@/api/user/proxy'
 import { ElMessage, FormInstance } from 'element-plus'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import fetctButton from '@/components/fetct-button/index.vue'
 
 // 对话框可见性状态
@@ -73,24 +93,29 @@ const dataForm = reactive({
 	userId: '',
 	cosRate: 0,
 	inRate: 0,
-	// onlineRate: 0,
+	onlineRate: 0,
 	// parentUserId: '',
-	userType: 1
+	userType: 1,
+	parentUserId: ''
 })
-
+const tabsVModel = ref('proxy')
 // 定义一个将比率转换为百分比字符串的函数
-const convertRateToPercentage = (rate: number) => {
-	return (rate * 100).toFixed(0)
-}
+// const convertRateToPercentage = (rate: number) => {
+// 	return (rate * 100).toFixed(0)
+// }
 // 定义一个将百分比字符串恢复为比率数字的函数
-const convertPercentageToRate = (percentage: string): number => {
-	const parsedPercentage = parseFloat(percentage)
-	return isNaN(parsedPercentage) ? 0 : parsedPercentage / 100
-}
+// const convertPercentageToRate = (percentage?: string): number => {
+// 	if (!percentage) {
+// 		return 0
+// 	}
+// 	const parsedPercentage = parseFloat(percentage)
+// 	return isNaN(parsedPercentage) ? 0 : parsedPercentage / 100
+// }
 // 处理比率输入的公共函数
-const handleRateChange = (field: 'cosRate' | 'inRate') => {
+const handleRateChange = (field: 'cosRate' | 'inRate' | 'onlineRate') => {
 	const value = dataForm[field]
-	const validValue = Math.min(1, Math.max(0, parseFloat(value.toFixed(2))))
+	// 确保值在 1 到 100 之间
+	const validValue = Math.min(100, Math.max(1, parseFloat(Number(value).toFixed(2))))
 	dataForm[field] = validValue
 }
 
@@ -101,55 +126,87 @@ const dataRules = reactive({
 	inRate: [{ required: true, message: '请输入代理收益分成', trigger: 'blur' }],
 	onlineRate: [{ required: true, message: '请输入主播收益分成比例', trigger: 'blur' }]
 })
-
+const title = computed(() => {
+	if (showUpdata.value && !dataForm.parentUserId) {
+		return '修改一级代理'
+	} else if (dataForm.parentUserId) {
+		return '新增下级代理'
+	} else {
+		return '设置一级代理'
+	}
+})
 // 重置表单数据和验证状态
 const onReset = () => {
 	dataForm.userId = ''
 	dataForm.cosRate = 0
 	dataForm.inRate = 0
-	// dataForm.onlineRate = 0
+	dataForm.onlineRate = 0
 	// dataForm.parentUserId = ''
 	dataForm.userType = 1
 	showUpdata.value = false
-	dataFormRef.value?.resetFields()
+	dataForm.parentUserId = ''
+	dataFormRef.value?.resetFields('userId')
+	// dataFormRef.value?.resetFields()
+	tabsVModel.value = 'proxy'
 }
 
 // 关闭对话框
 const onCloseDialog = () => {
 	visible.value = false
 }
-
+const emit = defineEmits(['refresh-list'])
 // 提交表单
 const onSubmit = async () => {
 	const validate = await dataFormRef.value?.validate()
 	if (!validate) {
 		return
 	}
-	const params = {
-		userId: dataForm.userId,
-		cosRate: convertRateToPercentage(dataForm.cosRate),
-		inRate: convertRateToPercentage(dataForm.inRate)
-		// onlineRate: convertRateToPercentage(dataForm.onlineRate),
-		// parentUserId: showUpdata.value ? undefined : dataForm.parentUserId,
-		// userType: showUpdata.value ? undefined : dataForm.userType
-	} as ProxyAddReq
-	const res = await fetchAddProxy(params)
+	let params = {} as ProxyAddReq
+	if (tabsVModel.value === 'proxy') {
+		if (!dataForm.cosRate || !dataForm.inRate) {
+			return ElMessage.error('代理消费分成和代理收益分成不能为空')
+		}
+		params = {
+			userId: dataForm.userId,
+			cosRate: dataForm.cosRate.toString(),
+			inRate: dataForm.inRate.toString(),
+			parentUserId: dataForm.parentUserId ? dataForm.parentUserId : undefined
+		}
+	} else {
+		if (!dataForm.onlineRate) {
+			return ElMessage.error('主播收益分成比例不能为空')
+		}
+		params = {
+			userId: dataForm.userId,
+			onlineRate: dataForm.onlineRate.toString()
+		}
+	}
+	let res
+	if (showUpdata.value) {
+		res = await fetchUpdateProxy(params)
+	} else {
+		res = await fetchAddProxy(params)
+	}
 	if (res) {
+		emit('refresh-list')
 		ElMessage.success('设置成功')
 		onCloseDialog()
 	}
 }
 const showUpdata = ref(false)
 // 初始化对话框
-const init = (row?: ProxyAddReq) => {
-	if (row) {
+const init = (row?: ProxyAddReq, isAdd?: boolean) => {
+	if (row?.userId && !isAdd) {
 		dataForm.userId = row.userId
-		dataForm.cosRate = convertPercentageToRate(row.cosRate)
-		dataForm.inRate = convertPercentageToRate(row.inRate)
-		// dataForm.onlineRate = convertPercentageToRate(row.onlineRate)
+		dataForm.cosRate = Number(row.cosRate)
+		dataForm.inRate = Number(row.inRate)
+		dataForm.onlineRate = Number(row.onlineRate)
 		showUpdata.value = true
 	} else {
 		onReset()
+		if (isAdd) {
+			dataForm.parentUserId = row?.userId || ''
+		}
 	}
 	visible.value = true
 }

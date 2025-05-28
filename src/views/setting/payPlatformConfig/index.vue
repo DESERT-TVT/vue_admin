@@ -120,6 +120,9 @@ const addOrUpdateHandle = (id?: number) => {
 }
 // 显示处理：显示前三位和后三位，中间用 ***
 const maskKey = (key: string): string => {
+	if (!key) {
+		return ''
+	}
 	if (key.length <= 6) {
 		return key
 	}

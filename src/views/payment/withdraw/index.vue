@@ -76,8 +76,8 @@
 					</el-table-column>
 					<el-table-column prop="type" label="类型" header-align="center" align="center">
 						<template #default="scope">
-							<span v-if="scope.row.type === 1">积分换金币</span>
-							<span v-else-if="scope.row.type === 2">积分提现</span>
+							<span v-if="scope.row.type === 1">钻石换金币</span>
+							<span v-else-if="scope.row.type === 2">钻石提现</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>
