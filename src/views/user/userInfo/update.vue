@@ -91,6 +91,12 @@
 			<el-form-item prop="hotNumber" label="热度值">
 				<el-input-number v-model="dataForm.hotNumber" placeholder="请输入热度值" type="number" :min="0" style="width: 200px"></el-input-number>
 			</el-form-item>
+			<el-form-item prop="blueV" label="蓝V">
+				<el-radio-group v-model="dataForm.blueV">
+					<el-radio :value="1" size="large">加v</el-radio>
+					<el-radio :value="0" size="large">不加</el-radio>
+				</el-radio-group>
+			</el-form-item>
 			<el-form-item prop="hotEndTime" label="热度结束时间">
 				<el-date-picker
 					v-model="dataForm.hotEndTime"
@@ -147,7 +153,8 @@ const dataForm = reactive({
 	temperamentLabel: ref<any[]>([]),
 	gender: '',
 	hotNumber: '',
-	hotEndTime: ''
+	hotEndTime: '',
+	blueV: ''
 })
 
 const videoDialogRef = ref()
@@ -174,6 +181,7 @@ const init = (row: any) => {
 	dataForm.avatar = row.avatar
 	dataForm.hotNumber = row.hotNumber
 	dataForm.hotEndTime = row.hotEndTime
+	dataForm.blueV = row.blueV
 	getUserTemperamentLabel(row.temperamentLabel)
 	coverAvatarFile.value.push({ url: [row.avatar] })
 	getUserPhoto(row.userId)
