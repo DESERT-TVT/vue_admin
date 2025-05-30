@@ -66,9 +66,10 @@
 					<el-table-column prop="status" label="状态" header-align="center" align="center">
 						<template #default="scope">
 							<el-tag v-if="scope.row.status === 0" type="warning">审核中</el-tag>
-							<el-tag v-else-if="scope.row.status === 1" type="success">通过</el-tag>
+							<el-tag v-else-if="scope.row.status === 1" type="success">审核通过（提现中）</el-tag>
 							<el-tag v-else-if="scope.row.status === -1" type="danger">拒绝</el-tag>
-
+							<el-tag v-else-if="scope.row.status === 2" type="success">提现成功</el-tag>
+							<el-tag v-else-if="scope.row.status === 3" type="danger">提现失败</el-tag>
 							<!--							<span v-if="scope.row.status === 0">审核中</span>-->
 							<!--							<span v-else-if="scope.row.status === 1">通过</span>-->
 							<!--							<span v-else-if="scope.row.status === -1">拒绝</span>-->
