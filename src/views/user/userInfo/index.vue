@@ -290,7 +290,7 @@
 					<!--							/>-->
 					<!--						</template>-->
 					<!--					</el-table-column>-->
-					<el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
+					<el-table-column label="操作" fixed="right" header-align="center" align="center" width="160">
 						<template #default="scope">
 							<el-button
 								v-if="userStore.user.superAdmin == 1 || scope.row.userId == userStore.user.id"
@@ -305,6 +305,8 @@
 							<el-button v-auth="'user:update'" link type="primary" @click="updateIdentificationHandle(scope.row)"> 添加认证 </el-button>
 							<br />
 							<el-button v-auth="'user:update'" link type="primary" @click="updateRefHandle(scope.row)"> 修改用户信息 </el-button>
+							<br />
+							<el-button v-auth="'sys:user:video:clear'" link type="primary" @click="onClearVideo(scope.row)">清除用户动态和媒体</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -365,7 +367,7 @@
 import { useCrud } from '@/hooks'
 import { reactive, ref } from 'vue'
 import { IHooksOptions } from '@/hooks/interface'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 import { useAppStore } from '@/store/modules/app'
 import {
@@ -376,7 +378,8 @@ import {
 	getIntegralDetailsApi,
 	getRechargeCountApi,
 	getWithdrawCountApi,
-	getUserInviteCountApi
+	getUserInviteCountApi,
+	fetchClearVideo
 } from '@/api/user/userManage'
 import { InfoFilled } from '@element-plus/icons-vue'
 import { updatePwdSubmitApi } from '@/api/sys/user'
@@ -415,7 +418,20 @@ const updateRef = ref()
 const updateRefHandle = (row: any) => {
 	updateRef.value.init(row)
 }
-
+const onClearVideo = (row: any) => {
+	ElMessageBox.confirm(`确定清除用户${row.userId}的动态和媒体吗？`, '提示', {
+		confirmButtonText: '确定',
+		cancelButtonText: '取消',
+		type: 'warning'
+	}).then(() => {
+		fetchClearVideo(row.id).then(res => {
+			if (res) {
+				ElMessage.success('清除成功')
+				getDataList()
+			}
+		})
+	})
+}
 const updatePwdRef = ref()
 const updatePwdVisible = ref(false)
 const updatePwdForm = reactive({
