@@ -129,7 +129,8 @@ const state: IHooksOptions = reactive({
 		start: dayjs().format('YYYY-MM-DD'),
 		end: dayjs().format('YYYY-MM-DD'),
 		userId: '',
-		nickName: ''
+		nickName: '',
+		userType: 1
 	}
 })
 const olinePageRef = ref<InstanceType<typeof OlinePage>>()

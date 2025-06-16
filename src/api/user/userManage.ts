@@ -59,3 +59,10 @@ export const getUserTemperamentLabelApi = (dataForm: any) => {
 export const updateUserInfoApi = (dataForm: any) => {
 	return service.post('/admin/sys/user/update', dataForm)
 }
+export const fetchClearVideo = (userId: number) => {
+	return service.get('/admin/sys/user/clear/video', {
+		params: {
+			userId
+		}
+	})
+}
