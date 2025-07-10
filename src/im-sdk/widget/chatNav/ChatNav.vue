@@ -25,7 +25,6 @@
 
 <script lang="ts" setup>
 import BackImg from '@/im-sdk/assets/backImg.svg';
-import { $t } from '@/locales';
 import { PopoverAction } from 'vant';
 import moreUrl from '@/im-sdk/assets/More.svg';
 import remarkImg from '@/im-sdk/assets/remark.svg';
@@ -44,9 +43,7 @@ const showMore = ref(false);
 
 // 弹出层
 const actions = ref([
-  { type: 'block', text: $t('common.blackOut'), icon: blockImg },
-  { type: 'remark', text: $t('common.setRemarks'), icon: remarkImg },
-  { type: 'report', text: $t('common.AnonymousReport'), icon: reportImg },
+
 ]);
 const handleSelect = (action: PopoverAction) => {
   console.log(action.type);

@@ -1,4 +1,3 @@
-import { getChargeInfo } from '@/api/IMchat/Charge';
 import callDataCenter from '@/im-sdk/callDataCenter';
 import config from '@/im-sdk/config';
 import {
@@ -9,11 +8,10 @@ import {
 import ImDataCenter from '@/im-sdk/ImDataCenter';
 import { CallState, ImUserData, MessageTempData } from '@/im-sdk/types';
 import { generateBrief } from '@/im-sdk/utils/message';
-import { $t } from '@/locales';
 import router, { preloadPage } from '@/router';
 import message from '@/utils/message';
 import imAdapter from './Adapter';
-import dataCenter from '@/dataCenter';
+// import dataCenter from '@/dataCenter';
 import Bubble from '@/im-sdk/widget/callBubble/Bubble.vue';
 import AudioView from '@/im-sdk/widget/callBubble/AudioView.vue';
 import VideoView from '@/im-sdk/widget/callBubble/VideoView.vue';
@@ -62,40 +60,20 @@ export function initIm() {
     // 当前登录用户 ID
     const fromUserId = ImDataCenter.data.mine?.userId;
     if (!fromUserId) {
-      message.error($t('common.userInfoMissing'));
+      message.error('用户信息缺失');
       return false;
     }
 
     // 不能自己给自己发送消息
     if (toUserId === fromUserId) {
-      message.error($t('common.oneByOne'));
+      message.error('不能给自己发消息');
       return false;
     }
 
     // 获取消息简要内容
     const brief = generateBrief(messageTemp.message).brief;
-    if (dataCenter.user.value?.online) return true;
-    try {
-      const res = await getChargeInfo({
-        fromUser: Number(fromUserId),
-        toUser: Number(toUserId),
-        chatContent: brief,
-      });
-
-      if (res?.data?.code === 0) {
-        messageTemp.message.ext = Object.assign(
-          {},
-          messageTemp.message.ext,
-          res.data.data
-        );
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      message.error($t('common.failSend'));
-      return false;
-    }
+    // if (dataCenter.user.value?.online) return true;
+    return true;
   };
 
   // 获取用户信息
@@ -107,10 +85,6 @@ export function initIm() {
       },
     });
   };
-
-  (Bubble as typeof Bubble & Enhance).getUserDetail = getUserDetail;
-  (AudioView as typeof AudioView & Enhance).getUserDetail = getUserDetail;
-  (VideoView as typeof VideoView & Enhance).getUserDetail = getUserDetail;
 
   watch(
     () => callDataCenter.data.state,
@@ -133,8 +107,8 @@ export function initIm() {
 }
 
 async function getUserDetail(user?: ImUserData) {
-  if (!user) {
-    return dataCenter.user.value;
-  }
-  return userManager.query(user.userId.toString());
+  // if (!user) {
+  //   return dataCenter.user.value;
+  // }
+  // return userManager.query(user.userId.toString());
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="timestamp">
     <div class="deductions" v-if="message.ext?.goldCoins && self_message && !system">
-      -{{ message.ext?.goldCoins }}{{ $t('coin.glodCoin') }}
+      -{{ message.ext?.goldCoins }}{{ '金币' }}
     </div>
     <div class="text">
       {{ TimeHoursMinters(message.time) }}

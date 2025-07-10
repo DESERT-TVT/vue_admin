@@ -12,7 +12,7 @@ export const MessageItemRender = ChatItem;
 
 export const ChatMenus: Component<{ id: string }>[] = [
   SendPrivateImg,
-  ChatCallVoice,
-  ChatCallVideo,
+  // ChatCallVoice,
+  // ChatCallVideo,
   // SendPrivatePayImg,
 ];

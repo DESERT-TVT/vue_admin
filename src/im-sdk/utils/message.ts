@@ -1,4 +1,3 @@
-import { $t } from '@/locales';
 import { MessageBrief, MessageData } from '../types';
 
 export function generateBrief(message: MessageData) {
@@ -6,19 +5,19 @@ export function generateBrief(message: MessageData) {
   if (message.type === 'txt') {
     brief = message.msg;
   } else if (message.type === 'img') {
-    brief = $t('message.imgBrief');
+    brief = '图片';
   } else if (message.type === 'audio') {
-    brief = $t('message.audioBrief');
+    brief = '语音';
   } else if (message.type === 'video') {
-    brief = $t('message.videoBrief');
+    brief = '视频';
   } else if (message.type === 'call') {
     if (message.callType === 'audio') {
-      brief = $t('call.audioCall');
+      brief = '语音';
     } else {
-      brief = $t('call.videoCall');
+      brief = '视频';
     }
   } else {
-    brief = $t('message.otherBrief');
+    brief = '其他';
   }
   const data: MessageBrief = {
     id: message.id,

@@ -8,10 +8,10 @@
       >
         <component :is="config.conversationRender" :data="item" />
       </van-cell>
-      <!-- 暂无数据 -->
+      <!--  -->
       <div class="default" v-if="dataList?.length == 0">
         <img :src="noDataImg" alt="" />
-        <span>{{ $t('home.noData') }}</span>
+        <span>{{ '暂无数据' }}</span>
       </div>
     </van-list>
   </div>
@@ -19,7 +19,6 @@
 
 <script lang="ts" setup>
 import noDataImg from '@/im-sdk/assets/noData.svg';
-import { $t } from '@/locales';
 import { onMounted } from 'vue';
 import config from '../config';
 import ImDataCenter from '../ImDataCenter';

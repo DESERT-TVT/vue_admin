@@ -45,7 +45,6 @@ import { CallContent, ImUserData, MessageData } from '@/im-sdk/types';
 import ImDataCenter from '@/im-sdk/ImDataCenter';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
-import { $t } from '@/locales';
 import { formatDuration } from '@/im-sdk/utils/timestamp';
 import callDataCenter from '@/im-sdk/callDataCenter';
 import callEvent from '@/third/huanxin/CallEvent';
@@ -74,21 +73,21 @@ const messageState = computed(() => {
   switch (data.result) {
     case 'calling':
       return {
-        text: $t('call.onCall'),
+        text: '正在呼叫中...',
         image: data.callType == 'video' ? ConnectedVideoImg : ConnectedCallImg,
         color: '#222222',
         onClick: () => {},
       };
     case 'ring':
       return {
-        text: $t('call.inviteYouToCall'),
+        text: '对方正在邀请你通话...',
         image: data.callType == 'video' ? ConnectedVideoImg : ConnectedCallImg,
         color: '#222222',
         onClick: () => {},
       };
     case 'cancel':
       return {
-        text: $t('call.cancel'),
+        text: '已取消',
         image:
           data.callType == 'video' ? NotConnectedVideoImg : NotConnectedCallImg,
         color: '#FF3B67',
@@ -97,7 +96,7 @@ const messageState = computed(() => {
       };
     case 'refuse':
       return {
-        text: isSelf ? $t('call.refuse') : $t('call.myrefuse'),
+        text: isSelf ? '对方已拒绝' : '已拒绝',
         image:
           data.callType == 'video' ? NotConnectedVideoImg : NotConnectedCallImg,
         color: '#FF3B67',
@@ -106,7 +105,7 @@ const messageState = computed(() => {
       };
     case 'busy':
       return {
-        text: $t('call.busy'),
+        text: '对方正在通话中',
         image:
           data.callType == 'video' ? NotConnectedVideoImg : NotConnectedCallImg,
         color: '#FF3B67',
@@ -115,7 +114,7 @@ const messageState = computed(() => {
       };
     case 'wait':
       return {
-        text: $t('call.wait'),
+        text: '等待对方接听',
         image: data.callType == 'video' ? ConnectedVideoImg : ConnectedCallImg,
         color: '#222222',
         onClick: () => {},
@@ -123,7 +122,7 @@ const messageState = computed(() => {
     case 'success':
       return {
         text:
-          $t('call.times') +
+          '通话时长' +
           (data.end ? formatDuration((data.end ?? 0) - (data.start ?? 0)) : ''),
         image: data.callType == 'video' ? ConnectedVideoImg : ConnectedCallImg,
         color: '#222222',
@@ -132,7 +131,7 @@ const messageState = computed(() => {
     case 'finish':
       return {
         text:
-          $t('call.times') +
+          '通话时长' +
           (data.end ? formatDuration((data.end ?? 0) - (data.start ?? 0)) : ''),
         image: data.callType == 'video' ? ConnectedVideoImg : ConnectedCallImg,
         color: '#222222',
@@ -141,7 +140,7 @@ const messageState = computed(() => {
     case 'abort':
       return {
         text:
-          $t('call.abort') +
+          '通话异常中止' +
           (data.end ? formatDuration((data.end ?? 0) - (data.start ?? 0)) : ''),
         image:
           data.callType == 'video' ? NotConnectedVideoImg : NotConnectedCallImg,
@@ -151,7 +150,7 @@ const messageState = computed(() => {
       };
     case 'failed':
       return {
-        text: $t('call.failed'),
+        text: '通话失败',
         image:
           data.callType == 'video' ? NotConnectedVideoImg : NotConnectedCallImg,
         color: '#FF3B67',

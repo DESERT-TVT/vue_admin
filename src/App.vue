@@ -12,7 +12,8 @@ import { useI18n } from 'vue-i18n'
 import { messages } from '@/i18n'
 import { handleThemeStyle } from '@/utils/theme'
 import { useAppStore } from '@/store/modules/app'
-
+import { initIm } from "./third/huanxin";
+initIm()
 const appStore = useAppStore()
 const { t } = useI18n()
 const locale = computed(() => messages[appStore.language].el)

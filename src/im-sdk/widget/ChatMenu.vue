@@ -19,7 +19,7 @@
           v-model.trim="peerMessage"
           ref="textarea"
           class="input_text"
-          :placeholder="$t('common.sendMessage')"
+          :placeholder="'发送消息...'"
           @input="resizeTextarea"
           @focus="showTool = false"
           maxlength="1000"
@@ -73,7 +73,6 @@ import expandIcon from '@/im-sdk/assets/toolbar.svg';
 import audioBtnIcon from '@/im-sdk/assets/voice.svg';
 import EmojiMap from '@/im-sdk/widget/menuModule/EmojiMap.vue';
 import VoiceBtn from '@/im-sdk/widget/menuModule/VoiceBtn.vue';
-import { $t } from '@/locales';
 import { onMounted, ref } from 'vue';
 import ImDataCenter from '../ImDataCenter';
 import config from '../config';

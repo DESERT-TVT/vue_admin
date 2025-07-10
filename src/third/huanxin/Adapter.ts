@@ -24,7 +24,6 @@ import {
 } from './utils';
 import { uuid } from './api';
 import CallRoom from './callRoom';
-import user from '@/dataCenter/user';
 export class Adapter implements BaseAdapter, CallAdapter {
   imConn!: EasemobChat.Connection;
 

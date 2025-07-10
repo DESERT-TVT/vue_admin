@@ -17,7 +17,7 @@
         <div class="status_box">
           <div class="left" ref="cancelZone">
             <div class="status_text" :class="{ active: innerData.state === 0 }">
-              {{ $t("imSdk.ReleaseCancel") }}
+              {{ '松手 取消' }}
             </div>
             <img
               :src="innerData.state === 0 ? cancelImg : cancelBtnImg"
@@ -25,11 +25,11 @@
             />
           </div>
           <div class="status_text" :class="{ active: innerData.state === 1 }">
-            {{ $t("imSdk.ReleaseSend") }}
+            {{ '松手 发送' }}
           </div>
           <div class="right" ref="sendZone">
             <div class="status_text" :class="{ active: innerData.state === 2 }">
-              {{ $t("imSdk.ReleaseSend") }}
+              {{ '松手 发送' }}
             </div>
             <img
               :src="innerData.state === 2 ? sendVBtnImg : sendVImg"
@@ -63,7 +63,6 @@ import cancelBtnImg from "@/im-sdk/assets/cancelBtn.svg";
 import sendVImg from "@/im-sdk/assets/sendV.svg";
 import sendVBtnImg from "@/im-sdk/assets/sendVBtn.svg";
 import ImDataCenter from "@/im-sdk/ImDataCenter";
-import { $t } from "@/locales";
 import message from "@/utils/message";
 import { nextTick, reactive, ref } from "vue";
 import { VioceRecorder } from "./Voice/VioceRecorder";
@@ -74,7 +73,7 @@ const props = defineProps<{ id: string }>();
 const innerData = reactive({
   state: 1,
   isRecording: false,
-  text: $t("common.HoldToSpeak"),
+  text: '按住说话',
 });
 // 更新区域边界信息
 // 区域边界缓存
@@ -99,7 +98,7 @@ let recorder: VioceRecorder | undefined;
 const maxDuration = 60 * 1000;
 const startRecording = async (e: TouchEvent) => {
   innerData.isRecording = true;
-  innerData.text = $t("common.ReleaseToEnd");
+  innerData.text =  '松开结束';
   nextTick(() => {
     // 初始化区域边界
     updateZoneRects();
@@ -108,12 +107,12 @@ const startRecording = async (e: TouchEvent) => {
   recorder
     .start((data) => {
       if (data.duration < 1) {
-        message.error($t("common.recordTooShort"));
+        message.error('录音时间较短');
         recorder?.abort();
         return;
       }
       if (!data.blob) {
-        message.error($t("common.recordError"));
+        message.error('录音失败，请检查相关权限和设备');
         return;
       }
       const controller = ImDataCenter.getConversation(props.id, true);
@@ -163,7 +162,7 @@ const endRecording = async () => {
   recorder = undefined;
   // 恢复初始状态
   setTimeout(() => {
-    innerData.text = $t("common.HoldToSpeak");
+    innerData.text = '按住说话';
   }, 500);
 };
 </script>
