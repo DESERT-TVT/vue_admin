@@ -26,3 +26,11 @@ export const useMenuSubmitApi = (dataForm: any) => {
 		return service.post('/sys/menu', dataForm)
 	}
 }
+
+export const useMenuDeleteApi = (id: Number) => {
+	return service.delete('/sys/menu/' + id)
+}
+
+export const useMenuCustodyInfo = (adminId:string) => {
+	return service.get(`/admin/sys/user/custody/info?adminId=${adminId}`)
+}
