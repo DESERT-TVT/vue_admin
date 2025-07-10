@@ -16,7 +16,7 @@ import { ref } from 'vue';
 
 import picMenuImg from '@/im-sdk/assets/picMenu.svg';
 import ImDataCenter from '@/im-sdk/ImDataCenter';
-import message from '@/utils/message';
+import {messageBtn} from '@/utils/message';
 
 const props = defineProps<{ id: string }>();
 
@@ -52,10 +52,10 @@ const sendMedia = async (e: Event) => {
     } else if (videoRegex.test(fileType)) {
       await controller.sendVideoMessage(file);
     } else {
-      message.error('不支持的文件类型');
+      messageBtn('不支持的文件类型');
     }
   } catch (err) {
-    message.error('发送失败');
+    messageBtn('发送失败');
   } finally {
     // 清空 input，避免重复上传同一个文件时不触发 change
     fileInput.value!.value = '';

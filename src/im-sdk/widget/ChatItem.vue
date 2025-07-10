@@ -15,7 +15,7 @@ import TextMessage from './messages/TextMessage.vue';
 import UnknownMessage from './messages/UnknownMessage.vue';
 import VideoMessage from './messages/VideoMessage.vue';
 import VoiceMessage from './messages/VoiceMessage.vue';
-import CallMessage from './messages/CallMessage.vue';
+// import CallMessage from './messages/CallMessage.vue';
 
 const { data } = defineProps<{
   data: MessageData;
@@ -30,7 +30,7 @@ const componentMap: Record<
   video: VideoMessage,
   audio: VoiceMessage,
   location: LocationMessage,
-  call: CallMessage,
+  // call: CallMessage,
 };
 const MessageComponent = componentMap[data?.type] || UnknownMessage;
 </script>

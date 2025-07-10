@@ -1,5 +1,4 @@
-import { $t } from '@/locales';
-import message from '@/utils/message';
+import {messageBtn} from '@/utils/message';
 import BenzAMRRecorder from 'benz-amr-recorder';
 
 interface VoiceRecord {
@@ -44,7 +43,7 @@ export class VioceRecorder {
         return true;
       })
       .catch((e) => {
-        message.error($t('common.recordError'));
+        messageBtn('录制失败');
         return false;
       });
   }
@@ -76,7 +75,7 @@ export class VioceRecorder {
         duration: this.recorder.getDuration(),
       });
     } catch (error) {
-      message.error($t('common.recordErrornot'));
+      messageBtn('录制失败');
     }
   }
 
@@ -84,7 +83,7 @@ export class VioceRecorder {
     const dt = Date.now() - this.time;
     if (dt >= this.maxDuration) {
       this.recorder.finishRecord();
-      message.error('已达到最大录制时间');
+      messageBtn('已达到最大录制时间');
       clearInterval(this.timer);
       this.timer = undefined;
     }

@@ -63,7 +63,7 @@ import cancelBtnImg from "@/im-sdk/assets/cancelBtn.svg";
 import sendVImg from "@/im-sdk/assets/sendV.svg";
 import sendVBtnImg from "@/im-sdk/assets/sendVBtn.svg";
 import ImDataCenter from "@/im-sdk/ImDataCenter";
-import message from "@/utils/message";
+import {messageBtn} from "@/utils/message";
 import { nextTick, reactive, ref } from "vue";
 import { VioceRecorder } from "./Voice/VioceRecorder";
 /**这里的id是im的userid */
@@ -107,12 +107,12 @@ const startRecording = async (e: TouchEvent) => {
   recorder
     .start((data) => {
       if (data.duration < 1) {
-        message.error('录音时间较短');
+        messageBtn('录音时间较短');
         recorder?.abort();
         return;
       }
       if (!data.blob) {
-        message.error('录音失败，请检查相关权限和设备');
+        messageBtn('录音失败，请检查相关权限和设备');
         return;
       }
       const controller = ImDataCenter.getConversation(props.id, true);
