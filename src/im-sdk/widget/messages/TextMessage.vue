@@ -13,11 +13,11 @@
             isSelf
               ? {
                   backgroundColor: '#F0F0F0',
-                  borderRadius: '.12rem .04rem .12rem .12rem',
+                  borderRadius: '12px 4px 12px 12px',
                 }
               : {
                   backgroundColor: '#FFF',
-                  borderRadius: '.04rem .12rem .12rem .12rem',
+                  borderRadius: '4px 12px 12px 12px',
                 }
           "
         >
@@ -62,10 +62,10 @@ const onViewUser = (user: ImUserData) => {
 .textMessage {
   display: flex;
   align-items: start;
-  gap: 0.12rem;
+  gap: 12px;
   .avatar {
-    width: 0.48rem;
-    height: 0.48rem;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     overflow: hidden;
   }
@@ -75,12 +75,12 @@ const onViewUser = (user: ImUserData) => {
     .content_box {
       display: flex;
       align-items: end;
-      gap: 0.08rem;
-      max-width: 2.32rem;
+      gap: 8px;
+      max-width: 232px;
       word-break: break-all;
-      .content {
-        padding: 0.08rem 0.12rem;
-        border-radius: 0.12rem 0.04rem 0.12rem 0.12rem;
+   ß   .content {
+        padding: 8px 12px;
+        border-radius: 12px 4px 12px 12px;
       }
     }
   }

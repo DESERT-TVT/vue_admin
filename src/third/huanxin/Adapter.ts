@@ -10,7 +10,6 @@ import {
   MessageTempData,
 } from '@/im-sdk/types';
 import { generateBrief } from '@/im-sdk/utils/message';
-// import userManager from '@/manager/user';
 import {
   default as easemobChat,
   EasemobChat,
@@ -23,6 +22,7 @@ import {
   messageConvert,
 } from './utils';
 import { uuid } from './api';
+import userManager from '@/manager/user';
 // import CallRoom from './callRoom';
 export class Adapter implements BaseAdapter, CallAdapter {
   imConn!: EasemobChat.Connection;
@@ -80,14 +80,14 @@ export class Adapter implements BaseAdapter, CallAdapter {
     this.imConn.addEventHandler('eventName', listener);
   }
   fetchUser(imId: string): Promise<ImUserData> {
-    // return userManager.queryByNameDelay(imId).then((user) => {
-    //   return {
-    //     imId,
-    //     userId: user.userId,
-    //     avatar: user.avatar,
-    //     name: user.nickname,
-    //   };
-    // });
+    return userManager.queryByNameDelay(imId).then((user) => {
+      return {
+        imId,
+        userId: user.userId,
+        avatar: user.avatar,
+        name: user.nickname,
+      };
+    });
   }
   private loginPromise?: Promise<boolean>;
   async login(userId: string, token: string) {

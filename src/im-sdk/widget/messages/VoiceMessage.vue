@@ -64,10 +64,10 @@ onBeforeUnmount(() => {
 .voiceMessage {
   display: flex;
   align-items: start;
-  gap: 0.12rem;
+  gap: 12px;
   .avatar {
-    width: 0.48rem;
-    height: 0.48rem;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     overflow: hidden;
   }
@@ -77,15 +77,15 @@ onBeforeUnmount(() => {
     .content_box {
       display: flex;
       align-items: end;
-      gap: 0.08rem;
+      gap: 8px;
       .content {
-        padding: 0.08rem 0.12rem;
-        border-radius: 0.12rem 0.04rem 0.12rem 0.12rem;
+        padding: 8px 12px;
+        border-radius: 12px 4px 12px 12px;
         display: flex;
         align-items: center;
-        gap: 0.1rem;
+        gap: 10px;
         font-weight: 400;
-        font-size: 0.12rem;
+        font-size: 12px;
         color: #b1b1b1;
       }
     }

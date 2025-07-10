@@ -27,3 +27,8 @@ export const useThirdLoginApi = (data: any) => {
 export const useLogoutApi = () => {
 	return service.post('/sys/auth/logout')
 }
+
+// 获取三方配置
+export function getOtherSettingAPI() {
+	return service.get('/server/auth/open/config')
+}

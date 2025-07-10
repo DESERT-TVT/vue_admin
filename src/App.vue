@@ -12,7 +12,10 @@ import { useI18n } from 'vue-i18n'
 import { messages } from '@/i18n'
 import { handleThemeStyle } from '@/utils/theme'
 import { useAppStore } from '@/store/modules/app'
-import { initIm } from "./third/huanxin";
+import { initIm } from './third/huanxin'
+import { getOtherSettingAPI } from './api/auth'
+import imAdapter from './third/huanxin/Adapter'
+import { useImStore } from './store/modules/im'
 initIm()
 const appStore = useAppStore()
 const { t } = useI18n()
@@ -22,10 +25,18 @@ const size = computed(() => appStore.componentSize)
 // 设置标题
 useTitle(t('app.title'))
 
-onMounted(() => {
+onMounted(async () => {
 	nextTick(() => {
 		// 初始化主题样式
 		handleThemeStyle(appStore.theme)
+	})
+	//获取三方配置
+	getOtherSettingAPI().then(res => {
+		if (res && res.code === 0) {
+			useImStore().setAppKey(res.data.imAppKey as string)
+		} else {
+			console.error('获取三方配置信息失败')
+		}
 	})
 })
 </script>

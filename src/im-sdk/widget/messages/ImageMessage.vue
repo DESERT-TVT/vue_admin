@@ -79,10 +79,10 @@ const imgHeight = (width: number, height: number) => {
 .imageMessage {
   display: flex;
   align-items: start;
-  gap: 0.12rem;
+  gap: 12px;
   .avatar {
-    width: 0.48rem;
-    height: 0.48rem;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     overflow: hidden;
   }
@@ -92,12 +92,12 @@ const imgHeight = (width: number, height: number) => {
     .content_box {
       display: flex;
       align-items: end;
-      gap: 0.08rem;
+      gap: 8px;
       .content {
-        border-radius: 0.12rem;
+        border-radius: 12px;
         overflow: hidden;
         .imageContent {
-          max-width: 1.48rem;
+          max-width: 148px;
         }
       }
     }

@@ -1,9 +1,9 @@
 <template>
   <div class="last_style">
-    <img :src="BackImg" class="left" @click="$router.go(-1)" />
+    <!-- <img :src="BackImg" class="left" @click="$router.go(-1)" /> -->
     <div class="inform_box">
-      <UserHead class="box_avatar" :img="conversation.user?.avatar" />
-      <div class="nickname">{{ conversation.user?.name }}</div>
+      <!-- <UserHead class="box_avatar" :img="conversation.user?.avatar" />
+      <div class="nickname">{{ conversation.user?.name }}</div> -->
     </div>
     <!-- <div class="right">
       <van-popover
@@ -71,35 +71,35 @@ const memoName = ref('');
 <style lang="scss" scoped>
 .last_style {
   width: 100%;
-  height: 0.68rem;
-  padding: 0 0.16rem;
+  height: 68px;
+  padding: 0 16px;
   background-color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.04rem;
+  gap: 4px;
   .left {
-    width: 0.24rem;
-    height: 0.24rem;
+    width: 24px;
+    height: 24px;
   }
   .inform_box {
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 0.08rem;
+    gap: 8px;
     .box_avatar {
-      width: 0.34rem;
-      height: 0.34rem;
+      width: 34px;
+      height: 34px;
     }
     .nickname {
       font-weight: 600;
-      font-size: 0.16rem;
+      font-size: 16px;
       color: #000000;
     }
   }
   .right {
-    width: 0.2rem;
-    height: 0.2rem;
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

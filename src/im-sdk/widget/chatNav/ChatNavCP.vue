@@ -92,16 +92,16 @@ const memoName = ref('');
 <style lang="scss" scoped>
 .last_style {
   width: 100%;
-  height: 0.68rem;
-  padding: 0 0.16rem;
+  height: 68px;
+  padding: 0 16px;
   background-color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.04rem;
+  gap: 4px;
   .left {
-    width: 0.24rem;
-    height: 0.24rem;
+    width: 24px;
+    height: 24px;
   }
   .inform_box {
     flex: 1;
@@ -110,16 +110,16 @@ const memoName = ref('');
     justify-content: center;
     .progress_container {
       position: relative;
-      width: 0.34rem;
-      height: 0.34rem;
+      width: 34px;
+      height: 34px;
       .hollow,
       .full {
         position: absolute;
-        width: 0.34rem; /* 图片实际尺寸 */
-        height: 0.34rem;
+        width: 34px; /* 图片实际尺寸 */
+        height: 34px;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%) scale(1.3); /* 放大1.3倍（≈0.44rem） */
+        transform: translate(-50%, -50%) scale(1.3); /* 放大1.3倍（≈44px） */
         transform-origin: center; /* 从中心缩放 */
       }
 
@@ -132,35 +132,35 @@ const memoName = ref('');
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 0.1rem;
+        font-size: 10px;
         color: #fff;
       }
     }
     .feeling {
-      width: 0.44rem;
-      height: 0.44rem;
+      width: 44px;
+      height: 44px;
       background-color: #fff0f7;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       .role {
-        width: 0.34rem;
-        height: 0.34rem;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         background: linear-gradient(
           90deg,
           rgba(237, 155, 194, 1),
           rgba(255, 106, 177, 1)
         );
-        padding: 2px; /* 模拟边框厚度 */
+        padding: .02rem; /* 模拟边框厚度 */
         box-sizing: border-box;
       }
     }
   }
   .right {
-    width: 0.2rem;
-    height: 0.2rem;
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

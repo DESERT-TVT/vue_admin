@@ -8,15 +8,15 @@ import { messageBtn } from '@/utils/message'
 import imAdapter from './Adapter'
 // import dataCenter from '@/dataCenter';
 
-// import userManager from '@/manager/user';
+import userManager from '@/manager/user';
 import { watch } from 'vue'
 import { router } from '@/router'
 
 /**支持从系统用户id跳转到聊天 */
 export function chatWithUserId(userId: string) {
-	// userManager.query(userId).then((user) => {
-	//   config.onChatWith?.(user.imUserId);
-	// });
+	userManager.query(userId).then((user) => {
+	  config.onChatWith?.(user.imUserId);
+	});
 }
 export function initIm() {
 	ImDataCenter.setAdapter(imAdapter)
@@ -70,12 +70,6 @@ export function initIm() {
 
 	// 获取用户信息
 	config.onViewUser = async (user?: ImUserData) => {
-		router.push({
-			path: '/mineinfo',
-			query: {
-				userId: user?.userId
-			}
-		})
 	}
 }
 

@@ -173,50 +173,50 @@ const endRecording = async () => {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 4.68rem;
+  height: 468px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 60%);
   display: flex;
   flex-direction: column;
   justify-content: end;
   align-items: center;
-  padding: .16rem 0.14rem;
+  padding: 16px 14px;
   .status_box {
     display: flex;
-    gap: 0.27rem;
+    gap: 27px;
     align-items: start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 50px;
     .status_text {
       font-weight: 500;
-      font-size: 0.14rem;
+      font-size: 14px;
       color: transparent;
-      line-height: 0.22rem;
-      margin-bottom: 0.12rem;
+      line-height: 22px;
+      margin-bottom: 12px;
     }
     .active {
       color: #666666;
     }
     .imgBtn {
-      width: 0.68rem;
-      height: 0.68rem;
+      width: 68px;
+      height: 68px;
     }
   }
   .voice_box {
     width: 100%;
-    height: 0.4rem;
+    height: 40px;
     background: #4c72f6;
-    border-radius: 0.12rem;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     .audio_bars {
       display: flex;
       align-items: center;
-      gap: 2px;
-      height: 0.22rem;  
-      padding: 0 .02rem;
+      gap: .02rem;
+      height: 22px;  
+      padding: 0 2px;
       .bar {
-        width: 2px;
+        width: .02rem;
         height: 0;
-        border-radius: 0.05rem;
+        border-radius: 5px;
         background-color: #ffffff;
         animation: bounce 2.5s infinite ease-in-out;
       }
@@ -224,13 +224,13 @@ const endRecording = async () => {
     @keyframes bounce {
       0%,
       100% {
-        height: 0.06rem;
-        border-radius: 0.05rem;
+        height: 6px;
+        border-radius: 5px;
         opacity: 1;
       }
       50% {
-        height: 0.22rem;
-        border-radius: 0.05rem;
+        height: 22px;
+        border-radius: 5px;
         opacity: 1;
       }
     }

@@ -42,10 +42,10 @@ video {
 .watermark-container::after {
   content: '';
   position: absolute;
-  bottom: .12rem;
-  right: .12rem;
-  width: .8rem; /* 自行调整大小 */
-  height: .24rem;
+  bottom: 12px;
+  right: 12px;
+  width: 80px; /* 自行调整大小 */
+  height: 24px;
   background-image: url('@/assets/brand/watermark.svg'); /* 水印图片地址 */
   background-size: contain;
   background-repeat: no-repeat;

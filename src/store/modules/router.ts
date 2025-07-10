@@ -4,7 +4,7 @@ import { constantMenu, dashboardMenu, generateRoutes } from '@/router'
 import { RouteRecordRaw } from 'vue-router'
 import constant from '@/utils/constant'
 import { useUserStore } from './user'
-import { ro } from 'element-plus/es/locale'
+import { de, ro } from 'element-plus/es/locale'
 import { generateMenu } from '@/utils/generateMenu'
 export const useRouterStore = defineStore('routerStore', {
 	state: () => ({
@@ -16,8 +16,7 @@ export const useRouterStore = defineStore('routerStore', {
 		async getMenuRoutes() {
 			const { data } = await useMenuNavApi()
 			const routes = generateRoutes(data)
-			console.log('routes', routes);
-			
+
 			// 控制台菜单
 			const dashboardRoutes = generateRoutes(dashboardMenu)
 			this.menuRoutes.push(...dashboardRoutes)

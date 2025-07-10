@@ -95,7 +95,7 @@ const resizeTextarea = () => {
 
   const maxHeight = 96; // 最大高度，单位是 px（你可以用 rem 转换后写死样式）
 
-  el.style.height = '0.24rem'; // 先重置高度以便获取准确 scrollHeight
+  el.style.height = '24px'; // 先重置高度以便获取准确 scrollHeight
   el.style.overflowY = 'hidden'; // 初始先隐藏滚动条
 
   const scrollHeight = el.scrollHeight;
@@ -112,7 +112,7 @@ const resizeTextarea = () => {
 const resetHeight = () => {
   const el = textarea.value;
   if (!el) return;
-  el.style.height = '.24rem';
+  el.style.height = '24px';
   el.style.overflowY = 'hidden';
 };
 
@@ -170,80 +170,80 @@ onMounted(() => {
 .bottom_box {
   width: 100%;
   background-color: #fff;
-  box-shadow: 0px -1px 2px 0px #d6d6d6;
+  box-shadow: 0rem -0.01rem .02rem 0rem #d6d6d6;
   .bottom_top {
-    padding: 0.12rem 0.12rem 0.16rem;
+    padding: 12px 12px 16px;
     display: flex;
     justify-content: space-between;
     align-items: end;
-    gap: 0.1rem;
+    gap: 10px;
     .gift_icon {
-      width: 0.26rem;
-      height: 0.26rem;
-      margin-bottom: 0.07rem;
+      width: 26px;
+      height: 26px;
+      margin-bottom: 7px;
     }
     .input_box {
       flex: 1;
       background: #f5f5f5;
-      border-radius: 0.12rem;
+      border-radius: 12px;
       display: flex;
       align-items: end;
-      padding: 0 0.06rem;
-      min-height: 0.4rem;
-      gap: 0.12rem;
+      padding: 0 6px;
+      min-height: 40px;
+      gap: 12px;
       .input_text {
         flex: 1;
         resize: none;
         background-color: transparent;
         font-weight: 400;
-        font-size: 0.16rem;
+        font-size: 16px;
         color: #222222;
-        line-height: 0.22rem;
-        margin: 0.08rem 0;
+        line-height: 22px;
+        margin: 8px 0;
       }
       .voiceBtn {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 0.08rem;
+        margin-bottom: 8px;
       }
       .other_box {
         display: flex;
         align-items: center;
-        height: 0.4rem;
-        gap: 0.12rem;
+        height: 40px;
+        gap: 12px;
       }
       .send_btn {
         font-weight: 500;
-        font-size: 0.14rem;
+        font-size: 14px;
         color: #ffffff;
-        line-height: 0.2rem;
-        padding: 0.06rem 0.12rem;
+        line-height: 20px;
+        padding: 6px 12px;
         background: #ffb001;
-        border-radius: 0.12rem;
+        border-radius: 12px;
         > img {
-          width: 0.2rem;
-          height: 0.2rem;
+          width: 20px;
+          height: 20px;
         }
       }
     }
   }
   .bottom_content {
     display: flex;
-    padding: 0.04rem 0.38rem 0.25rem;
-    gap: 0.68rem;
+    padding: 4px 38px 25px;
+    gap: 68px;
     .content_tool {
-      width: 0.26rem;
-      height: 0.26rem;
+      width: 26px;
+      height: 26px;
     }
     // 表情
     .emojis_box {
-      height: 1.6rem;
+      height: 160px;
       width: 100%;
       overflow-y: auto;
-      padding: 0.04rem;
-      box-shadow: 0 0 0.02rem rgb(223, 221, 221);
+      padding: 4px;
+      box-shadow: 0 0 2px rgb(223, 221, 221);
       -ms-overflow-style: none;
       /* Internet Explorer 10+ */
       scrollbar-width: none;
@@ -263,7 +263,7 @@ onMounted(() => {
       }
 
       .emoji {
-        font-size: 0.28rem;
+        font-size: 28px;
       }
     }
   }
@@ -278,7 +278,7 @@ onMounted(() => {
 .fade_slide-enter-from,
 .fade_slide-leave-to {
   opacity: 0;
-  transform: translateY(0.1rem);
+  transform: translateY(10px);
 }
 
 .fade_slide-enter-to,

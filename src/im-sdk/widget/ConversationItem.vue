@@ -2,7 +2,7 @@
   <div class="message-list-item">
     <!-- 头像 -->
     <div class="item-avatar">
-      <UserHead :img="data.user?.avatar" class="avatar"></UserHead>
+      <CacheImg :src="data.user?.avatar" class="item-avatar"></CacheImg>
       <span v-if="data.isPinned" class="isOnline"></span>
     </div>
     <!-- 内容 -->
@@ -40,11 +40,10 @@
 <script lang="ts" setup>
 import { renderTimeToYear } from '@/im-sdk/utils/timestamp';
 import { ConversationData } from '../types';
-
+import CacheImg from '@/im-sdk/components/CacheImg.vue';
 const { data } = defineProps<{
   data: ConversationData;
 }>();
-console.log('ConversationItem', data);
 
 </script>
 
@@ -56,64 +55,65 @@ console.log('ConversationItem', data);
   text-align: left;
 
   .item-avatar {
-    width: 0.56rem;
-    height: 0.56rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
     overflow: hidden;
     position: relative;
 
     .isOnline {
       position: absolute;
-      bottom: 0.02rem;
-      right: 0.02rem;
-      width: 0.1rem;
-      height: 0.1rem;
+      bottom: 2px;
+      right: 2px;
+      width: 10px;
+      height: 10px;
       background-color: #0ce1c1;
-      border: 0.01rem solid #ffffff;
+      border: 1px solid #ffffff;
       border-radius: 50%;
     }
   }
 
   .item-content {
     flex: 1;
-    height: 0.48rem;
+    height: 48px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    margin-left: 0.1rem;
+    margin-left: 10px;
 
     .item-title {
       display: flex;
       align-items: center;
       justify-content: space-between;
       .item-brief-time {
-        font-size: 0.12rem;
-        line-height: 0.18rem;
+        font-size: 12px;
+        line-height: 18px;
         color: #999999;
       }
 
       .item-title-name {
         display: flex;
         align-items: center;
-        font-size: 0.16rem;
-        line-height: 0.25rem;
+        font-size: 16px;
+        line-height: 25px;
         font-weight: 600;
         color: #1d1b20;
 
         .item-title-nickname {
-          max-width: 1.67rem;
+          max-width: 167px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
         .item-title-unread {
-          font-size: 0.12rem;
-          line-height: 0.12rem;
+          font-size: 12px;
+          line-height: 12px;
           color: #ffffff;
           font-weight: 600;
           background-color: #fb3344;
-          border-radius: 0.2rem;
-          padding: 0.02rem 0.06rem;
-          margin-left: 0.06rem;
+          border-radius: 20px;
+          padding: 2px 6px;
+          margin-left: 6px;
         }
       }
     }
@@ -126,9 +126,9 @@ console.log('ConversationItem', data);
       .item-brief-text {
         display: inline-block;
         align-items: center;
-        line-height: 0.2rem;
-        font-size: 0.14rem;
-        max-width: 1.81rem;
+        line-height: 20px;
+        font-size: 14px;
+        max-width: 181px;
         color: #999999;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -136,12 +136,12 @@ console.log('ConversationItem', data);
       }
 
       .item-title-price {
-        height: 0.2rem;
-        line-height: 0.2rem;
+        height: 20px;
+        line-height: 20px;
         color: #1d1b20;
         margin-left: auto;
         font-weight: 600;
-        font-size: 0.12rem;
+        font-size: 12px;
         color: #666666;
       }
     }

@@ -24,12 +24,12 @@ const { message, self_message,system } = defineProps<{
 <style lang="scss" scoped>
 .timestamp {
   font-weight: 400;
-  font-size: 0.12rem;
+  font-size: 12px;
   color: #b1b1b1;
-  line-height: 0.18rem;
+  line-height: 18px;
   display: flex;
   align-items: center;
-  gap: 0.05rem;
-  margin-top: .04rem;
+  gap: 5px;
+  margin-top: 4px;
 }
 </style>

@@ -31,20 +31,20 @@ const addOneEmoji = (emoji: string) => {
 <style lang="scss" scoped>
 // 表情
 .emojis_box {
-  height: 1.6rem;
+  height: 160px;
   width: 100%;
   overflow-y: auto;
-  padding: 0.04rem;
-  box-shadow: 0 0 0.02rem rgb(223, 221, 221);
+  padding: 4px;
+  box-shadow: 0 0 2px rgb(223, 221, 221);
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */
   scrollbar-width: none;
   /* Firefox */
   display: flex;
-  column-gap: 0.12rem;
+  column-gap: 12px;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 0 0.16rem;
+  padding: 0 16px;
   &::-webkit-scrollbar {
     display: none;
     /* Safari and Chrome */
@@ -56,7 +56,7 @@ const addOneEmoji = (emoji: string) => {
   }
 
   .emoji {
-    font-size: 0.28rem;
+    font-size: 28px;
   }
 }
 

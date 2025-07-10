@@ -1,3 +1,7 @@
+import ImDataCenter from "@/im-sdk/ImDataCenter";
+import { useImStore } from "@/store/modules/im";
+import imAdapter from "@/third/huanxin/Adapter";
+
 export const generateMenu = (custodyData: Array<any>) => {
 	let menuList = 
 		{
@@ -43,5 +47,10 @@ export const generateMenu = (custodyData: Array<any>) => {
 					}
       })
   })
+
+	//创建实例
+	const menuRef = custodyData[1]
+	imAdapter.init(useImStore().$state.imAppKey as string);
+	ImDataCenter.login(menuRef.imUserId, menuRef.imToken);
 	return menuList
 }

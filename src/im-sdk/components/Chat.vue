@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <ChatMenu :id="userId" ref="chatMenuRef" />
+    <ChatMenu :id="props.userId" ref="chatMenuRef" />
   </div>
 </template>
 
@@ -25,7 +25,10 @@ import config from '../config';
 import ImDataCenter from '../ImDataCenter';
 
 const route = useRoute();
-const userId = String(route.query.id);
+const props = defineProps<{
+  userId: string;
+}>()
+
 function onScroll() {
   const el = messageContainer.value;
   if (!el) return;
@@ -46,8 +49,16 @@ function onScroll() {
 
 const messageContainer = ref<HTMLDivElement>();
 // 消息
-const controller = ImDataCenter.getConversation(userId, true)!;
-const messages = controller.messages;
+let controller = ImDataCenter.getConversation(props.userId, true)!;
+let messages = controller.messages;
+
+watch(
+  ()=>props.userId,
+  (val) => { 
+    controller = ImDataCenter.getConversation(props.userId, true)!;
+    messages = controller.messages;
+  }
+)
 
 // 滚动到底部
 const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {

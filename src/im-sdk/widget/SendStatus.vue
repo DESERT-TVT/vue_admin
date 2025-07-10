@@ -17,8 +17,8 @@ const { status } = defineProps<{
 
 <style lang="scss" scoped>
 .icon {
-  width: 0.18rem;
-  height: 0.18rem;
+  width: 18px;
+  height: 18px;
 }
 .transform{
   animation: spin 1s linear infinite ;

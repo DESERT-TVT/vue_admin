@@ -77,10 +77,10 @@ const videoHeight = (width: number, height: number) => {
 .videoMessage {
   display: flex;
   align-items: start;
-  gap: 0.12rem;
+  gap: 12px;
   .avatar {
-    width: 0.48rem;
-    height: 0.48rem;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     overflow: hidden;
   }
@@ -89,8 +89,8 @@ const videoHeight = (width: number, height: number) => {
     display: inline-block;
     width: 100%;
     cursor: pointer;
-    max-width: 1.48rem;
-    border-radius: 0.12rem;
+    max-width: 148px;
+    border-radius: 12px;
     overflow: hidden;
   }
 
@@ -99,7 +99,7 @@ const videoHeight = (width: number, height: number) => {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: .08rem;
   }
 
   /* 播放按钮 */
@@ -110,8 +110,8 @@ const videoHeight = (width: number, height: number) => {
     transform: translate(-50%, -50%);
     border: none;
     border-radius: 50%;
-    width: .32rem;
-    height: .32rem;
+    width: 32px;
+    height: 32px;
     text-align: center;
     padding: 0;
     z-index: 10;
@@ -122,11 +122,11 @@ const videoHeight = (width: number, height: number) => {
     .content_box {
       display: flex;
       align-items: end;
-      gap: 0.08rem;
-      border-radius: 0.12rem;
+      gap: 8px;
+      border-radius: 12px;
       overflow: hidden;
       .video {
-        border-radius: 0.12rem;
+        border-radius: 12px;
         overflow: hidden;
       }
     }
@@ -134,7 +134,7 @@ const videoHeight = (width: number, height: number) => {
 }
 
 .video {
-  border-radius: 8px;
+  border-radius: .08rem;
   max-width: 100%;
   cursor: pointer;
 }
@@ -156,20 +156,20 @@ const videoHeight = (width: number, height: number) => {
 .video-wrapper {
   position: relative;
   width: 90%;
-  max-width: 600px;
+  max-width: 6rem;
 }
 
 .full-video {
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: .12rem;
 }
 
 .close-btn {
   position: absolute;
-  top: -40px;
+  top: -0.4rem;
   right: 0;
-  font-size: 32px;
+  font-size: .32rem;
   color: white;
   background: none;
   border: none;

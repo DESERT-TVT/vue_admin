@@ -50,3 +50,31 @@ export const APISaveBotText = (params: any) => {
 export const APIUpdateBotTextStatus = (params: { id: string, status: number }) => {
 	return service.post('/admin/sys/user/bot/comment/status', params)
 }
+
+
+export function fetchUserInfoByNames(userNames: string[]) {
+  return service
+    .get("/server/user/user/list/info", {
+      params: {
+        userNames: userNames.join(","),
+      },
+    })
+    .catch((err) => {});
+}
+
+
+export async function userinfo(userId: number | string) {
+  if (userId == 0) {
+    return;
+  }
+  try {
+    const res = await service.get("/server/user/info", {
+      params: {
+        userId,
+      },
+    });
+    if (res) {
+      return res;
+    }
+  } catch (err) {}
+}

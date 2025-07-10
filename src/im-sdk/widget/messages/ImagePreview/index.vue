@@ -10,7 +10,7 @@
       :closeable="(props.burnCount || 0) <= 0"
     >
       <template #index>
-        <div style="color: white; font-size: 16px">
+        <div style="color: white; font-size: .16rem">
           {{ currentIndex + 1 }} / {{ imagesList.length }}
         </div>
       </template>
@@ -32,7 +32,7 @@
       />
     </div>
     <div
-      class="fixed top-[0.06rem] right-[0.16rem] z-3000"
+      class="fixed top-[6px] right-[16px] z-3000"
       v-if="show && props.burnCount"
     >
       <div class="burnCount-text">
@@ -134,7 +134,7 @@ function applyScale() {
   transform: translateY(-50%);
   z-index: 3000;
   color: white;
-  font-size: 2.4rem;
+  font-size: 240px;
   font-weight: bold;
   border-radius: 50%;
   cursor: pointer;
@@ -142,31 +142,31 @@ function applyScale() {
 }
 
 .left {
-  left: 0.14rem;
+  left: 14px;
 }
 
 .right {
-  right: 0.14rem;
+  right: 14px;
 }
 
 .burnCount-text {
   color: #fff;
-  font-size: 0.2rem;
-  line-height: 0.28rem;
+  font-size: 20px;
+  line-height: 28px;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 0.04rem 0.2rem;
-  border-radius: 0.18rem;
+  padding: 4px 20px;
+  border-radius: 18px;
 }
 
 
 /* 缩放样式  */
 .zoom-controls {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
+  bottom: 100px;
+  right: 100px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 50px;
   z-index: 3000;
 }
 
@@ -174,9 +174,9 @@ function applyScale() {
   background: rgba(0, 0, 0, 0.6);
   border: none;
   color: white;
-  font-size: 1.2rem;
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.4rem;
+  font-size: 120px;
+  padding: 40px 60px;
+  border-radius: 40px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -191,10 +191,10 @@ function applyScale() {
 .watermark-container::after {
   content: '';
   position: absolute;
-  bottom: .12rem;
-  right: .12rem;
-  width: .8rem; /* 自行调整大小 */
-  height: .24rem;
+  bottom: 12px;
+  right: 12px;
+  width: 80px; /* 自行调整大小 */
+  height: 24px;
   background-image: url('@/assets/brand/watermark.svg'); /* 水印图片地址 */
   background-size: contain;
   background-repeat: no-repeat;

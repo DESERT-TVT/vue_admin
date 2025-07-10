@@ -30,7 +30,6 @@ const componentMap: Record<
   video: VideoMessage,
   audio: VoiceMessage,
   location: LocationMessage,
-  // call: CallMessage,
 };
 const MessageComponent = componentMap[data?.type] || UnknownMessage;
 </script>
