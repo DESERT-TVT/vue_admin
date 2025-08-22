@@ -20,7 +20,7 @@
 		"@wangeditor/editor-for-vue": "5.1.12",
 		"ali-oss": "^6.20.0",
 		"aws-sdk": "^2.1659.0",
-		"axios": "1.6.8",
+		"axios": "1.8.2",
 		"benz-amr-recorder": "^1.1.5",
 		"cropperjs": "1.6.1",
 		"date-fns": "^3.6.0",
@@ -38,7 +38,7 @@
 		"sm-crypto": "^0.3.13",
 		"video.js": "^7.20.3",
 		"vue": "3.4.21",
-		"vue-i18n": "9.10.2",
+		"vue-i18n": "9.14.5",
 		"vue-router": "4.3.0",
 		"xe-utils": "3.5.22"
 	},
@@ -61,7 +61,7 @@
 		"prettier": "3.2.5",
 		"sass": "1.72.0",
 		"typescript": "5.4.2",
-		"vite": "5.1.6",
+		"vite": "5.4.19",
 		"vite-plugin-svg-icons": "^2.0.1",
 		"vite-plugin-vue-setup-extend": "0.4.0",
 		"vue-tsc": "2.0.6"
