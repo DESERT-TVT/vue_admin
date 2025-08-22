@@ -22,15 +22,11 @@ export const useRouterStore = defineStore('routerStore', {
 			this.menuRoutes.push(...dashboardRoutes)
 
 			// 后端菜单
-			// this.menuRoutes.push(...routes)
-			// im菜单渲染
-			const { data: custodyData } = await useMenuCustodyInfo(useUserStore().user.id)
-			this.menuRoutes.push(generateMenu(custodyData))
 
 			// 常量菜单
 			if (constant.env.DEV) {
-				// const constantRoutes = generateRoutes(constantMenu)
-				// this.menuRoutes.push(...constantRoutes)
+				const constantRoutes = generateRoutes(constantMenu)
+				this.menuRoutes.push(...constantRoutes)
 			}
 
 			return this.menuRoutes
