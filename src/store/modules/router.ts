@@ -4,8 +4,6 @@ import { constantMenu, dashboardMenu, generateRoutes } from '@/router'
 import { RouteRecordRaw } from 'vue-router'
 import constant from '@/utils/constant'
 import { useUserStore } from './user'
-import { de, ro } from 'element-plus/es/locale'
-import { generateMenu } from '@/utils/generateMenu'
 export const useRouterStore = defineStore('routerStore', {
 	state: () => ({
 		menuRoutes: [] as RouteRecordRaw[],
@@ -22,6 +20,7 @@ export const useRouterStore = defineStore('routerStore', {
 			this.menuRoutes.push(...dashboardRoutes)
 
 			// 后端菜单
+			// this.menuRoutes.push(...routes)
 
 			// 常量菜单
 			if (constant.env.DEV) {

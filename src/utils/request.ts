@@ -8,7 +8,6 @@ import { ElMessageBox } from 'element-plus/es'
 // axios实例
 const service = axios.create({
 	baseURL: window.server || (import.meta.env.VITE_API_URL as any),
-	//baseURL: 'http://192.168.110.65:10001',
 	timeout: 60000,
 	headers: { 'Content-Type': 'application/json;charset=UTF-8' }
 })
@@ -118,7 +117,6 @@ service.interceptors.response.use(
 
 		// 错误提示
 		ElMessage.error(res.msg)
-
 		return Promise.reject(new Error(res.msg || 'Error'))
 	},
 	error => {

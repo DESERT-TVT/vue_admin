@@ -62,7 +62,14 @@ export const dashboardMenu = [
 		children: [
 			{
 				id: 101,
-				name: '首页',
+				name: '数据统计',
+				url: 'dashboard/dataStatistics',
+				openStyle: 0,
+				icon: 'icon-setting'
+			},
+			{
+				id: 102,
+				name: '上报数据',
 				url: 'dashboard/index',
 				openStyle: 0,
 				icon: 'icon-home',

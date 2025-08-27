@@ -17,7 +17,7 @@
 				</el-select>
 			</el-form-item>
 			<el-form-item>
-				<el-select v-model="state.queryForm.sortColumn" placeholder="Select" style="width: 240px">
+				<el-select v-model="state.queryForm.groupColumn" placeholder="Select" style="width: 240px">
 					<el-option v-for="item in groupColumn" :key="item.value" :label="item.label" :value="item.value" />
 				</el-select>
 			</el-form-item>
@@ -33,7 +33,7 @@
 			<el-form-item>
 				<el-input v-model="state.queryForm.nodeId" placeholder="节点id搜索" :prefix-icon="Search" clearable style="width: 215px"></el-input>
 			</el-form-item>
-			<el-form-item>
+      <el-form-item>
         <el-date-picker
         v-model="date"
         type="daterange"
@@ -50,47 +50,18 @@
 				<el-button type="primary" @click="getDataList()">查询</el-button>
 			</el-form-item>
 		</el-form>
-
-		<!-- 表格 -->
-		<el-table
-			v-loading="state.dataListLoading"
-			show-overflow-tooltip
-			:data="state.dataList"
-			border
-			style="width: 100%"
-			@selection-change="selectionChangeHandle"
-			@sort-change="sortChangeHandle"
-		>
-			<el-table-column prop="userId" label="用户id" header-align="center" align="center" min-width="100" />
-			<el-table-column prop="ipAddress" label="ip" header-align="center" align="center" min-width="100" />
-			<el-table-column prop="equipmentName" label="设备名称" header-align="center" align="center" min-width="170" />
-			<el-table-column prop="channelName" label="	渠道名称" header-align="center" align="center" min-width="200" />
-			<el-table-column prop="eventName" label="事件名称" header-align="center" align="center" min-width="150" />
-			<el-table-column prop="nodeName" label="节点名称" header-align="center" align="center" min-width="150" />
-			<el-table-column prop="platformName" label="平台名称" header-align="center" align="center" min-width="150" />
-			<el-table-column prop="extraInfo" label="	额外信息" header-align="center" align="center" min-width="150" />
-			<el-table-column prop="clientId" label="设备号" header-align="center" align="center" sortable="custom" min-width="150" />
-		</el-table>
-
-		<!-- 分页	-->
-		<el-pagination
-			:current-page="state.page"
-			:page-sizes="state.pageSizes"
-			:page-size="state.limit"
-			:total="state.total"
-			layout="total, sizes, prev, pager, next, jumper"
-			@size-change="sizeChangeHandle"
-			@current-change="currentChangeHandle"
-		>
-		</el-pagination>
+		<el-card>
+			<div ref="main" style="width: 100%; height: calc(100vh - 110px - var(--theme-header-height))"></div>
+		</el-card>
 	</el-card>
 </template>
 <script setup lang="ts">
 import { IHooksOptions } from '@/hooks/interface'
 import { onMounted, reactive, ref, watch } from 'vue'
-import { useCrud } from '@/hooks'
 import { Search } from '@element-plus/icons-vue'
-import { platformApi, PlatformList } from '@/api/dataStatistics'
+import { platformApi, PlatformList, staticApi, StaticListList } from '@/api/dataStatistics'
+import * as echarts from 'echarts'
+import { fa } from 'element-plus/es/locale'
 
 // 数据分组字段
 const groupColumn = [
@@ -99,21 +70,19 @@ const groupColumn = [
 	{ label: '事件', value: 'event_id' },
 	{ label: '节点', value: 'node_id' }
 ]
-
 const state: IHooksOptions = reactive({
-	dataListUrl: '/admin/data/page',
+	dataList: [] as StaticListList[],
 	queryForm: {
 		platformId: 1,
 		start: '2025-01-01',
 		end: '2026-01-01',
-		sortColumn: groupColumn[1].value,
+		groupColumn: groupColumn[0].value,
 		equipmentId: null,
 		channelId: null,
 		eventId: null,
 		nodeId: null
 	}
 })
-
 const date = ref([state.queryForm.start, state.queryForm.end])
 
 
@@ -126,7 +95,6 @@ watch(date, (val) => {
     state.queryForm.end = ''
   }
 })
-
 // 分页平台查询
 const options = ref<PlatformList[]>([])
 const loading = ref(false)
@@ -170,5 +138,58 @@ const handleScroll = async (e: HTMLElement) => {
 		}
 	}
 }
-const { getDataList, selectionChangeHandle, sortChangeHandle, sizeChangeHandle, currentChangeHandle } = useCrud(state)
+
+const valueToLabelMap = Object.fromEntries(groupColumn.map(item => [item.value, item.label]))
+// 图表数据
+const main = ref()
+const init = () => {
+	const myChart = echarts.init(main.value)
+	// 绘制图表
+	myChart.setOption({
+		title: {
+			text: '数据统计'
+		},
+		tooltip: {
+			trigger: 'item',
+			formatter: '{a} <br/>{b}: {c} ({d}%)'
+		},
+		legend: {
+			data: [valueToLabelMap[state.queryForm.groupColumn] + '数量']
+		},
+		toolbox: {
+			feature: {
+				saveAsImage: {}
+			}
+		},
+		grid: {
+			left: '3%',
+			right: '4%',
+			bottom: '3%',
+			containLabel: true
+		},
+		series: [
+			{
+				name: valueToLabelMap[state.queryForm.groupColumn] + '数量',
+				type: 'pie',
+				stack: 'Total',
+				areaStyle: {},
+				emphasis: {
+					focus: 'series'
+				},
+				data: state.dataList
+			}
+		]
+	})
+}
+
+const getDataList = async () => {
+	await staticApi(state.queryForm).then(res => {
+		state.dataList = res.data
+	})
+  init()
+}
+
+onMounted(async() => {
+	await getDataList()
+})
 </script>

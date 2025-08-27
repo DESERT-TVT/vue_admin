@@ -27,7 +27,7 @@
 		"dexie": "^4.0.11",
 		"easemob-websdk": "^4.9.1",
 		"echarts": "^5.5.0",
-		"element-plus": "2.7.2",
+		"element-plus": "^2.11.1",
 		"js-md5": "^0.8.3",
 		"mitt": "3.0.1",
 		"nprogress": "0.2.0",
