@@ -317,8 +317,6 @@ const aggregationDef = reactive<{ label: string; value: string,valueField:string
 let aggregationList = reactive<{ label: string; value: string}[]>([])
 
 const handleAggregation = () => {
-	console.log(aggregationDef,'111');
-	
 	aggregationList = aggregationDef.filter(item => item.value && state.queryForm.groupColumn !== item.valueField).map(item => {
 		return {
 			label: item.label,
@@ -334,11 +332,11 @@ const getDataList = async () => {
 			merged[key] = aggregation.queryForm[key]
 		}
 	}
+	// 聚合数据
+	handleAggregation()
 	await staticApi(merged).then(res => {
 		state.dataList = res.data
 	})
-	// 聚合数据
-	await handleAggregation()
 	// 绘制图表
 	init()
 }
