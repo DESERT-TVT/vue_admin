@@ -74,6 +74,47 @@ export const dashboardMenu = [
 				openStyle: 0,
 				icon: 'icon-home',
 				affix: true
+			},
+			{
+				id: 103,
+				name: '平台管理',
+				url: 'dashboard/platform/index',
+				openStyle: 0,
+				icon: 'icon-editor',
+				affix: true
+			},
+			{
+				id: 104,
+				name: '设备管理',
+				url: 'dashboard/equipment/index',
+				openStyle: 0,
+				icon: 'icon-editor',
+				affix: true
+			},
+			{
+				id: 105,
+				name: '节点管理',
+				url: 'dashboard/node/index',
+				openStyle: 0,
+				icon: 'icon-editor',
+				affix: true
+			}
+			,
+			{
+				id: 105,
+				name: '事件管理',
+				url: 'dashboard/event/index',
+				openStyle: 0,
+				icon: 'icon-editor',
+				affix: true
+			},
+			{
+				id: 105,
+				name: '渠道管理',
+				url: 'dashboard/channel/index',
+				openStyle: 0,
+				icon: 'icon-editor',
+				affix: true
 			}
 		]
 	}

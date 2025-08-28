@@ -17,35 +17,33 @@
 				</el-select>
 			</el-form-item>
 			<el-form-item>
-				<el-select v-model="state.queryForm.sortColumn" placeholder="Select" style="width: 240px">
-					<el-option v-for="item in groupColumn" :key="item.value" :label="item.label" :value="item.value" />
-				</el-select>
+				<select-v2 v-model="state.queryForm.equipmentId" :fetch="equipmentReq" placeholder="设备名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<el-input v-model="state.queryForm.equipmentId" placeholder="设备id搜索" :prefix-icon="Search" clearable style="width: 215px"></el-input>
+				<select-v2 v-model="state.queryForm.channelId" :fetch="channelReq" placeholder="渠道名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<el-input v-model="state.queryForm.channelId" placeholder="渠道id搜索" :prefix-icon="Search" clearable style="width: 215px"></el-input>
+				<select-v2 v-model="state.queryForm.eventId" :fetch="eventReq" placeholder="事件名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<el-input v-model="state.queryForm.eventId" placeholder="事件id搜索" :prefix-icon="Search" clearable style="width: 215px"></el-input>
+				<select-v2 v-model="state.queryForm.nodeId" :fetch="nodeReq" placeholder="节点名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<el-input v-model="state.queryForm.nodeId" placeholder="节点id搜索" :prefix-icon="Search" clearable style="width: 215px"></el-input>
+				<el-input v-model="state.queryForm.host" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 215px"></el-input>
 			</el-form-item>
 			<el-form-item>
-        <el-date-picker
-        v-model="date"
-        type="daterange"
-        unlink-panels
-        value-format="YYYY-MM-DD"
-        range-separator="To"
-        format="YYYY/MM/DD"
-        :clearable="false"
-        start-placeholder="开始时间"
-        end-placeholder="结束时间"
-      />
-      </el-form-item>
+				<el-date-picker
+					v-model="date"
+					type="daterange"
+					unlink-panels
+					value-format="YYYY-MM-DD"
+					range-separator="To"
+					format="YYYY/MM/DD"
+					:clearable="false"
+					start-placeholder="开始时间"
+					end-placeholder="结束时间"
+				/>
+			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="getDataList()">查询</el-button>
 			</el-form-item>
@@ -68,8 +66,9 @@
 			<el-table-column prop="eventName" label="事件名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="nodeName" label="节点名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="platformName" label="平台名称" header-align="center" align="center" min-width="150" />
+			<el-table-column prop="host" label="域名" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="extraInfo" label="	额外信息" header-align="center" align="center" min-width="150" />
-			<el-table-column prop="clientId" label="设备号" header-align="center" align="center" sortable="custom" min-width="150" />
+			<el-table-column prop="clientId" label="设备号" header-align="center" align="center" min-width="150" />
 		</el-table>
 
 		<!-- 分页	-->
@@ -91,14 +90,7 @@ import { onMounted, reactive, ref, watch } from 'vue'
 import { useCrud } from '@/hooks'
 import { Search } from '@element-plus/icons-vue'
 import { platformApi, PlatformList } from '@/api/dataStatistics'
-
-// 数据分组字段
-const groupColumn = [
-	{ label: '设备', value: 'equipment_id' },
-	{ label: '渠道', value: 'channel_id' },
-	{ label: '事件', value: 'event_id' },
-	{ label: '节点', value: 'node_id' }
-]
+import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
 
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/data/page',
@@ -106,25 +98,70 @@ const state: IHooksOptions = reactive({
 		platformId: 1,
 		start: '2025-01-01',
 		end: '2026-01-01',
-		sortColumn: groupColumn[1].value,
+		sortColumn: 'create_time',
 		equipmentId: null,
 		channelId: null,
 		eventId: null,
-		nodeId: null
+		nodeId: null,
+		host: null,
 	}
 })
 
+// 设备数据请求
+const equipmentReq: FetchV2 = {
+	url: '/admin/equipment/page',
+	params: {
+		page: 1,
+		limit: 1000,
+		name: '',
+		platformId: state.queryForm.platformId
+	}
+}
+
+// 节点数据请求
+const nodeReq: FetchV2 = {
+	url: '/admin/node/page',
+	params: {
+		page: 1,
+		limit: 1000,
+		name: '',
+		platformId: state.queryForm.platformId
+	}
+}
+
+// 事件数据请求
+const eventReq: FetchV2 = {
+	url: '/admin/event/page',
+	params: {
+		page: 1,
+		limit: 1000,
+		name: '',
+		platformId: state.queryForm.platformId
+	}
+}
+
+//渠道数据请求
+const channelReq: FetchV2 = {
+	url: '/admin/channel/page',
+	params: {
+		page: 1,
+		limit: 1000,
+		name: '',
+		platformId: state.queryForm.platformId
+	}
+}
+
+
 const date = ref([state.queryForm.start, state.queryForm.end])
 
-
-watch(date, (val) => {
-  if (val && val.length === 2) {
-    state.queryForm.start = val[0]
-    state.queryForm.end = val[1]
-  } else {
-    state.queryForm.start = ''
-    state.queryForm.end = ''
-  }
+watch(date, val => {
+	if (val && val.length === 2) {
+		state.queryForm.start = val[0]
+		state.queryForm.end = val[1]
+	} else {
+		state.queryForm.start = ''
+		state.queryForm.end = ''
+	}
 })
 
 // 分页平台查询
