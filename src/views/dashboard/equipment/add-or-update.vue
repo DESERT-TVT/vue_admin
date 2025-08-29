@@ -25,6 +25,8 @@ const emit = defineEmits(['refreshDataList'])
 const visible = ref(false)
 const init = (row?: any) => {
 	visible.value = true
+	// 重置表单数据
+	dataFormRef.value?.resetFields()
 	if(row){
 		dataForm.name = row.name
 		dataForm.id = row.id
