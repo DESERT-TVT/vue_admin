@@ -67,6 +67,7 @@
 			<el-table-column prop="nodeName" label="节点名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="platformName" label="平台名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="host" label="域名" header-align="center" align="center" min-width="150" />
+			<el-table-column prop="createTime" label="创建时间" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="extraInfo" label="	额外信息" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="clientId" label="设备号" header-align="center" align="center" min-width="150" />
 		</el-table>
