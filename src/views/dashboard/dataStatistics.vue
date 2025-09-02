@@ -19,19 +19,47 @@
 			<div style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px">
 				<h1 style="margin-bottom: 10px">筛选数据</h1>
 				<el-form-item>
-					<select-v2 v-model="state.queryForm.equipmentId" @changeLabel="aggregationDef[0].value = $event" v-show="state.startValue != 'equipment_id'" :fetch="equipmentReq" placeholder="设备名称搜索" style="width: 240px" />
+					<select-v2
+						v-model="aggregation.queryForm.equipmentId"
+						@changeLabel="aggregationDef[0].value = $event"
+						v-if="state.startValue != 'equipment_id'"
+						:fetch="equipmentReq"
+						placeholder="设备名称搜索"
+						style="width: 240px"
+					/>
 				</el-form-item>
 				<el-form-item>
-					<select-v2 v-model="state.queryForm.channelId" @changeLabel="aggregationDef[1].value = $event" :fetch="channelReq" placeholder="渠道名称搜索" v-show="state.startValue != 'channel_id'"  style="width: 240px" />
+					<select-v2
+						v-model="aggregation.queryForm.channelId"
+						@changeLabel="aggregationDef[1].value = $event"
+						:fetch="channelReq"
+						placeholder="渠道名称搜索"
+						v-if="state.startValue != 'channel_id'"
+						style="width: 240px"
+					/>
 				</el-form-item>
 				<el-form-item>
-					<select-v2 v-model="state.queryForm.eventId" @changeLabel="aggregationDef[2].value = $event" :fetch="eventReq" placeholder="事件名称搜索" v-show="state.startValue != 'event_id'"  style="width: 240px" />
+					<select-v2
+						v-model="aggregation.queryForm.eventId"
+						@changeLabel="aggregationDef[2].value = $event"
+						:fetch="eventReq"
+						placeholder="事件名称搜索"
+						v-if="state.startValue != 'event_id'"
+						style="width: 240px"
+					/>
 				</el-form-item>
 				<el-form-item>
-					<select-v2 v-model="state.queryForm.nodeId" @changeLabel="aggregationDef[3].value = $event" :fetch="nodeReq" placeholder="节点名称搜索" v-show="state.startValue != 'node_id'"  style="width: 240px" />
+					<select-v2
+						v-model="aggregation.queryForm.nodeId"
+						@changeLabel="aggregationDef[3].value = $event"
+						:fetch="nodeReq"
+						placeholder="节点名称搜索"
+						v-if="state.startValue != 'node_id'"
+						style="width: 240px"
+					/>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="state.queryForm.host" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
+					<el-input v-model="aggregation.queryForm.host" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker
@@ -81,11 +109,11 @@ import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
 import * as echarts from 'echarts'
 
 // 数据分组字段
-const groupColumn = [
-	{ label: '设备', value: 'equipment_id' },
-	{ label: '渠道', value: 'channel_id' },
-	{ label: '事件', value: 'event_id' },
-	{ label: '节点', value: 'node_id' }
+const groupColumn: { label: string; value: string; labelName: string }[] = [
+	{ label: '设备', value: 'equipment_id', labelName: 'equipmentId' },
+	{ label: '渠道', value: 'channel_id', labelName: 'channelId' },
+	{ label: '事件', value: 'event_id', labelName: 'eventId' },
+	{ label: '节点', value: 'node_id', labelName: 'nodeId' }
 ]
 const state: IHooksOptions = reactive({
 	dataList: [] as StaticListList[],
@@ -280,25 +308,28 @@ let aggregationList = reactive<{ label: string; value: string }[]>([])
 
 const handleAggregation = () => {
 	aggregationList = aggregationDef
-		.filter(item => item.value && state.queryForm.groupColumn !== item.valueField)
+		.filter(item => item.value)
 		.map(item => {
 			return {
 				label: item.label,
 				value: item.value
 			}
 		})
-		console.log(aggregationList,'11');
-		
+}
+
+function getLabelNameByValue(value: any) {
+	const item = state.queryForm.groupColumn.find((col: { label: string; value: string; labelName: string }) => col.value === value)
+	return item ? item.labelName : null
 }
 
 const getDataList = async () => {
+	state.startValue = state.queryForm.groupColumn
 	const merged: any = { ...state.queryForm }
 	for (const key in state.queryForm) {
-		if (merged[key] == null) {
+		if (merged[key] == null && key != getLabelNameByValue(state.queryForm.groupColumn)) {
 			merged[key] = aggregation.queryForm[key]
 		}
 	}
-	state.startValue = state.queryForm.groupColumn
 	// 聚合数据
 	handleAggregation()
 	await staticApi(merged).then(res => {
