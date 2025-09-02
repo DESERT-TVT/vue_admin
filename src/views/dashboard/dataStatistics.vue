@@ -318,7 +318,7 @@ const handleAggregation = () => {
 }
 
 function getLabelNameByValue(value: any) {
-	const item = state.queryForm.groupColumn.find((col: { label: string; value: string; labelName: string }) => col.value === value)
+	const item = groupColumn.find((col: { label: string; value: string; labelName: string }) => col.value === value)
 	return item ? item.labelName : null
 }
 
