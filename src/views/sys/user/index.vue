@@ -67,6 +67,7 @@
 					<el-table-column align="center" fixed="right" header-align="center" label="操作" width="120">
 						<template #default="scope">
 							<el-button v-auth="'sys:user:update'" link type="primary" @click="addOrUpdateHandle(scope.row.id)">修改 </el-button>
+							<el-button type="primary" link @click="deleteBatchHandle(scope.row.id)">删除</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
