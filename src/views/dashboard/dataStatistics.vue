@@ -97,7 +97,7 @@
 		</el-form>
 		<!-- 表格 -->
 		<el-table show-overflow-tooltip :data="state.dataList" border style="width: 100%; margin-bottom: 20px">
-			<el-table-column prop="name" :label="valueToLabelMap[state.queryForm.groupColumn]" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="name" :label="valueToLabelMap[state.startValue?? '']" header-align="center" align="center" min-width="170" />
 			<el-table-column v-for="value in aggregationList" :label="value.label" header-align="center" align="center" min-width="170">
 				<default slot="default" slot-scope="scope"> {{ value.value }} </default>
 			</el-table-column>
@@ -135,7 +135,8 @@ const state: IHooksOptions = reactive({
 		eventId: null,
 		nodeId: null,
 		host: null
-	}
+	},
+	startValue: groupColumn[0].value
 })
 
 const aggregation: IHooksOptions = reactive({
@@ -291,9 +292,8 @@ const init = () => {
 	})
 }
 //聚合方法
-const aggregationDef = reactive<{ label: string; value: string,valueField:string }[]>([
+const aggregationDef = reactive<{ label: string; value: string; valueField: string }[]>([
 	{
-		
 		label: '设备',
 		value: '',
 		valueField: 'equipment_id'
@@ -314,15 +314,17 @@ const aggregationDef = reactive<{ label: string; value: string,valueField:string
 		valueField: 'node_id'
 	}
 ])
-let aggregationList = reactive<{ label: string; value: string}[]>([])
+let aggregationList = reactive<{ label: string; value: string }[]>([])
 
 const handleAggregation = () => {
-	aggregationList = aggregationDef.filter(item => item.value && state.queryForm.groupColumn !== item.valueField).map(item => {
-		return {
-			label: item.label,
-			value: item.value
-		}
-	})
+	aggregationList = aggregationDef
+		.filter(item => item.value && state.queryForm.groupColumn !== item.valueField)
+		.map(item => {
+			return {
+				label: item.label,
+				value: item.value
+			}
+		})
 }
 
 const getDataList = async () => {
@@ -332,6 +334,7 @@ const getDataList = async () => {
 			merged[key] = aggregation.queryForm[key]
 		}
 	}
+	state.startValue = state.queryForm.groupColumn
 	// 聚合数据
 	handleAggregation()
 	await staticApi(merged).then(res => {

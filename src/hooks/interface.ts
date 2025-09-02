@@ -33,6 +33,8 @@ export interface IHooksOptions {
 	// 数据列表，多选项
 	dataListSelections?: any[]
 	dataListSelectionKeys?: any[]
+	// 首字段
+	startValue?: string
 }
 
 export interface Temperament {

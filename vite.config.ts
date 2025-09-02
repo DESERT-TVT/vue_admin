@@ -43,7 +43,7 @@ export default defineConfig({
 		open: false, // 是否自动打开浏览器
 		proxy: {
 			'/api': {
-				// target: 'http://8.210.19.249:10001', // 局域网
+				// target: 'http://192.168.110.234:8080', // 局域网
 				target: 'http://47.83.136.46:8080', // 测试服
 				changeOrigin: true,
 				rewrite: path => path.replace(/^\/api/, '')
