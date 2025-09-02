@@ -15,7 +15,7 @@
 						<el-input v-model="state.queryForm.phoneOrEmail" placeholder="账户"></el-input>
 					</el-form-item>
 					<el-form-item>
-						<el-button icon="Search" type="primary" @click="getDataList()">查询</el-button>
+						<el-button icon="Search" v-auth="'sys:user:page'" type="primary" @click="getDataList()">查询</el-button>
 					</el-form-item>
 					<el-form-item>
 						<el-button icon="RefreshRight" @click="reset(queryRef)">重置</el-button>
