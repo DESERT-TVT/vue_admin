@@ -28,22 +28,7 @@
 					<el-space>
 						<el-button v-auth="'sys:user:save'" icon="Plus" type="primary" @click="addOrUpdateHandle()">新增</el-button>
 					</el-space>
-					<!--          <el-space v-auth="'sys:user:import'">-->
-					<!--            <el-upload :action="uploadUserExcelUrl" :before-upload="beforeUpload" :on-success="handleSuccess"-->
-					<!--                       :show-file-list="false">-->
-					<!--              <el-button plain icon="Upload">导入</el-button>-->
-					<!--            </el-upload>-->
-					<!--          </el-space>-->
-					<!--          <el-space>-->
-					<!--            <el-button v-auth="'sys:user:export'" plain icon="Download" @click="downloadExcel()">导出</el-button>-->
-					<!--          </el-space>-->
-					<!--          <el-space>-->
-					<!--            <el-button v-auth="'sys:user:delete'" icon="Delete" plain type="danger" @click="deleteBatchHandle()">-->
-					<!--              批量删除-->
-					<!--            </el-button>-->
-					<!--          </el-space>-->
 				</el-space>
-
 				<el-table
 					v-loading="state.dataListLoading"
 					:data="state.dataList"
@@ -54,15 +39,15 @@
 				>
 					<el-table-column align="center" header-align="center" type="selection" width="38"></el-table-column>
 					<el-table-column align="center" header-align="center" label="UID" prop="id"></el-table-column>
-					<el-table-column align="center" header-align="center" label="昵称" prop="nickname"></el-table-column>
+					<el-table-column align="center" header-align="center" label="用户名称" prop="username"></el-table-column>
 					<el-table-column align="center" header-align="center" label="账户" prop="mobile"></el-table-column>
-					<el-table-column align="center" header-align="center" label="角色" prop="roleName"></el-table-column>
 					<el-table-column align="center" header-align="center" label="密码" prop="password">
 						<template #default="scope">
 							<el-button type="text" @click="updatePwd(scope.row.id)">点击修改</el-button>
 						</template>
 					</el-table-column>
-					<el-table-column align="center" header-align="center" label="最后登录时间" prop="createTime"></el-table-column>
+					<el-table-column align="center" header-align="center" label="平台ID" prop="platformId"></el-table-column>
+					<el-table-column align="center" header-align="center" label="创建时间" prop="createTime"></el-table-column>
 					<el-table-column align="center" label="状态" prop="status">
 						<template #default="scope">
 							<el-switch
@@ -79,16 +64,9 @@
 							/>
 						</template>
 					</el-table-column>
-					<!--          <fast-dict-column prop="gender" label="性别" dict-type="user_gender"></fast-dict-column>-->
-					<!--          <el-table-column prop="mobile" label="手机号" header-align="center" align="center"></el-table-column>-->
-					<!--          <el-table-column prop="orgName" label="所属机构" header-align="center" align="center"></el-table-column>-->
-					<!--          <fast-dict-column prop="status" label="状态" dict-type="user_status"></fast-dict-column>-->
-					<!--          <el-table-column prop="createTime" label="创建时间" header-align="center" align="center"></el-table-column>-->
 					<el-table-column align="center" fixed="right" header-align="center" label="操作" width="120">
 						<template #default="scope">
 							<el-button v-auth="'sys:user:update'" link type="primary" @click="addOrUpdateHandle(scope.row.id)">修改 </el-button>
-							<!--              <el-button v-auth="'sys:user:delete'" type="primary" link @click="deleteBatchHandle(scope.row.id)">删除-->
-							<!--              </el-button>-->
 						</template>
 					</el-table-column>
 				</el-table>
@@ -140,8 +118,8 @@ import { useUserStore } from '@/store/modules/user'
 import { updatePwdSubmitApi, useUserSubmitApi, updateStatusApi } from '@/api/sys/user'
 
 const state: IHooksOptions = reactive({
-	dataListUrl: 'admin/sys/user/manage/page',
-	deleteUrl: 'admin/sys/user',
+	dataListUrl: '/sys/user/page',
+	deleteUrl: '/sys/user',
 	queryForm: {
 		username: '',
 		phoneOrEmail: '',

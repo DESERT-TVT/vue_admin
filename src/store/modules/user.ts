@@ -18,7 +18,8 @@ export const useUserStore = defineStore('userStore', {
 			avatar: '',
 			orgName: '',
 			postNameList: [],
-			createTime: ''
+			createTime: '',
+			platformId: ''
 		},
 		// 权限列表
 		authorityList: [],

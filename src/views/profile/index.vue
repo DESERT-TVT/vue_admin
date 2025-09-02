@@ -31,12 +31,12 @@
 						用户邮箱 <span>{{ userStore.user.email || '/' }}</span>
 					</li>
 					<li>
-						<fast-icon icon="icon-apartment" />
-						所属机构 <span>{{ userStore.user.orgName || '/' }}</span>
-					</li>
-					<li>
 						<fast-icon icon="icon-tag" />
 						所属岗位 <span>{{ userStore.user.postNameList || '/' }} </span>
+					</li>
+					<li>
+						<fast-icon icon="icon-apartment" />
+						所属平台ID <span>{{ userStore.user.platformId || '总管' }} </span>
 					</li>
 					<li>
 						<fast-icon icon="icon-calendar-check" />

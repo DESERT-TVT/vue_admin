@@ -12,6 +12,9 @@
 					<el-form-item label="设置用户名" prop="username">
 						<el-input v-model="dataForm.username" placeholder="用户名"></el-input>
 					</el-form-item>
+					<el-form-item label="设置姓名" prop="realName">
+						<el-input v-model="dataForm.realName" placeholder="姓名"></el-input>
+					</el-form-item>
 					<el-form-item v-if="showPassword" label="设置密码" prop="password">
 						<el-input v-model="dataForm.password" placeholder="密码" type="password"></el-input>
 					</el-form-item>
@@ -21,17 +24,14 @@
 						</el-select>
 					</el-form-item>
 
-					<el-form-item label="所属站点" prop="postIdList">
-						<el-select v-model="dataForm.tenantId" placeholder="所属站点" style="width: 100%">
-							<el-option v-for="post in siteList" :key="post.id" :label="post.siteName" :value="post.id"></el-option>
+					<el-form-item label="所属平台" prop="postIdList">
+						<el-select v-model="dataForm.platformId" placeholder="所属平台" style="width: 100%">
+							<el-option v-for="post in siteList" :key="post.id" :label="post.name" :value="post.id"></el-option>
 						</el-select>
 					</el-form-item>
 				</el-col>
 
 				<el-col :span="12">
-					<!--					<el-form-item prop="realName" label="姓名">-->
-					<!--						<el-input v-model="dataForm.realName" placeholder="姓名"></el-input>-->
-					<!--					</el-form-item>-->
 					<el-form-item label="性别" prop="gender">
 						<fast-dict-radio v-model="dataForm.gender" dict-type="user_gender"></fast-dict-radio>
 					</el-form-item>
@@ -81,7 +81,8 @@ const dataForm = reactive({
 	roleIdList: [] as any[],
 	postIdList: [] as any[],
 	status: 1,
-	tenantId: null
+	tenantId: null,
+	platformId: ''
 })
 
 const init = (id?: number) => {
@@ -118,7 +119,7 @@ const getRoleList = async () => {
 
 const getSiteList = async () => {
 	let res = await useSiteList()
-	siteList.value = res.data
+	siteList.value = res.data.list
 }
 
 // 获取信息

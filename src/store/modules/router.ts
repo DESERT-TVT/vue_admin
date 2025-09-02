@@ -20,7 +20,7 @@ export const useRouterStore = defineStore('routerStore', {
 			this.menuRoutes.push(...dashboardRoutes)
 
 			// 后端菜单
-			// this.menuRoutes.push(...routes)
+			this.menuRoutes.push(...routes)
 
 			// 常量菜单
 			if (constant.env.DEV) {
