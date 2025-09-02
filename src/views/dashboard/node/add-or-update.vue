@@ -44,7 +44,16 @@ const init = (row?: any) => {
 	if(row){
 		dataForm.name = row.name
 		dataForm.id = row.id
+	}else {
+		reset()
 	}
+}
+
+// 清空数据
+const reset = () => {
+	dataForm.name = ''
+	dataForm.platformId = ''
+	dataForm.id = ''
 }
 
 const dataFormRef = ref<FormInstance>()

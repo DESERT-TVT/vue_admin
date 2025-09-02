@@ -27,10 +27,17 @@ const init = (row?: any) => {
 	visible.value = true
 	// 重置表单数据
 	dataFormRef.value?.resetFields()
-	if(row){
+	if (row) {
 		dataForm.id = row.id
 		dataForm.name = row.name
+	} else {
+		reset()
 	}
+}
+
+const reset = () => {
+	dataForm.name = ''
+	dataForm.id = ''
 }
 
 const dataFormRef = ref<FormInstance>()

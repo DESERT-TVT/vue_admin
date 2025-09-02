@@ -1,6 +1,6 @@
 <template>
 	<el-dialog v-model="visible" :title="!dataForm.id ? $t('add') : $t('edit')" :close-on-click-modal="false" draggable width="30%">
-		<el-form  ref="dataFormRef" :model="dataForm" :rules="dataRules" label-width="auto" style="margin-top: 20px">
+		<el-form ref="dataFormRef" :model="dataForm" :rules="dataRules" label-width="auto" style="margin-top: 20px">
 			<el-form-item v-if="!dataForm.id" label="选择平台:">
 				<el-select
 					v-model="dataForm.platformId"
@@ -41,10 +41,18 @@ const init = (row?: any) => {
 	visible.value = true
 	// 重置表单数据
 	dataFormRef.value?.resetFields()
-	if(row){
+	if (row) {
 		dataForm.name = row.name
 		dataForm.id = row.id
+	} else {
+		reset()
 	}
+}
+
+const reset = () => {
+	dataForm.name = ''
+	dataForm.platformId = ''
+	dataForm.id = ''
 }
 
 const dataFormRef = ref<FormInstance>()

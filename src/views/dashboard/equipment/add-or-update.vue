@@ -30,7 +30,14 @@ const init = (row?: any) => {
 	if(row){
 		dataForm.name = row.name
 		dataForm.id = row.id
+	}else{
+		reset()
 	}
+}
+
+const reset = () => {
+	dataForm.name = ''
+	dataForm.id = ''
 }
 
 const dataFormRef = ref<FormInstance>()
