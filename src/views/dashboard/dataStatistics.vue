@@ -19,21 +19,16 @@
 			<div style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px">
 				<h1 style="margin-bottom: 10px">筛选数据</h1>
 				<el-form-item>
-					<el-select v-model="state.queryForm.groupColumn" placeholder="Select" style="width: 240px">
-						<el-option v-for="item in groupColumn" :key="item.value" :label="item.label" :value="item.value" />
-					</el-select>
+					<select-v2 v-model="state.queryForm.equipmentId" @changeLabel="aggregationDef[0].value = $event" v-show="state.startValue != 'equipment_id'" :fetch="equipmentReq" placeholder="设备名称搜索" style="width: 240px" />
 				</el-form-item>
 				<el-form-item>
-					<select-v2 v-model="state.queryForm.equipmentId" :fetch="equipmentReq" placeholder="设备名称搜索" style="width: 240px" />
+					<select-v2 v-model="state.queryForm.channelId" @changeLabel="aggregationDef[1].value = $event" :fetch="channelReq" placeholder="渠道名称搜索" v-show="state.startValue != 'channel_id'"  style="width: 240px" />
 				</el-form-item>
 				<el-form-item>
-					<select-v2 v-model="state.queryForm.channelId" :fetch="channelReq" placeholder="渠道名称搜索" style="width: 240px" />
+					<select-v2 v-model="state.queryForm.eventId" @changeLabel="aggregationDef[2].value = $event" :fetch="eventReq" placeholder="事件名称搜索" v-show="state.startValue != 'event_id'"  style="width: 240px" />
 				</el-form-item>
 				<el-form-item>
-					<select-v2 v-model="state.queryForm.eventId" :fetch="eventReq" placeholder="事件名称搜索" style="width: 240px" />
-				</el-form-item>
-				<el-form-item>
-					<select-v2 v-model="state.queryForm.nodeId" :fetch="nodeReq" placeholder="节点名称搜索" style="width: 240px" />
+					<select-v2 v-model="state.queryForm.nodeId" @changeLabel="aggregationDef[3].value = $event" :fetch="nodeReq" placeholder="节点名称搜索" v-show="state.startValue != 'node_id'"  style="width: 240px" />
 				</el-form-item>
 				<el-form-item>
 					<el-input v-model="state.queryForm.host" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
@@ -54,41 +49,10 @@
 			</div>
 			<div style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px">
 				<h1 style="margin-bottom: 10px">聚合数据</h1>
-				<el-form-item v-show="!state.queryForm.equipmentId">
-					<select-v2
-						v-model="aggregation.queryForm.equipmentId"
-						@changeLabel="aggregationDef[0].value = $event"
-						:fetch="equipmentReq"
-						placeholder="设备名称搜索"
-						style="width: 240px"
-					/>
-				</el-form-item>
-				<el-form-item v-show="!state.queryForm.channelId">
-					<select-v2
-						v-model="aggregation.queryForm.channelId"
-						@changeLabel="aggregationDef[1].value = $event"
-						:fetch="channelReq"
-						placeholder="渠道名称搜索"
-						style="width: 240px"
-					/>
-				</el-form-item>
-				<el-form-item v-show="!state.queryForm.eventId">
-					<select-v2
-						v-model="aggregation.queryForm.eventId"
-						@changeLabel="aggregationDef[2].value = $event"
-						:fetch="eventReq"
-						placeholder="事件名称搜索"
-						style="width: 240px"
-					/>
-				</el-form-item>
-				<el-form-item v-show="!state.queryForm.nodeId">
-					<select-v2
-						v-model="aggregation.queryForm.nodeId"
-						@changeLabel="aggregationDef[3].value = $event"
-						:fetch="nodeReq"
-						placeholder="节点名称搜索"
-						style="width: 240px"
-					/>
+				<el-form-item>
+					<el-select v-model="state.queryForm.groupColumn" placeholder="Select" style="width: 240px">
+						<el-option v-for="item in groupColumn" :key="item.value" :label="item.label" :value="item.value" />
+					</el-select>
 				</el-form-item>
 			</div>
 			<el-form-item>
@@ -97,7 +61,7 @@
 		</el-form>
 		<!-- 表格 -->
 		<el-table show-overflow-tooltip :data="state.dataList" border style="width: 100%; margin-bottom: 20px">
-			<el-table-column prop="name" :label="valueToLabelMap[state.startValue?? '']" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="name" :label="valueToLabelMap[state.startValue ?? '']" header-align="center" align="center" min-width="170" />
 			<el-table-column v-for="value in aggregationList" :label="value.label" header-align="center" align="center" min-width="170">
 				<default slot="default" slot-scope="scope"> {{ value.value }} </default>
 			</el-table-column>
@@ -202,8 +166,6 @@ const handleScroll = async (e: HTMLElement) => {
 		}
 	}
 }
-
-let equipmentName: string
 
 // 设备数据请求
 const equipmentReq: FetchV2 = {
@@ -325,6 +287,8 @@ const handleAggregation = () => {
 				value: item.value
 			}
 		})
+		console.log(aggregationList,'11');
+		
 }
 
 const getDataList = async () => {
