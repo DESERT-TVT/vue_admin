@@ -82,6 +82,9 @@
 						<el-option v-for="item in groupColumn" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
 				</el-form-item>
+				<el-form-item>
+					<el-input v-model="aggregation.queryForm.otherData" placeholder="索引参数" :prefix-icon="Search" clearable style="width: 240px"></el-input>
+				</el-form-item>
 			</div>
 			<el-form-item>
 				<el-button type="primary" @click="getDataList()">查询</el-button>
@@ -126,7 +129,8 @@ const state: IHooksOptions = reactive({
 		channelId: null,
 		eventId: null,
 		nodeId: null,
-		host: null
+		host: null,
+		otherData:null
 	},
 	startValue: groupColumn[0].value
 })
@@ -136,7 +140,8 @@ const aggregation: IHooksOptions = reactive({
 		equipmentId: null,
 		channelId: null,
 		eventId: null,
-		nodeId: null
+		nodeId: null,
+		otherData:null,
 	}
 })
 
