@@ -22,7 +22,7 @@
 					<select-v2
 						v-model="aggregation.queryForm.equipmentId"
 						@changeLabel="aggregationDef[0].value = $event"
-						v-if="state.startValue != 'equipment_id'"
+						v-if="state.queryForm.groupColumn != 'equipment_id'"
 						:fetch="equipmentReq"
 						placeholder="设备名称搜索"
 						style="width: 240px"
@@ -34,7 +34,7 @@
 						@changeLabel="aggregationDef[1].value = $event"
 						:fetch="channelReq"
 						placeholder="渠道名称搜索"
-						v-if="state.startValue != 'channel_id'"
+						v-if="state.queryForm.groupColumn != 'channel_id'"
 						style="width: 240px"
 					/>
 				</el-form-item>
@@ -44,7 +44,7 @@
 						@changeLabel="aggregationDef[2].value = $event"
 						:fetch="eventReq"
 						placeholder="事件名称搜索"
-						v-if="state.startValue != 'event_id'"
+						v-if="state.queryForm.groupColumn != 'event_id'"
 						style="width: 240px"
 					/>
 				</el-form-item>
@@ -54,12 +54,15 @@
 						@changeLabel="aggregationDef[3].value = $event"
 						:fetch="nodeReq"
 						placeholder="节点名称搜索"
-						v-if="state.startValue != 'node_id'"
+						v-if="state.queryForm.groupColumn != 'node_id'"
 						style="width: 240px"
 					/>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="aggregation.queryForm.host" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
+					<el-input v-model="aggregation.queryForm.host" v-if="state.queryForm.groupColumn != 'host'" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-input v-model="aggregation.queryForm.otherData" v-if="state.queryForm.groupColumn != 'other_data'" placeholder="索引参数" :prefix-icon="Search" clearable style="width: 240px"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker
@@ -81,9 +84,6 @@
 					<el-select v-model="state.queryForm.groupColumn" placeholder="Select" style="width: 240px">
 						<el-option v-for="item in groupColumn" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="aggregation.queryForm.otherData" placeholder="索引参数" :prefix-icon="Search" clearable style="width: 240px"></el-input>
 				</el-form-item>
 			</div>
 			<el-form-item>
@@ -116,7 +116,9 @@ const groupColumn: { label: string; value: string; labelName: string }[] = [
 	{ label: '设备', value: 'equipment_id', labelName: 'equipmentId' },
 	{ label: '渠道', value: 'channel_id', labelName: 'channelId' },
 	{ label: '事件', value: 'event_id', labelName: 'eventId' },
-	{ label: '节点', value: 'node_id', labelName: 'nodeId' }
+	{ label: '节点', value: 'node_id', labelName: 'nodeId' },
+	{ label: '其他数据', value: 'other_data', labelName: 'otherData' },
+	{ label: '域名', value: 'host', labelName: 'host' },
 ]
 const state: IHooksOptions = reactive({
 	dataList: [] as StaticListList[],

@@ -51,7 +51,6 @@ function handleClear(value: string) {
 const loading = ref(false)
 const options = ref<{ value: string | number; label: string }[]>([])
 const remoteMethod = async (query: string) => {
-	if (query !== '') {
 		loading.value = true
 		try {
 			const { data } = await service.get(props.fetch.url, {
@@ -69,9 +68,6 @@ const remoteMethod = async (query: string) => {
 		} finally {
 			loading.value = false
 		}
-	} else {
-		options.value = []
-	}
 }
 </script>
 
