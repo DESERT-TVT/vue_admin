@@ -40,6 +40,7 @@
 					range-separator="To"
 					format="YYYY/MM/DD"
 					:clearable="false"
+					:shortcuts="shortcuts"
 					start-placeholder="开始时间"
 					end-placeholder="结束时间"
 				/>
@@ -160,6 +161,35 @@ const channelReq: FetchV2 = {
 	}
 }
 
+const shortcuts = [
+  {
+    text: 'Last week',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last month',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last 3 months',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
 
 const date = ref([state.queryForm.start, state.queryForm.end])
 
