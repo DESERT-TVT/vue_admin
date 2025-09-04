@@ -109,15 +109,17 @@ const state: IHooksOptions = reactive({
 })
 
 // 设备数据请求
-const equipmentReq: FetchV2 = {
+const equipmentReq: FetchV2 = reactive({
 	url: '/admin/equipment/page',
 	params: {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
-}
+})
 
 // 节点数据请求
 const nodeReq: FetchV2 = {
@@ -126,7 +128,9 @@ const nodeReq: FetchV2 = {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
 }
 
@@ -137,7 +141,9 @@ const eventReq: FetchV2 = {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
 }
 
@@ -148,7 +154,9 @@ const channelReq: FetchV2 = {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
 }
 
