@@ -62,7 +62,7 @@
 					<el-input v-model="aggregation.queryForm.host" v-if="state.queryForm.groupColumn != 'host'" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="aggregation.queryForm.otherData" v-if="state.queryForm.groupColumn != 'other_data'" placeholder="索引参数" :prefix-icon="Search" clearable style="width: 240px"></el-input>
+					<el-input v-model="aggregation.queryForm.otherData" v-if="state.queryForm.groupColumn != 'other_data'" placeholder="其他数据" :prefix-icon="Search" clearable style="width: 240px"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker
