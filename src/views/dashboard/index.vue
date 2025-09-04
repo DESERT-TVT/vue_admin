@@ -92,13 +92,13 @@ import { useCrud } from '@/hooks'
 import { Search } from '@element-plus/icons-vue'
 import { platformApi, PlatformList } from '@/api/dataStatistics'
 import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
-
+import dayjs from 'dayjs'
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/data/page',
 	queryForm: {
 		platformId: 1,
-		start: '2025-01-01',
-		end: '2026-01-01',
+		start: dayjs().format("YYYY-MM-DD"),
+		end: dayjs().format("YYYY-MM-DD"),
 		sortColumn: 'create_time',
 		equipmentId: null,
 		channelId: null,

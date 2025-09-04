@@ -73,6 +73,7 @@
 						range-separator="To"
 						format="YYYY/MM/DD"
 						:clearable="false"
+						:shortcuts="shortcuts"
 						start-placeholder="开始时间"
 						end-placeholder="结束时间"
 					/>
@@ -110,7 +111,7 @@ import { Search } from '@element-plus/icons-vue'
 import { platformApi, PlatformList, staticApi, StaticListList } from '@/api/dataStatistics'
 import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
 import * as echarts from 'echarts'
-
+import dayjs from 'dayjs'
 // 数据分组字段
 const groupColumn: { label: string; value: string; labelName: string }[] = [
 	{ label: '设备', value: 'equipment_id', labelName: 'equipmentId' },
@@ -124,8 +125,8 @@ const state: IHooksOptions = reactive({
 	dataList: [] as StaticListList[],
 	queryForm: {
 		platformId: 1,
-		start: '2025-01-01',
-		end: '2026-01-01',
+		start: dayjs().format("YYYY-MM-DD"),
+		end: dayjs().format("YYYY-MM-DD"),
 		groupColumn: groupColumn[0].value,
 		equipmentId: null,
 		channelId: null,
@@ -146,6 +147,36 @@ const aggregation: IHooksOptions = reactive({
 		otherData:null,
 	}
 })
+
+const shortcuts = [
+  {
+    text: 'Last week',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last month',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last 3 months',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
 
 const date = ref([state.queryForm.start, state.queryForm.end])
 
