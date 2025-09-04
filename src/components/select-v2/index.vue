@@ -51,23 +51,32 @@ function handleClear(value: string) {
 const loading = ref(false)
 const options = ref<{ value: string | number; label: string }[]>([])
 const remoteMethod = async (query: string) => {
-		loading.value = true
-		try {
-			const { data } = await service.get(props.fetch.url, {
-				params: {
-					...props.fetch.params,
-					name: query
+	loading.value = true
+	try {
+		const { data } = await service.get(props.fetch.url, {
+			params: {
+				...props.fetch.params,
+				name: query
+			}
+		})
+		if (props.fetch.url === '/admin/channel/page') {
+			options.value = data.list.map((item: any) => {
+				return {
+					value: item.name,
+					label: item.name
 				}
 			})
+		} else {
 			options.value = data.list.map((item: any) => {
 				return {
 					value: item.id,
 					label: item.name
 				}
 			})
-		} finally {
-			loading.value = false
 		}
+	} finally {
+		loading.value = false
+	}
 }
 </script>
 

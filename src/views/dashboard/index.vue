@@ -20,7 +20,7 @@
 				<select-v2 v-model="state.queryForm.equipmentId" :fetch="equipmentReq" placeholder="设备名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<select-v2 v-model="state.queryForm.channelId" :fetch="channelReq" placeholder="渠道名称搜索" style="width: 240px" />
+				<select-v2 v-model="state.queryForm.channelName" :fetch="channelReq" placeholder="渠道名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
 				<select-v2 v-model="state.queryForm.eventId" :fetch="eventReq" placeholder="事件名称搜索" style="width: 240px" />
@@ -102,7 +102,7 @@ const state: IHooksOptions = reactive({
 		end: dayjs().format("YYYY-MM-DD"),
 		sortColumn: 'create_time',
 		equipmentId: null,
-		channelId: null,
+		channelName: null,
 		eventId: null,
 		nodeId: null,
 		host: null,

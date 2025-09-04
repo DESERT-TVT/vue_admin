@@ -30,11 +30,11 @@
 				</el-form-item>
 				<el-form-item>
 					<select-v2
-						v-model="aggregation.queryForm.channelId"
+						v-model="aggregation.queryForm.channelName"
 						@changeLabel="aggregationDef[1].value = $event"
 						:fetch="channelReq"
 						placeholder="渠道名称搜索"
-						v-if="state.queryForm.groupColumn != 'channel_id'"
+						v-if="state.queryForm.groupColumn != 'channel_name'"
 						style="width: 240px"
 					/>
 				</el-form-item>
@@ -115,7 +115,7 @@ import dayjs from 'dayjs'
 // 数据分组字段
 const groupColumn: { label: string; value: string; labelName: string }[] = [
 	{ label: '设备', value: 'equipment_id', labelName: 'equipmentId' },
-	{ label: '渠道', value: 'channel_id', labelName: 'channelId' },
+	{ label: '渠道', value: 'channel_name', labelName: 'channelName' },
 	{ label: '事件', value: 'event_id', labelName: 'eventId' },
 	{ label: '节点', value: 'node_id', labelName: 'nodeId' },
 	{ label: '其他数据', value: 'other_data', labelName: 'otherData' },
@@ -129,7 +129,7 @@ const state: IHooksOptions = reactive({
 		end: dayjs().format("YYYY-MM-DD"),
 		groupColumn: groupColumn[0].value,
 		equipmentId: null,
-		channelId: null,
+		channelName: null,
 		eventId: null,
 		nodeId: null,
 		host: null,
@@ -141,7 +141,7 @@ const state: IHooksOptions = reactive({
 const aggregation: IHooksOptions = reactive({
 	queryForm: {
 		equipmentId: null,
-		channelId: null,
+		channelName: null,
 		eventId: null,
 		nodeId: null,
 		otherData:null,
@@ -240,7 +240,9 @@ const equipmentReq: FetchV2 = {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
 }
 
@@ -251,7 +253,9 @@ const nodeReq: FetchV2 = {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
 }
 
@@ -262,7 +266,9 @@ const eventReq: FetchV2 = {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
 }
 
@@ -273,7 +279,9 @@ const channelReq: FetchV2 = {
 		page: 1,
 		limit: 1000,
 		name: '',
-		platformId: state.queryForm.platformId
+		get platformId() {
+      return state.queryForm.platformId
+    }
 	}
 }
 
@@ -329,7 +337,7 @@ const aggregationDef = reactive<{ label: string; value: string; valueField: stri
 	{
 		label: '渠道',
 		value: '',
-		valueField: 'channel_id'
+		valueField: 'channel_name'
 	},
 	{
 		label: '事件',
