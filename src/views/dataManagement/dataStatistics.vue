@@ -104,7 +104,7 @@
 		</el-card>
 	</el-card>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="DataManagementDataStatistics">
 import { IHooksOptions } from '@/hooks/interface'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { Search } from '@element-plus/icons-vue'

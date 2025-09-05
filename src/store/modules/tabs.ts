@@ -21,7 +21,6 @@ export const useTabsStore = defineStore('tabsStore', {
 			if (this.cachedViews.includes(view.name)) {
 				return
 			}
-
 			if (view.meta.cache) {
 				this.cachedViews.push(view.name)
 			}

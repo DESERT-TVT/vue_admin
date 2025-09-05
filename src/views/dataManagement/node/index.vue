@@ -23,7 +23,6 @@
 				<el-button @click="getDataList()">搜索</el-button>
 			</el-form-item>
 			<el-form-item>
-
 				<el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
 			</el-form-item>
 		</el-form>
@@ -39,14 +38,14 @@
 			@sort-change="sortChangeHandle"
 		>
 			<el-table-column type="selection" header-align="center" align="center" width="38" />
-			<el-table-column prop="id" label="渠道id" header-align="center" align="center" min-width="170" />
-			<el-table-column prop="name" label="渠道name" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="id" label="节点id" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="name" label="节点name" header-align="center" align="center" min-width="170" />
 			<el-table-column prop="platformId" label="平台id" header-align="center" align="center" min-width="170" />
 			<el-table-column prop="createTime" label="创建时间" header-align="center" align="center" min-width="170" />
 			<el-table-column prop="creator" label="创建人" header-align="center" align="center" min-width="170" />
 			<el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
 				<template #default="scope">
-					<el-button link type="primary" @click="addOrUpdateHandle(scope.row)">修改</el-button>
+				<el-button link type="primary" @click="addOrUpdateHandle(scope.row)">修改</el-button>
 					<el-button link type="primary" @click="deleteGetHandle({ id: scope.row.id })">删除</el-button>
 				</template>
 			</el-table-column>
@@ -68,7 +67,7 @@
 		<add-or-update ref="addOrUpdateRef" @refresh-data-list="getDataList" />
 	</el-card>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="DataManagementNodeIndex">
 import { IHooksOptions } from '@/hooks/interface'
 import { onMounted, reactive, ref } from 'vue'
 import AddOrUpdate from './add-or-update.vue'
@@ -77,8 +76,8 @@ import { Search } from '@element-plus/icons-vue'
 import { platformApi, PlatformList } from '@/api/dataStatistics'
 
 const state: IHooksOptions = reactive({
-	dataListUrl: '/admin/channel/page',
-	deleteUrl: '/admin/delete/channel',
+	dataListUrl: '/admin/node/page',
+	deleteUrl: '/admin/delete/node',
 	createdIsNeed: false,
 	queryForm: {
 		name: undefined,

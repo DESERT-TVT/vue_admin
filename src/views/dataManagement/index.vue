@@ -91,11 +91,10 @@
 		</el-pagination>
 	</el-card>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="DataManagementIndex">
 import { IHooksOptions } from '@/hooks/interface'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useCrud } from '@/hooks'
-import { Search } from '@element-plus/icons-vue'
 import { platformApi, PlatformList } from '@/api/dataStatistics'
 import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
 import dayjs from 'dayjs'

@@ -68,7 +68,7 @@
 		<add-or-update ref="addOrUpdateRef" @refresh-data-list="getDataList" />
 	</el-card>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="DataManagementEquipmentIndex">
 import { IHooksOptions } from '@/hooks/interface'
 import { onMounted, reactive, ref } from 'vue'
 import AddOrUpdate from './add-or-update.vue'

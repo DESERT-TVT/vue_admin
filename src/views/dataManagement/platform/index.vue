@@ -55,10 +55,10 @@
 		<add-or-update ref="addOrUpdateRef" @refresh-data-list="getDataList" />
 	</el-card>
 </template>
-<script setup lang="ts">
+<script setup lang="ts"  name="DataManagementPlatformIndex">
 import { IHooksOptions } from '@/hooks/interface'
 import { reactive, ref } from 'vue'
-import AddOrUpdate from '@/views/dashboard/platform/add-or-update.vue'
+import AddOrUpdate from './add-or-update.vue'
 import { useCrud } from '@/hooks'
 import { Search } from '@element-plus/icons-vue'
 
