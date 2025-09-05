@@ -16,8 +16,8 @@ export const useRouterStore = defineStore('routerStore', {
 			const routes = generateRoutes(data)
 
 			// 控制台菜单
-			// const dashboardRoutes = generateRoutes(dashboardMenu)
-			// this.menuRoutes.push(...dashboardRoutes)
+			const dashboardRoutes = generateRoutes(dashboardMenu)
+			this.menuRoutes.push(...dashboardRoutes)
 
 			// 后端菜单
 			this.menuRoutes.push(...routes)
