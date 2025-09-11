@@ -20,18 +20,8 @@
 				<h1 style="margin-bottom: 10px">筛选数据</h1>
 				<el-form-item>
 					<select-v2
-						v-model="aggregation.queryForm.equipmentId"
-						@changeLabel="aggregationDef[0].value = $event"
-						v-if="state.queryForm.groupColumn != 'equipment_id'"
-						:fetch="equipmentReq"
-						placeholder="设备名称搜索"
-						style="width: 240px"
-					/>
-				</el-form-item>
-				<el-form-item>
-					<select-v2
 						v-model="aggregation.queryForm.channelName"
-						@changeLabel="aggregationDef[1].value = $event"
+						@changeLabel="aggregationDef[0].value = $event"
 						:fetch="channelReq"
 						placeholder="渠道名称搜索"
 						v-if="state.queryForm.groupColumn != 'channel_name'"
@@ -39,30 +29,15 @@
 					/>
 				</el-form-item>
 				<el-form-item>
-					<select-v2
-						v-model="aggregation.queryForm.eventId"
-						@changeLabel="aggregationDef[2].value = $event"
-						:fetch="eventReq"
-						placeholder="事件名称搜索"
-						v-if="state.queryForm.groupColumn != 'event_id'"
+					<el-select-v2
+						@change="aggregationDef[1].value = TypeMap.find(item => item.value == $event)?.label || ''"
+						v-model="aggregation.queryForm.type"
+						v-if="state.queryForm.groupColumn != 'type'"
+						clearable
+						:options="TypeMap"
+						placeholder="选择事件类型"
 						style="width: 240px"
 					/>
-				</el-form-item>
-				<el-form-item>
-					<select-v2
-						v-model="aggregation.queryForm.nodeId"
-						@changeLabel="aggregationDef[3].value = $event"
-						:fetch="nodeReq"
-						placeholder="节点名称搜索"
-						v-if="state.queryForm.groupColumn != 'node_id'"
-						style="width: 240px"
-					/>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="aggregation.queryForm.otherData" @change="aggregationDef[4].value = $event" v-if="state.queryForm.groupColumn != 'other_data'" placeholder="其他数据" :prefix-icon="Search" clearable style="width: 240px"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-input v-model="aggregation.queryForm.host" @change="aggregationDef[5].value = $event" v-if="state.queryForm.groupColumn != 'host'" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker
@@ -106,76 +81,64 @@
 </template>
 <script setup lang="ts" name="DataManagementDataStatistics">
 import { IHooksOptions } from '@/hooks/interface'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { Search } from '@element-plus/icons-vue'
-import { platformApi, PlatformList, staticApi, StaticListList } from '@/api/dataStatistics'
+import { onMounted, reactive, ref, watch } from 'vue'
+import { platformApi, PlatformList, downStaticApi, StaticListList } from '@/api/dataStatistics'
 import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 // 数据分组字段
 const groupColumn: { label: string; value: string; labelName: string }[] = [
-	{ label: '设备', value: 'equipment_id', labelName: 'equipmentId' },
 	{ label: '渠道', value: 'channel_name', labelName: 'channelName' },
-	{ label: '事件', value: 'event_id', labelName: 'eventId' },
-	{ label: '节点', value: 'node_id', labelName: 'nodeId' },
-	{ label: '其他数据', value: 'other_data', labelName: 'otherData' },
-	{ label: '域名', value: 'host', labelName: 'host' },
+	{ label: '事件', value: 'type', labelName: 'type' }
 ]
 const state: IHooksOptions = reactive({
 	dataList: [] as StaticListList[],
 	queryForm: {
 		platformId: 1,
-		start: dayjs().format("YYYY-MM-DD"),
-		end: dayjs().format("YYYY-MM-DD"),
+		start: dayjs().format('YYYY-MM-DD'),
+		end: dayjs().format('YYYY-MM-DD'),
 		groupColumn: groupColumn[0].value,
-		equipmentId: null,
-		channelName: null,
-		eventId: null,
-		nodeId: null,
-		host: null,
-		otherData:null
+		type: null,
+		channelName: null
 	},
 	startValue: groupColumn[0].value
 })
 
 const aggregation: IHooksOptions = reactive({
 	queryForm: {
-		equipmentId: null,
-		channelName: null,
-		eventId: null,
-		nodeId: null,
-		otherData:null,
+		type: null,
+		channelName: null
 	}
 })
 
 const shortcuts = [
-  {
-    text: 'Last week',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
-    },
-  },
-  {
-    text: 'Last month',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
-    },
-  },
-  {
-    text: 'Last 3 months',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
-    },
-  },
+	{
+		text: 'Last week',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+			return [start, end]
+		}
+	},
+	{
+		text: 'Last month',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+			return [start, end]
+		}
+	},
+	{
+		text: 'Last 3 months',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+			return [start, end]
+		}
+	}
 ]
 
 const date = ref([state.queryForm.start, state.queryForm.end])
@@ -189,6 +152,19 @@ watch(date, val => {
 		state.queryForm.end = ''
 	}
 })
+
+// 事件类型
+const TypeMap = [
+	{
+		label: '下载',
+		value: 1
+	},
+	{
+		label: '安装',
+		value: 2
+	}
+]
+
 // 分页平台查询
 const options = ref<PlatformList[]>([])
 const loading = ref(false)
@@ -233,45 +209,6 @@ const handleScroll = async (e: HTMLElement) => {
 	}
 }
 
-// 设备数据请求
-const equipmentReq: FetchV2 = {
-	url: '/admin/equipment/page',
-	params: {
-		page: 1,
-		limit: 1000,
-		name: '',
-		get platformId() {
-      return state.queryForm.platformId
-    }
-	}
-}
-
-// 节点数据请求
-const nodeReq: FetchV2 = {
-	url: '/admin/node/page',
-	params: {
-		page: 1,
-		limit: 1000,
-		name: '',
-		get platformId() {
-      return state.queryForm.platformId
-    }
-	}
-}
-
-// 事件数据请求
-const eventReq: FetchV2 = {
-	url: '/admin/event/page',
-	params: {
-		page: 1,
-		limit: 1000,
-		name: '',
-		get platformId() {
-      return state.queryForm.platformId
-    }
-	}
-}
-
 //渠道数据请求
 const channelReq: FetchV2 = {
 	url: '/admin/channel/page',
@@ -280,8 +217,8 @@ const channelReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
 
@@ -330,11 +267,6 @@ const init = () => {
 //聚合方法
 const aggregationDef = reactive<{ label: string; value: string; valueField: string }[]>([
 	{
-		label: '设备',
-		value: '',
-		valueField: 'equipment_id'
-	},
-	{
 		label: '渠道',
 		value: '',
 		valueField: 'channel_name'
@@ -342,23 +274,7 @@ const aggregationDef = reactive<{ label: string; value: string; valueField: stri
 	{
 		label: '事件',
 		value: '',
-		valueField: 'event_id'
-	},
-	{
-		label: '节点',
-		value: '',
-		valueField: 'node_id'
-	},
-	{
-		label: '其他数据',
-		value: '',
-		valueField: 'other_data'
-	}
-	,
-	{
-		label: '域名',
-		value: '',
-		valueField: 'host'
+		valueField: 'type'
 	}
 ])
 let aggregationList = reactive<{ label: string; value: string }[]>([])
@@ -389,7 +305,7 @@ const getDataList = async () => {
 	}
 	// 聚合数据
 	handleAggregation()
-	await staticApi(merged).then(res => {
+	await downStaticApi(merged).then(res => {
 		state.dataList = res.data
 	})
 	// 绘制图表

@@ -4,6 +4,18 @@
 			<el-form-item label="平台名称" prop="name">
 				<el-input v-model="dataForm.name" placeholder="请输入平台名称" clearable></el-input>
 			</el-form-item>
+			<el-form-item label="安卓下载链接" prop="androidDownload">
+				<el-input v-model="dataForm.androidDownload" placeholder="请输入安卓下载链接" clearable></el-input>
+			</el-form-item>
+			<el-form-item label="ios下载链接" prop="iosDownload">
+				<el-input v-model="dataForm.iosDownload" placeholder="请输入ios下载链接" clearable></el-input>
+			</el-form-item>
+			<el-form-item label="安卓scheme" prop="androidScheme">
+				<el-input v-model="dataForm.androidScheme" placeholder="请输入安卓scheme" clearable></el-input>
+			</el-form-item>
+			<el-form-item label="ios scheme" prop="iosScheme">
+				<el-input v-model="dataForm.iosScheme" placeholder="请输入ios scheme" clearable></el-input>
+			</el-form-item>
 		</el-form>
 		<template #footer>
 			<el-button @click="visible = false">取消</el-button>
@@ -28,8 +40,7 @@ const init = (row?: any) => {
 	// 重置表单数据
 	dataFormRef.value?.resetFields()
 	if (row) {
-		dataForm.id = row.id
-		dataForm.name = row.name
+		Object.assign(dataForm, row)
 	} else {
 		reset()
 	}
@@ -38,12 +49,20 @@ const init = (row?: any) => {
 const reset = () => {
 	dataForm.name = ''
 	dataForm.id = ''
+	dataForm.androidDownload = ''
+	dataForm.iosDownload = ''
+	dataForm.androidScheme = ''
+	dataForm.iosScheme = ''
 }
 
 const dataFormRef = ref<FormInstance>()
 const dataForm = reactive({
 	name: ref<any>(),
-	id: ref<any>()
+	id: ref<any>(),
+	androidDownload: ref<any>(),
+	iosDownload: ref<any>(),
+	androidScheme: ref<any>(),
+	iosScheme: ref<any>()
 })
 
 const dataRules = reactive<FormRules<typeof dataForm>>({

@@ -29,6 +29,10 @@
 			<el-table-column prop="createTime" label="创建时间" header-align="center" align="center" min-width="170" />
 			<el-table-column prop="creator" label="创建人" header-align="center" align="center" min-width="170" />
 			<el-table-column prop="secret" label="平台密钥" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="androidDownload" label="安卓下载链接" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="iosDownload" label="ios下载链接" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="androidScheme" label="安卓scheme" header-align="center" align="center" min-width="170" />
+			<el-table-column prop="iosScheme" label="ios scheme" header-align="center" align="center" min-width="170" />
 			<el-table-column label="操作" fixed="right" header-align="center" align="center" width="150">
 				<template #default="scope">
 					<el-button link type="primary" @click="addOrUpdateHandle(scope.row)">

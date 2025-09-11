@@ -44,6 +44,11 @@ export const staticApi = (params: StaticList) => {
 	return service.get('/admin/data/static', { params })
 }
 
+export const downStaticApi = (params: StaticList) => {
+	return service.get('/admin/data/down/static', { params })
+}
+
+
 export const addPlatformSubmitApi = (params: any) => {
 	return service.get('/admin/add/platform', {params})
 }
