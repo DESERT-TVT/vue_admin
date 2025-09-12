@@ -59,6 +59,7 @@
 					{{ TypeMap.find(item => item.value === scope.row.type)?.label }}
 				</template>
 			</el-table-column>
+			<el-table-column prop="clientId" label="客户端ID" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="userAgent" label="用户设备" header-align="center" align="center" min-width="150" />
 		</el-table>
 
