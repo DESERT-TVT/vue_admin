@@ -23,12 +23,6 @@
 				<el-select-v2 v-model="state.queryForm.type" :options="TypeMap" placeholder="选择事件类型" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<el-input v-model="state.queryForm.otherData" placeholder="其他数据" clearable style="width: 240px"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-input v-model="state.queryForm.host" placeholder="输入域名" clearable style="width: 215px"></el-input>
-			</el-form-item>
-			<el-form-item>
 				<el-date-picker
 					v-model="date"
 					type="daterange"
