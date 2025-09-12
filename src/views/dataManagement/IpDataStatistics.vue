@@ -18,13 +18,18 @@
 			</el-form-item>
 			<div style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px">
 				<h1 style="margin-bottom: 10px">筛选数据</h1>
+        <el-form-item>
+					<el-select v-model="state.queryForm.queryColumn" placeholder="Select" style="width: 240px">
+						<el-option v-for="item in queryColumn" :key="item.value" :label="item.label" :value="item.value" />
+					</el-select>
+				</el-form-item>
 				<el-form-item>
 					<select-v2
 						v-model="aggregation.queryForm.channelName"
 						@changeLabel="aggregationDef[0].value = $event"
 						:fetch="channelReq"
 						placeholder="渠道名称搜索"
-						v-if="state.queryForm.groupColumn != 'channel_name'"
+						v-if="state.queryForm.queryColumn != 'channel_name'"
 						style="width: 240px"
 					/>
 				</el-form-item>
@@ -32,7 +37,7 @@
 					<el-select-v2
 						@change="aggregationDef[1].value = TypeMap.find(item => item.value == $event)?.label || ''"
 						v-model="aggregation.queryForm.type"
-						v-if="state.queryForm.groupColumn != 'type'"
+						v-if="state.queryForm.queryColumn != 'type'"
 						clearable
 						:options="TypeMap"
 						placeholder="选择事件类型"
@@ -54,57 +59,42 @@
 					/>
 				</el-form-item>
 			</div>
-			<div style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px">
-				<h1 style="margin-bottom: 10px">聚合数据</h1>
-				<el-form-item>
-					<el-select v-model="state.queryForm.groupColumn" placeholder="Select" style="width: 240px">
-						<el-option v-for="item in groupColumn" :key="item.value" :label="item.label" :value="item.value" />
-					</el-select>
-				</el-form-item>
-			</div>
 			<el-form-item>
 				<el-button type="primary" @click="getDataList()">查询</el-button>
 			</el-form-item>
 		</el-form>
 		<!-- 表格 -->
-		<el-table show-overflow-tooltip :data="state.dataList" border style="width: 100%; margin-bottom: 20px">
-			<el-table-column prop="name" :label="valueToLabelMap[state.startValue ?? '']" header-align="center" align="center" min-width="170" />
+		<el-table show-overflow-tooltip :data="(state.dataList ?? []).map(item => ({ value: item }))" border style="width: 100%; margin-bottom: 20px">
+			<el-table-column prop="value" :label="valueToLabelMap[state.startValue ?? '']" header-align="center" align="center" min-width="170" />
 			<el-table-column v-for="value in aggregationList" :label="value.label" header-align="center" align="center" min-width="170">
 				<default slot="default" slot-scope="scope"> {{ value.value }} </default>
 			</el-table-column>
-			<el-table-column prop="value" label="数量" header-align="center" align="center" min-width="150" />
 		</el-table>
-		<el-card>
-			<div ref="main" style="width: 100%; height: calc(100vh - 110px - var(--theme-header-height))"></div>
-		</el-card>
 	</el-card>
 </template>
 <script setup lang="ts" name="DataManagementDataStatistics">
 import { IHooksOptions } from '@/hooks/interface'
 import { onMounted, reactive, ref, watch } from 'vue'
-import { platformApi, PlatformList, downStaticApi, StaticListList } from '@/api/dataStatistics'
+import { platformApi, PlatformList, StaticListList, ipStaticApi } from '@/api/dataStatistics'
 import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
-import * as echarts from 'echarts'
 import dayjs from 'dayjs'
 // 数据分组字段
-const groupColumn: { label: string; value: string; labelName: string }[] = [
-	{ label: '渠道', value: 'channel_name', labelName: 'channelName' },
-	{ label: '事件', value: 'type', labelName: 'type' },
-	{ label: 'IP', value: 'ip_address', labelName: 'ip_address' },
-	{ label: 'UUID', value: 'uuid', labelName: 'uuid' },
-	{ label: '客户端ID', value: 'client_id', labelName: 'client_id' }
+const queryColumn: { label: string; value: string; labelName: string }[] = [
+	{ label: 'ip地址', value: 'ip_address', labelName: 'ip_address' },
+	{ label: 'uuid', value: 'uuid', labelName: 'uuid' },
+	{ label: '客户端id', value: 'client_id', labelName: 'client_id' },
 ]
 const state: IHooksOptions = reactive({
-	dataList: [] as StaticListList[],
+	dataList: [],
 	queryForm: {
 		platformId: 1,
 		start: dayjs().format('YYYY-MM-DD'),
 		end: dayjs().format('YYYY-MM-DD'),
-		groupColumn: groupColumn[0].value,
+		queryColumn: queryColumn[0].value,
 		type: null,
 		channelName: null
 	},
-	startValue: groupColumn[0].value
+	startValue: queryColumn[0].value
 })
 
 const aggregation: IHooksOptions = reactive({
@@ -225,48 +215,7 @@ const channelReq: FetchV2 = {
 	}
 }
 
-const valueToLabelMap = Object.fromEntries((groupColumn ?? []).map(item => [item.value, item.label]))
-// 图表数据
-const main = ref()
-const init = () => {
-	const myChart = echarts.init(main.value)
-	// 绘制图表
-	myChart.setOption({
-		title: {
-			text: '数据统计'
-		},
-		tooltip: {
-			trigger: 'item',
-			formatter: '{a} <br/>{b}: {c} ({d}%)'
-		},
-		legend: {
-			data: [valueToLabelMap[state.queryForm.groupColumn] + '数量']
-		},
-		toolbox: {
-			feature: {
-				saveAsImage: {}
-			}
-		},
-		grid: {
-			left: '3%',
-			right: '4%',
-			bottom: '3%',
-			containLabel: true
-		},
-		series: [
-			{
-				name: valueToLabelMap[state.queryForm.groupColumn] + '数量',
-				type: 'pie',
-				stack: 'Total',
-				areaStyle: {},
-				emphasis: {
-					focus: 'series'
-				},
-				data: state.dataList
-			}
-		]
-	})
-}
+const valueToLabelMap = Object.fromEntries((queryColumn ?? []).map(item => [item.value, item.label]))
 //聚合方法
 const aggregationDef = reactive<{ label: string; value: string; valueField: string }[]>([
 	{
@@ -294,25 +243,23 @@ const handleAggregation = () => {
 }
 
 function getLabelNameByValue(value: any) {
-	const item = groupColumn.find((col: { label: string; value: string; labelName: string }) => col.value === value)
+	const item = queryColumn.find((col: { label: string; value: string; labelName: string }) => col.value === value)
 	return item ? item.labelName : null
 }
 
 const getDataList = async () => {
-	state.startValue = state.queryForm.groupColumn
+	state.startValue = state.queryForm.queryColumn
 	const merged: any = { ...state.queryForm }
 	for (const key in state.queryForm) {
-		if (merged[key] == null && key != getLabelNameByValue(state.queryForm.groupColumn)) {
+		if (merged[key] == null && key != getLabelNameByValue(state.queryForm.queryColumn)) {
 			merged[key] = aggregation.queryForm[key]
 		}
 	}
 	// 聚合数据
 	handleAggregation()
-	await downStaticApi(merged).then(res => {
+	await ipStaticApi(merged).then(res => {
 		state.dataList = res.data
 	})
-	// 绘制图表
-	init()
 }
 
 onMounted(async () => {
