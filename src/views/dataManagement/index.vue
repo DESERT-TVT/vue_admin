@@ -20,7 +20,7 @@
 				<select-v2 v-model="state.queryForm.equipmentId" :fetch="equipmentReq" placeholder="设备名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<select-v2 v-model="state.queryForm.channelName" :fetch="channelReq" placeholder="渠道名称搜索" style="width: 240px" />
+				<select-v2 v-model="state.queryForm.channelName" :fetch="channelReq" :pureMode="true" placeholder="渠道名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
 				<select-v2 v-model="state.queryForm.eventId" :fetch="eventReq" placeholder="事件名称搜索" style="width: 240px" />
@@ -29,8 +29,8 @@
 				<select-v2 v-model="state.queryForm.nodeId" :fetch="nodeReq" placeholder="节点名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-					<el-input v-model="state.queryForm.otherData" placeholder="其他数据" clearable style="width: 240px"></el-input>
-				</el-form-item>
+				<el-input v-model="state.queryForm.otherData" placeholder="其他数据" clearable style="width: 240px"></el-input>
+			</el-form-item>
 			<el-form-item>
 				<el-input v-model="state.queryForm.host" placeholder="输入域名" clearable style="width: 215px"></el-input>
 			</el-form-item>
@@ -66,7 +66,13 @@
 			<el-table-column prop="userId" label="用户id" header-align="center" align="center" min-width="100" />
 			<el-table-column prop="ipAddress" label="ip" header-align="center" align="center" min-width="100" />
 			<el-table-column prop="equipmentName" label="设备名称" header-align="center" align="center" min-width="170" />
-			<el-table-column prop="channelName" label="	渠道名称" header-align="center" align="center" min-width="200" />
+			<!-- <el-table-column> -->
+			<el-table-column prop="channelName" label="渠道名称" header-align="center" align="center" min-width="200">
+				<template #default="scope">
+					<span v-if="scope.row.channelName">{{ getChannelLabel(scope.row.channelName) }}</span>
+					<span v-else>--</span>
+				</template>
+			</el-table-column>
 			<el-table-column prop="eventName" label="事件名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="nodeName" label="节点名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="platformName" label="平台名称" header-align="center" align="center" min-width="150" />
@@ -95,15 +101,15 @@
 import { IHooksOptions } from '@/hooks/interface'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useCrud } from '@/hooks'
-import { platformApi, PlatformList } from '@/api/dataStatistics'
+import { channelReqFetchApi, platformApi, PlatformList } from '@/api/dataStatistics'
 import selectV2, { FetchV2 } from '@/components/select-v2/index.vue'
 import dayjs from 'dayjs'
 const state: IHooksOptions = reactive({
 	dataListUrl: '/admin/data/page',
 	queryForm: {
 		platformId: 1,
-		start: dayjs().format("YYYY-MM-DD"),
-		end: dayjs().format("YYYY-MM-DD"),
+		start: dayjs().format('YYYY-MM-DD'),
+		end: dayjs().format('YYYY-MM-DD'),
 		sortColumn: 'create_time',
 		equipmentId: null,
 		channelName: null,
@@ -122,8 +128,8 @@ const equipmentReq: FetchV2 = reactive({
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 })
 
@@ -135,8 +141,8 @@ const nodeReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
 
@@ -148,8 +154,8 @@ const eventReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
 
@@ -161,39 +167,62 @@ const channelReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
+// 获取渠道
+const channelMap = reactive(new Map<number, string>())
+const getChannelName = async () => {
+	const res = await channelReqFetchApi({
+		page: 1,
+		limit: 1000,
+		name: '',
+		get platformId() {
+			return state.queryForm.platformId
+		}
+	})
+	channelMap.clear()
+	res.data.list.forEach((item: { id: number; name: string }) => {
+		channelMap.set(item.id, item.name)
+	})
+}
 
+// 渠道名称映射
+const getChannelLabel = (id: number) => {
+	if (!channelMap.size) return '加载中...'
+	return channelMap.get(Number(id)) || ''
+}
+
+// 日期快捷选项
 const shortcuts = [
-  {
-    text: 'Last week',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
-    },
-  },
-  {
-    text: 'Last month',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
-    },
-  },
-  {
-    text: 'Last 3 months',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
-    },
-  },
+	{
+		text: 'Last week',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+			return [start, end]
+		}
+	},
+	{
+		text: 'Last month',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+			return [start, end]
+		}
+	},
+	{
+		text: 'Last 3 months',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+			return [start, end]
+		}
+	}
 ]
 
 const date = ref([state.queryForm.start, state.queryForm.end])
@@ -227,6 +256,7 @@ onMounted(async () => {
 	if (total.value > 0) {
 		state.queryForm.platformId = options.value[0].id // 默认选中第一项
 	}
+	await getChannelName()
 })
 
 // 下拉展开时刷新第一页

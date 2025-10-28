@@ -26,6 +26,7 @@ const props = defineProps<{
 	modelValue: string | number | null
 	placeholder: string
 	fetch: FetchV2
+	pureMode?: boolean
 }>()
 
 // 定义事件
@@ -59,7 +60,7 @@ const remoteMethod = async (query: string) => {
 				name: query
 			}
 		})
-		if (props.fetch.url === '/admin/channel/page') {
+		if (props.fetch.url === '/admin/channel/page' && !props.pureMode) {
 			options.value = data.list.map((item: any) => {
 				return {
 					value: item.name,

@@ -91,3 +91,6 @@ export const addChannelSubmitApi = (params: any) => {
 export const updateChannelSubmitApi = (params: any) => {
 	return service.get('/admin/update/channel', {params})
 }
+export const channelReqFetchApi = (params: any) => {
+	return service.get('/admin/channel/page', { params })
+}
