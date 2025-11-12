@@ -59,10 +59,26 @@
 					/>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="aggregation.queryForm.otherData" @change="aggregationDef[4].value = $event" v-if="state.queryForm.groupColumn != 'other_data'" placeholder="其他数据" :prefix-icon="Search" clearable style="width: 240px"></el-input>
+					<el-input
+						v-model="aggregation.queryForm.otherData"
+						@change="aggregationDef[4].value = $event"
+						v-if="state.queryForm.groupColumn != 'other_data'"
+						placeholder="其他数据"
+						:prefix-icon="Search"
+						clearable
+						style="width: 240px"
+					></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="aggregation.queryForm.host" @change="aggregationDef[5].value = $event" v-if="state.queryForm.groupColumn != 'host'" placeholder="输入域名" :prefix-icon="Search" clearable style="width: 240px"></el-input>
+					<el-input
+						v-model="aggregation.queryForm.host"
+						@change="aggregationDef[5].value = $event"
+						v-if="state.queryForm.groupColumn != 'host'"
+						placeholder="输入域名"
+						:prefix-icon="Search"
+						clearable
+						style="width: 240px"
+					></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-date-picker
@@ -119,21 +135,21 @@ const groupColumn: { label: string; value: string; labelName: string }[] = [
 	{ label: '事件', value: 'event_id', labelName: 'eventId' },
 	{ label: '节点', value: 'node_id', labelName: 'nodeId' },
 	{ label: '其他数据', value: 'other_data', labelName: 'otherData' },
-	{ label: '域名', value: 'host', labelName: 'host' },
+	{ label: '域名', value: 'host', labelName: 'host' }
 ]
 const state: IHooksOptions = reactive({
 	dataList: [] as StaticListList[],
 	queryForm: {
 		platformId: 1,
-		start: dayjs().format("YYYY-MM-DD"),
-		end: dayjs().format("YYYY-MM-DD"),
+		start: dayjs().format('YYYY-MM-DD'),
+		end: dayjs().format('YYYY-MM-DD'),
 		groupColumn: groupColumn[0].value,
 		equipmentId: null,
 		channelName: null,
 		eventId: null,
 		nodeId: null,
 		host: null,
-		otherData:null
+		otherData: null
 	},
 	startValue: groupColumn[0].value
 })
@@ -144,38 +160,38 @@ const aggregation: IHooksOptions = reactive({
 		channelName: null,
 		eventId: null,
 		nodeId: null,
-		otherData:null,
+		otherData: null
 	}
 })
 
 const shortcuts = [
-  {
-    text: 'Last week',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
-    },
-  },
-  {
-    text: 'Last month',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
-    },
-  },
-  {
-    text: 'Last 3 months',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
-    },
-  },
+	{
+		text: 'Last week',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+			return [start, end]
+		}
+	},
+	{
+		text: 'Last month',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+			return [start, end]
+		}
+	},
+	{
+		text: 'Last 3 months',
+		value: () => {
+			const end = new Date()
+			const start = new Date()
+			start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+			return [start, end]
+		}
+	}
 ]
 
 const date = ref([state.queryForm.start, state.queryForm.end])
@@ -222,7 +238,9 @@ const handleVisibleChange = async (visible: boolean) => {
 // 下拉滚动触底加载更多
 const handleScroll = async (e: HTMLElement) => {
 	const wrap = document.querySelector('.el-select-dropdown .el-select-dropdown__wrap') as HTMLElement
-	if (!wrap) return
+	if (!wrap) {
+		return
+	}
 	const { clientHeight, scrollHeight } = wrap
 	if (e.scrollTop + clientHeight >= scrollHeight - 5) {
 		if (options.value.length < total.value && !loading.value) {
@@ -241,8 +259,8 @@ const equipmentReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
 
@@ -254,8 +272,8 @@ const nodeReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
 
@@ -267,8 +285,8 @@ const eventReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
 
@@ -280,8 +298,8 @@ const channelReq: FetchV2 = {
 		limit: 1000,
 		name: '',
 		get platformId() {
-      return state.queryForm.platformId
-    }
+			return state.queryForm.platformId
+		}
 	}
 }
 
@@ -353,8 +371,7 @@ const aggregationDef = reactive<{ label: string; value: string; valueField: stri
 		label: '其他数据',
 		value: '',
 		valueField: 'other_data'
-	}
-	,
+	},
 	{
 		label: '域名',
 		value: '',

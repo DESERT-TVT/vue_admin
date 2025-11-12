@@ -23,7 +23,6 @@
 				<el-button @click="getDataList()">搜索</el-button>
 			</el-form-item>
 			<el-form-item>
-
 				<el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
 			</el-form-item>
 		</el-form>

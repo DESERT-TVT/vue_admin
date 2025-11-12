@@ -20,7 +20,7 @@
 				<select-v2 v-model="state.queryForm.equipmentId" :fetch="equipmentReq" placeholder="设备名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
-				<select-v2 v-model="state.queryForm.channelName" :fetch="channelReq" :pureMode="true" placeholder="渠道名称搜索" style="width: 240px" />
+				<select-v2 v-model="state.queryForm.channelName" :fetch="channelReq" placeholder="渠道名称搜索" style="width: 240px" />
 			</el-form-item>
 			<el-form-item>
 				<select-v2 v-model="state.queryForm.eventId" :fetch="eventReq" placeholder="事件名称搜索" style="width: 240px" />
@@ -67,12 +67,7 @@
 			<el-table-column prop="ipAddress" label="ip" header-align="center" align="center" min-width="100" />
 			<el-table-column prop="equipmentName" label="设备名称" header-align="center" align="center" min-width="170" />
 			<!-- <el-table-column> -->
-			<el-table-column prop="channelName" label="渠道名称" header-align="center" align="center" min-width="200">
-				<template #default="scope">
-					<span v-if="scope.row.channelName">{{ getChannelLabel(scope.row.channelName) }}</span>
-					<span v-else>--</span>
-				</template>
-			</el-table-column>
+			<el-table-column prop="channelName" label="渠道名称" header-align="center" align="center" min-width="200" />
 			<el-table-column prop="eventName" label="事件名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="nodeName" label="节点名称" header-align="center" align="center" min-width="150" />
 			<el-table-column prop="platformName" label="平台名称" header-align="center" align="center" min-width="150" />
